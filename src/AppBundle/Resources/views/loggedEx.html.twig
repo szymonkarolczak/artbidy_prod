@@ -1,0 +1,15 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ parent() }} - Worldwide Artbase{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        <div class="alert alert-danger">
+            {{ 'main.musisz_byc_zalogowany'|trans }}
+        </div>
+        
+    </div> <!-- /container -->
+
+{% endblock %}

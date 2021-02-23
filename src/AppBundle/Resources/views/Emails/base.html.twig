@@ -1,0 +1,10 @@
+<div style="width: 100%; max-width: 500px; margin: 0 auto; padding:15px; font-family: Arial, Verdana, Tahoma; font-size: 14px;">
+    <div style="margin-bottom: 25px; text-align: center">
+        <a href="{{ absolute_url(path('homepage')) }}"><img src="{{ absolute_url(asset('assets/images/logo-bez-napisow.png')) }}"  style="max-width:50px" alt="Artbidy Logo"/></a>
+    </div>
+    {% block content %} 
+    {% endblock %}
+    <div style="margin-top: 50px; padding: 15px; font-size: 11px; color: white; width: 100%;">
+        {{ 'mail.wygenerowana_automatycznie'|trans }}
+    </div>
+</div>

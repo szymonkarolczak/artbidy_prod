@@ -1,0 +1,16 @@
+{% extends 'AppBundle:Emails:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block content %}
+<h3>Zapytanie o obiekt na aukcji</h3>
+<h4>{{ work.title }}</h4>
+<h5>{{ auction.langs.first.title }}</h5>
+<p>
+      {{ fullname }}<br />
+      {{ email }}<br />
+      {{ phone }}
+
+</p>
+<p>{{ content }}</p>
+{% endblock %}

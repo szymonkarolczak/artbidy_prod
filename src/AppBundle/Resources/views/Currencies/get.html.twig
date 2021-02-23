@@ -1,0 +1,10 @@
+<li class="dropdown change-lang">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ app.session.get('_currency')|upper }} <span class="caret"></span></a>
+    <ul class="dropdown-menu">
+        {% for currency in currencies %}
+            {% if currency.code != app.session.get('_currency') %}
+            <li><a href="{{ path("change_currency", {currency: currency.code}) }}">{{ currency.code|upper }}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</li>

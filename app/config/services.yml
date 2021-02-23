@@ -1,0 +1,72 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+  admin.filter:
+    class: AdminBundle\Model\Filter
+    arguments: ["@request_stack"]
+  admin.uploader:
+    class: AdminBundle\Model\FileUploader
+    arguments: ['%news_files_directory%']
+  admin.form.type.news:
+    class: AdminBundle\Form\NewsType
+    arguments: ["@doctrine.orm.entity_manager"]
+    tags:
+        - { name: form.type }
+  admin.form.type.event:
+    class: AdminBundle\Form\EventType
+    arguments: ["@doctrine.orm.entity_manager"]
+    tags:
+        - { name: form.type }
+  admin.form.type.exhibition:
+      class: AdminBundle\Form\ExhibitionType
+      arguments: ["@doctrine.orm.entity_manager"]
+      tags:
+          - { name: form.type }
+
+  app.form.type.exhibition:
+    class: AppBundle\Form\ExhibitionType
+    arguments: ["@doctrine.orm.entity_manager"]
+    tags:
+        - { name: form.type }
+  app.locale_listener:
+    class: AppBundle\EventListener\LocaleListener
+    arguments: ['%kernel.default_locale%']
+    tags:
+      - { name: kernel.event_subscriber }
+  app.form.registration:
+    class: UserBundle\Form\RegistrationType
+    tags:
+       - { name: form.type, alias: app_user_registration }
+  app.currency:
+    class: AppBundle\Model\Currency
+  app.country:
+    class: AppBundle\Model\Country
+    arguments: ["@translator.default", "%kernel.root_dir%"]
+  app.auction:
+    class: AppBundle\Model\Auction
+  app.uploader:
+    class: AppBundle\Model\FileUploader
+  app.work:
+    class: AppBundle\Model\Work
+    arguments: ["@app.uploader", '%work_files_directory%']
+  form.type.looking:
+      class: AppBundle\Form\LookingType
+      arguments: ["@doctrine.orm.entity_manager"]
+      tags:
+          - { name: form.type }
+  kernel.listener.kernel_request:
+    class: AppBundle\EventListener\Redirect404ToHomepageListener
+    arguments:
+      router: "@router"
+    tags:
+      - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+  app.last_route_event_listener:
+    class: AppBundle\EventListener\LastRouteListener
+    tags:
+      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 30 }
+#  app.houseauction_manager:  
+#    class: AppBundle\Model\HouseAuctionManager
+#    arguments: ["@doctrine.orm.entity_manager", '%houseauction_files_directory%', '%event_files_directory%', "@service_container", "@request_stack"]

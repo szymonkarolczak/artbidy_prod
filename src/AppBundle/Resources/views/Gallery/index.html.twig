@@ -1,0 +1,118 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ 'main_menu.galerie'|trans }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <section id="search" class="stdSection">
+            <h1 class="small">{{ 'galleries.przegladaj'|trans }}</h1>
+            <div class="row">
+                <div class="col-md-12 text-left">
+                    <form method="get">
+                        <div class="col-md-4 form-group form-group-sm">
+                            <input type="text" name="_filter[fullname]"{% if app.request.get('_filter').fullname is defined %} value="{{ app.request.get('_filter').fullname }}"{% endif %} class="form-control" id="fullname" placeholder="{{ 'user.nazwa'|trans }}">
+                        </div>
+                        <div class="col-md-3 form-group form-group-sm">
+                            <input type="text" name="_filter[city]"{% if app.request.get('_filter').city is defined %} value="{{ app.request.get('_filter').city }}"{% endif %} class="form-control" id="city" placeholder="{{ 'user.miasto'|trans }}">
+                        </div>
+                        <div class="col-md-3 form-group form-group-sm">
+                            <select name="_filter[country]" id="_filter[country]" class="form-control">
+                                {% for country in countries %}
+                                <option value="{{ country.country }}">{{ country.country|trans }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-2 input-group">
+                            <div class="input-group-btn">
+                                <input type="submit" value="{{ 'main.filtruj'|trans }}" class="btn btn-primary" />
+                                <a href="{{ path("galleries") }}" class="btn btn-default">{{ 'main.wyczysc'|trans }}</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-12">
+                    <div class="page-header mt_0">
+                        <h4 class="text-left">{{ 'galleries.znaleziono_liczba'|trans }} {{ pagination.getTotalItemCount }}</h4>
+                    </div>
+                        {% for artist in pagination %}
+                        {% if loop.index % 4 == 1 %}
+                        <div class="row">
+                            {% endif %}
+                            <div class="col-md-4 col-xs-12 mb_15 higher-height">
+                                {% include 'AppBundle:Gallery:item.html.twig' with {user: artist} %}
+                            </div>
+                            {% if loop.index is divisible by(4) or loop.last %}
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <div class="alert alert-info">
+                                {{ 'galleries.nie_znaleziono'|trans }}
+                            </div>
+                        {% endfor %}
+                    <div class="navigation text-center">
+                        {{ knp_pagination_render(pagination) }}
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+   
+
+    <div class="container" style="margin-bottom: 50px;">
+
+
+{#        {% if ads[0] is defined and ads[0] %}#}
+{#            {{ ads[0].content|raw }}#}
+{#        {% endif %}#}
+
+        {% if not is_granted('ROLE_GALERIA') %}
+            <div class="text-center">
+                <a href="{{ path("footer_information", {page: 'galleries'}) }}" class="btn btn-fineart">{{ 'galleries.chcesz_byc_galeria'|trans }}</a>
+            </div>
+        {% endif %}
+
+    </div>
+
+{% endblock %}
+
+{% block css %}
+    <!-- Owl Carousel Assets -->
+    <link href="{{ asset('assets/vendor/owl.carousel/owl-carousel/owl.carousel.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/owl.carousel/owl-carousel/owl.theme.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/vendor/owl.carousel/owl-carousel/owl.carousel.js') }}"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(".owl-carousel").owlCarousel({
+                itemsScaleUp: false,
+                navigationText: false,
+                navigation: true,
+                pagination: false,
+                autoPlay: 3000,
+                items : 2,
+                itemsDesktop : [1199,3],
+                itemsDesktopSmall : [979,3],
+                autoHeight: true
+            });
+            $(".owl-carousel-2").owlCarousel({
+                itemsScaleUp: false,
+                navigationText: false,
+                navigation: true,
+                pagination: false,
+                autoPlay: 3000,
+                items : 3,
+                itemsDesktop : [1199,3],
+                itemsDesktopSmall : [979,3],
+                autoHeight: true
+            });
+            {% if app.request.get('_filter') %}
+            $('html,body').animate({
+                scrollTop: $('section#search').offset().top - 70
+            }, 500);
+            {% endif %}
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'AppBundle:Emails:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block content %}
+
+    {% set title = auction.langs.first.title %}
+    {% for lang in auction.langs %}
+        {% if lang.lang.shortcut == app.session.get('_locale') %}
+            {% set title = lang.title %}
+        {% endif %}
+    {% endfor %}
+
+    <h3>{{ 'mail.witaj1'|trans() }}</h3>
+    <p>{{ 'mail.auction.prowizja_content_dane_seller'|trans({'%work%': work.title, '%auction%': title}, 'messages') }}</p>
+    <p>
+        {{ bid.author.fullname }}<br />
+        {{ bid.author.email }}
+    </p>
+{% endblock %}

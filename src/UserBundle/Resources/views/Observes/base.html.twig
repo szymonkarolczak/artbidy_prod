@@ -1,0 +1,27 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ 'obserwuj.dodane'|trans }} - {{parent()}} {% endblock %}
+
+{% block body %}
+    <div class="container">
+
+        <div class="page-header mt_0">
+            <h1 class="mt_0">{{ 'obserwuj.dodane'|trans }}</h1>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-3">
+                <ul class="nav nav-pills nav-stacked"> 
+                    <li role="presentation"{% if app.request.attributes.get('_route') == 'user_observes' %} class="active"{% endif %}><a href="{{ path("user_observes") }}">{{ 'main.aukcje_finearts'|trans }}</a></li> 
+                    <li role="presentation"{% if app.request.attributes.get('_route') == 'user_observes_houseauction' %} class="active"{% endif %}><a href="{{ path("user_observes_houseauction") }}">{{ 'obserwuj.aukcje_domow'|trans }}</a></li>
+                    <li role="presentation"{% if app.request.attributes.get('_route') == 'user_observes_users' %} class="active"{% endif %}><a href="{{ path("user_observes_users") }}">{{ 'obserwuj.uzytkownicy'|trans }}</a></li>
+                </ul>
+            </div>
+            <div class="col-md-9">
+                {% block observes %}
+                {% endblock %}
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

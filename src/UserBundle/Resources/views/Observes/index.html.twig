@@ -1,0 +1,54 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block body %}
+    
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-3">
+                <ul class="nav nav-pills nav-stacked">
+                    <li role="presentation" class="active"><a href="{{ path("user_observes") }}">{{ 'main_menu.aukcje'|trans }}</a></li>
+                    <li role="presentation"><a href="{{ path("user_observes_objects") }}">{{ 'main.obiekty'|trans }}</a></li>
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <div class="page-header mt_0">
+                    <h1 class="mt_0">{{ 'obserwuj.aukcje_finearts'|trans }} <small>({{ pagination.getTotalItemCount }})</small></h1>
+                </div>
+
+                <table class="table table-bordered table-hover table-striped">
+                    <tr>
+                        <th>{{ 'main.tytul'|trans }}</th>
+                        <th>{{ 'main.data_start'|trans }}</th>
+                        <th>{{ 'main.data_koniec'|trans }}</th>
+                        <th>{{ 'main.akcja'|trans }}</th>
+                    </tr>
+                    {% for observe in pagination %}
+                        {% set title = observe.title %}
+                        {% set observe = observe[0] %}
+                        <tr>
+                            <td><a href="{{ path("auction", {id: observe.auction.id, slug: title|slugify}) }}">{{ title }}</a></td>
+                            <td>{{ observe.auction.startDate|date('Y-m-d H:i:s') }}</td>
+                            <td>{{ observe.auction.endDate|date('Y-m-d H:i:s') }}</td>
+                            <td>
+                                <a href="{{ path("user_observes_delete", {id: observe.id}) }}" class="btn btn-xs btn-danger">{{ 'main.usun'|trans }}</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4">
+                                <div class="alert alert-info">{{ 'obserwuj.brak'|trans }}</div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+
+                <div class="navigation text-center">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+{% endblock %}

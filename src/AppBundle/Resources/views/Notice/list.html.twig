@@ -1,0 +1,47 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ 'licytacja.page.title.notice'|trans }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        <div class="page-header mt_0">
+            <h1 class="mt_0">{{ 'licytacja.page.title.notice'|trans }} <small>{{ pagination.getTotalItemCount }}</small></h1>
+        </div>
+
+        <table class="table table-striped table-hover">
+            <tr>
+                <th>ID</th>
+                <th>{{ 'licytacja.tabel.title.time'|trans }}</th>
+                <th>{{ 'licytacja.tabel.title.status'|trans }}</th>
+                <th>{{ 'licytacja.tabel.title.title'|trans }}</th>
+                <th>{{ 'licytacja.tabel.title.options'|trans }}</th>
+                
+            </tr>
+            {% for notices in pagination %}
+            <tr {% if notices.IsReaded %} {% else %} class="success"{% endif %}>
+                <td>{{ notices.id }}</td>
+                <td>{{ notices.CreatedAt|date('Y-m-d H:i:s') }}</td>
+                <td>{% if notices.IsReaded %} {{ 'notice.statusese.readed'|trans }} {% else %} {{ 'notice.statusese.new'|trans }}{% endif %}</td>
+                <td>{{ notices.title }}</td>
+                <td>
+                    <a href="{{ path('user_notice_read', {id: notices.id}) }}" class="btn btn-xs btn-primary">{{ 'licytacja.buttons.read_obiekty'|trans }}</a>    
+                </td>
+            </tr>
+            {% else %}
+                <tr>
+                    <td colspan="9">
+                        <div class="alert alert-info">{{ 'notice.massenges.nie_znaleziono'|trans }}</div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    </div> <!-- /container -->
+
+{% endblock %}

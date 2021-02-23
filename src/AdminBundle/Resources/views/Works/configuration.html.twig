@@ -1,0 +1,51 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="page-header mt_0">
+            <h1 class="mt_0">Konfiguracja dodawania dzieł <small>{{ pagination.getTotalItemCount }}</small></h1>
+            <a href="{{ path("admin_works_configuration_generate") }}" class="btn btn-primary">Generuj pliki</a>
+        </div>
+
+        {{ form_start(form) }}
+        {{ form_row(form.lang) }}
+        {{ form_row(form.value) }}
+        {{ form_row(form.type) }}
+        {{ form_end(form) }}
+
+        <hr />
+        {{ filters|raw }}
+
+        <table class="table table-bordered table-striped table-hover">
+            <tr>
+                <th>ID</th>
+                <th>Typ</th>
+                <th>Język</th>
+                <th>Wartość</th>
+                <th>Akcja</th>
+            </tr>
+            {% for config in pagination %}
+            <tr>
+                <td>{{ config.id }}</td>
+                <td>{{ config.type }}</td>
+                <td>{{ config.lang.shortcut|upper }}</td>
+                <td>{{ config.value }}</td>
+                <td>
+                    <a href="{{ path('admin_works_configuration_delete', {id: config.id}) }}" class="btn btn-xs btn-danger" onclick="return confirm('Czy na pewno chcesz usunąć to pole?')">Usuń</a>
+                    <a href="{{ path('admin_works_configuration_languages', {id: config.id}) }}" class="btn btn-xs btn-info">Języki</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    </div>
+
+{% endblock %}

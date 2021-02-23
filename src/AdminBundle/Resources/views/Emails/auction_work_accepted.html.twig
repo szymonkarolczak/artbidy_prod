@@ -1,0 +1,18 @@
+{% extends 'AppBundle:Emails:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block content %}
+<h3>{{ 'mail.witaj'|trans({'%username%': author.username}) }}</h3>
+
+    {% set title = auction.langs.first.title %}
+    {% for Exlang in auction.langs %}
+        {% if Exlang.lang.shortcut == lang %}
+            {% set title = Exlang.title %}
+        {% endif %}
+    {% endfor %}
+
+<h4>Gratulacje!</h4>
+<p>Informujemy, że Twoje zgłoszenie obiektu "{{ work.title }}" na aukcję "{{ title }}" zostało zaakceptowane.</p>
+
+{% endblock %}

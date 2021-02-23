@@ -1,0 +1,64 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="page-header mt_0">
+            <h1 class="mt_0">Wyniki czyszczenia cache</h1>
+        </div>
+{% if is_granted('ROLE_ADMIN') %}
+        <div class="row">
+            <div class="col-md-4 col-sm-12 col-xs-12">
+                <div class="x_panel tile">
+                    <div class="x_title">
+                        <h2>Cache - development</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li style="float: right"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        {{ devCache }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 col-xs-12">
+                <div class="x_panel tile">
+                    <div class="x_title">
+                        <h2>Cache - produkcja</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li style="float: right"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        {{ prodCache }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 col-xs-12">
+                <div class="x_panel tile">
+                    <div class="x_title">
+                        <h2>Uprawnienia</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li style="float: right"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        {% if chmod is empty %}
+                            <div class="alert alert-success">Uprawnienia poprawie nadane</div>
+                        {% else %}
+                            {{ chmod }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{% endif %}
+    </div>
+
+{% endblock %}

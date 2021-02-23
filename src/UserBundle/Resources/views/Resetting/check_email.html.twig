@@ -1,0 +1,19 @@
+{% extends "AppBundle::base.html.twig" %}
+
+{% block title %}{{ 'user.resetuj_haslo'|trans([], 'messages') }} - {{ parent() }}{% endblock %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block body %}
+    <div class="container">
+
+        <div class="page-header mt_0">
+            <h1 class="mt_0">{{ 'user.resetuj_haslo'|trans([], 'messages') }}</h1>
+        </div>
+
+        <p>
+            {{ 'resetting.check_email'|trans({'%tokenLifetime%': tokenLifetime}) }}
+        </p>
+
+    </div>
+{% endblock %}

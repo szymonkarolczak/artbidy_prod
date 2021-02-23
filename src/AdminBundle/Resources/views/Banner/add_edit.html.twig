@@ -1,0 +1,82 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="page-header mt_0">
+            <h1 class="mt_0">{{ banner is defined ? 'Edytuj banner' : 'Dodaj banner' }}</h1>
+        </div>
+
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-md-9">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'admin.jezyki'|trans }}</div>
+                    <div class="panel-body">
+                        <button id="add-another-lang" type="button" class="btn btn-info">{{ 'aktualnosci.kategorie.dodaj_jezyk'|trans }}</button>
+                        <hr />
+                        <div id="admin_banner_langs" class="langs" data-prototype="{{ form_widget(form.langs.vars.prototype)|e('html_attr') }}">
+                            {% for lang in form.langs %}
+                                {{ form_row(lang) }}
+                                <hr />
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Dane banneru</div>
+                    <div class="panel-body">
+                        {{ form_row(form.url) }}
+                        {{ form_row(form.color) }}
+                        {{ form_row(form.position) }}
+                        {{ form_row(form.active) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'main.opcje'|trans({}, 'messages') }}</div>
+                    <div class="panel-body">
+                        {{ form_widget(form.submit) }}
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'add_work.grafika'|trans({}, 'messages') }}</div>
+                    <div class="panel-body">
+                        {% if banner is defined and banner.image %}
+                            <img src="{{ asset('files/banner/'~banner.image.filename)}}" style="max-width: 100%; max-height: 250px;" />
+                        {% endif %}
+                        {{ form_row(form.image) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(function() {
+
+            var langCount = '{{ form.langs|length }}';
+
+            $('#add-another-lang').click(function(e) {
+                e.preventDefault();
+
+                var userList = $('#admin_banner_langs');
+
+                var newWidget = userList.attr('data-prototype');
+                newWidget = newWidget.replace(/__name__/g, langCount);
+                langCount++;
+
+                var newLi = $('<div></div>').html(newWidget+'<hr />');
+                newLi.prependTo(userList);
+            });
+        });
+    </script>
+{% endblock %}

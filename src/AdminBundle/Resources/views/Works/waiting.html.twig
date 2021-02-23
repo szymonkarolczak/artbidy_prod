@@ -1,0 +1,59 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="container-fluid">
+            <div class="page-header mt_0">
+                <h1 class="mt_0">
+                    {{ 'dziela.oczekujace_na_akceptacje'|trans }}
+                    <small>{{ pagination.getTotalItemCount }}</small>
+                </h1>
+            </div>
+        </div>
+
+        {{ filters|raw }}
+
+        <table class="table table-bordered table-striped table-hover">
+            <tr>
+                <th>ID</th>
+                <th>{{ 'admin.tytul'|trans }}</th>
+                <th>{{ 'admin.autor'|trans }}</th>
+                <th>{{ 'admin.grafika'|trans }}</th>
+                <th>{{ 'admin.galeria'|trans }}</th>
+                <th>{{ 'admin.data_dodania'|trans }}</th>
+                <th>{{ 'admin.artysta'|trans }}</th>
+                <th>{{ 'admin.akcja'|trans }}</th>
+            </tr>
+            {% for work in pagination %}
+            <tr>
+                <td>{{ work[0].id }}</td>
+                <td>{{ work[0].title }}</td>
+                <td>{{ work.username }}</td>
+                <td><img src="{{ asset('files/work/'~work[0].image) }}" style="max-height: 90px" alt="{{ work[0].id }} image" /></td>
+                <td>
+                        {% for image in work[0].gallery %}
+                        <img src="{{ asset('files/work/'~image) }}" height="40" width="40" alt="{{ image }}" />
+                        {% endfor %}
+                </td>
+                <td>{{ work[0].addDate|date('Y-m-d H:i:s') }}</td>
+                <td>{{ work[0].artist }}</td>
+                <td>
+                    <a href="{{ path("admin_works_waiting_accept", {id: work[0].id}) }}" onclick="return confirm('{{ "dziela.czy_na_pewno_zaakceptowac"|trans }}')" class="btn btn-xs btn-success">Akceptuj</a>
+                    <a href="{{ path("admin_works_edit", {id: work[0].id}) }}" class="btn btn-xs btn-warning">Edytuj</a>
+                    <a href="{{ path("admin_works_delete", {id: work[0].id}) }}" class="btn btn-xs btn-danger" onclick="return confirm('{{ "dziela.czy_na_pewno_usunac"|trans }}')">Usuń</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    </div>
+
+{% endblock %}

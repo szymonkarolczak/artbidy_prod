@@ -1,0 +1,14 @@
+{% for user in ranking %}
+    {% if loop.index % 4 == 1 %}
+        <div class="row">
+    {% endif %}
+        {% set num = user.num %}
+        {% set artist = user.user %}
+        <div class="more-padding col-md-3 col-xs-12 text-center mb_25" style="min-height: 340px;">
+            {% include 'AppBundle:Artist:item.html.twig' with {user: artist} %}
+            <p class="small">{{ 'profile.odwiedzin'|trans({'%liczba%': num}) }}</p>
+        </div>
+    {% if loop.index is divisible by(4) or loop.last %}
+        </div>
+    {% endif %}
+{% endfor %}

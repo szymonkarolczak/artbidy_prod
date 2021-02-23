@@ -1,0 +1,47 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="page-header mt_0">
+            <h1 class="mt_0">Ustawienia</h1>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                {{ form_start(form) }}
+                <div class="x_panel tile">
+                    <div class="x_title">
+                        <h2>Homepage Banner</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li style="float: right"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="col-md-10 col-xs-12">
+                                {{ form_widget(form.value) }}
+                                <input type="submit" style="margin-top: 10px;" value="{{ 'admin.zapisz'|trans }}" class="btn btn-success" />
+                            </div>
+                            <div class="col-md-2 col-xs-12">
+                                <h4>Opcje</h4>
+                                <p>%prezentacja_galerii%</p>
+                                <p>%nadchodzace_aukcje%</p>
+                                <p>%wyniki_aukcji%</p>
+                                <p>%nadchodzace_wystawy%</p>
+                                <p>%polecane_wydarzenia%</p>
+                                <p>%najnowsze_aktualnosci%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

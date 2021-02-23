@@ -1,0 +1,161 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ 'uslugi.uslugi'|trans }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+
+    {% if app.user is null %}
+        {% set username = 'niezalogowany'|trans %}
+    {% else %}
+        {% set username = app.user.username %}
+    {% endif %}
+
+    <div class="container">
+
+        <div class="page-header mt_0">
+            <h1>{{ 'home.raporty'|trans }}</h1>
+        </div>
+
+        {% if reports %}
+            <table class="table">
+                <tr>
+                    <th>{{ 'main.okladka'|trans }}</th>
+                    <th>{{ 'main.tytul'|trans }}</th>
+                    <th>{{ 'add_work.opis'|trans }}</th>
+                    <th>{{ 'raporty.dostepnosc'|trans }}</th>
+                    <th>{{ 'add_work.cena'|trans }}</th>
+                    <th>{{ 'main.akcja'|trans }}</th>
+                </tr>
+                {% for report in reports %}
+                    {% set bought = report.bought %}
+                    {% set report = report[0] %}
+                    <tr>
+                        <td><img src="{{ asset('files/library/'~report.image) }}" style="max-height: 50px;"
+                                 alt="{{ report.id }}"/></td>
+                        <td>{{ report.title }}</td>
+                        <td>{{ report.description }}</td>
+                        <td>
+                            {% if report.filename %}
+                                <i class="glyphicon glyphicon-ok"></i>
+                            {% endif %}
+                        </td>
+                        <td>{{ currency.convert('PLN', app.session.get('_currency'), report.price) }} {{ app.session.get('_currency') }}</td>
+                        <td>
+                            {% if bought %}
+                                {% if report.filename %}
+                                    <a href="{{ path('user_services_reports_get', {id: report.id}) }}"
+                                       class="btn btn-xs btn-success">{{ 'raporty.pobierz'|trans }}</a>
+                                {% endif %}
+                            {% else %}
+                                <form method="post">
+                                    <input type="hidden" name="reportId" value="{{ report.id }}"/>
+                                    {#<input type="submit" class="btn btn-xs btn-primary" value="PayPal" />#}
+                                    {% if app.user %}
+                                        <button type="button" data-title="{{ report.title }}"
+                                                data-transfer="{{ username }} - {{ report.title }}"
+                                                class="btn btn-xs btn-warning transferModal">{{ 'main.kup'|trans }}</button>
+                                    {% else %}
+                                        <a href="{{ path("fos_user_security_login") }}"
+                                           class="btn btn-xs btn-warning">{{ 'main_menu.zaloguj_sie'|trans }}</a>
+                                    {% endif %}
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <div class="alert alert-info">{{ 'raporty.brak'|trans }}</div>
+        {% endif %}
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="bankTransfer" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="bankTransferLabel"></h4>
+                </div>
+                <div class="modal-body">
+                    {{ 'raporty.transfer_wstep'|trans }}
+                    <table class="table mt_20">
+                        <tr>
+                            <td style="width: 30%" class="text-right">{{ 'transfer.odbiorca'|trans }}</td>
+                            <td>
+                                {{ bank_owner }}<br/>
+                                {{ bank_country }}<br/>
+                                {{ bank_city }}<br/>
+                                {{ bank_street }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">{{ 'transfer.numer'|trans }}</td>
+                            <td>{{ bank_number }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">IBAN:</td>
+                            <td>
+                                {{ bank_iban }}<br/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">BIC/SWIFT:</td>
+                            <td>{{ bank_bic }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">{{ 'transfer.tytul'|trans }}</td>
+                            <td id="transferTitle"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">{{ 'main.zamknij'|trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+        {% block javascripts %}
+            <script type="text/javascript">
+                {# $(function() {
+                     $('.transferModal').click(function() {
+                         var transferTitle = $(this).data('transfer');
+                         var title = $(this).data('title');
+                         $('#bankTransferLabel').html(title);
+                         $('#transferTitle').html(transferTitle);
+                         $('#bankTransfer').modal();
+                     });
+                 });#}
+
+                $(function () {
+                    var transferModal = $('.transferModal');
+                    var bankTransfer = $('#bankTransfer');
+
+                    $('.transferModal').on('click', function () {
+                        bankTransfer.removeClass('fade');
+                        bankTransfer.css('display', 'block');
+                        $('#transferTitle').html($(this).data('transfer'));
+
+                    });
+
+                    $('.modal-footer').on('click', function () {
+                        bankTransfer.addClass('fade');
+                        bankTransfer.css('display', 'none');
+                    });
+
+                    $('.close').on('click', function () {
+                        bankTransfer.addClass('fade');
+                        bankTransfer.css('display', 'none');
+                    });
+
+
+                    // koniec
+                });
+
+            </script>
+        {% endblock %}

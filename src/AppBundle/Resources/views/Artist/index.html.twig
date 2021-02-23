@@ -1,0 +1,174 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ 'main_menu.artysci'|trans }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+   
+    <div class="container" style="margin-bottom: 50px;">
+        <section id="filters" class="stdSection">
+            <h1 class="small">{{ 'artists.przegladaj'|trans }}</h1>
+            <div class="row">
+                <div class="col-md-12 text-left">
+                    <form method="get">
+                        <div class="col-md-5 form-group form-group-sm">
+                            <input type="text" name="_filter[fullname]"{% if app.request.get('_filter').fullname is defined %} value="{{ app.request.get('_filter').fullname }}"{% endif %} class="form-control" id="fullname" placeholder="{{ 'user.imie_i_nazwisko'|trans }}">
+                        </div>
+                        <div class="col-md-5 form-group form-group-sm">
+                            <select class="form-control" name="_filter[country]">
+                                <option value="">{{ 'user.kraj'|trans }}</option>
+                                {% for country in countries %}
+{#                                <option{% if app.request.get('_filter').country is defined and app.request.get('_filter').country == country %} selected="selected"{% endif %} value="{{ country }}">{{ country|trans }}</option>#}
+                                <option{% if app.request.get('_filter').country is defined and app.request.get('_filter').country == country %} selected="selected"{% endif %} value="{{ country.country }}">{{ country.country|trans }}</option>
+                                
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-2 input-group">
+                            <div class="input-group-btn">
+                                <input type="submit" value="{{ 'main.filtruj'|trans }}" class="btn btn-primary" style="height: 40px; font-size: 20px;" />
+                                <a href="{{ path("artists") }}" class="btn btn-default" style="height: 40px; font-size: 20px;">{{ 'main.wyczysc'|trans }}</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-12">
+                    <div class="page-header mt_0 text-left">
+                        <h4>{{ 'artists.znaleziono_liczba'|trans }} {{ pagination.getTotalItemCount }}</h4>
+                    </div>
+                    {% for artist in pagination %}
+                        {% if loop.first %}
+                            <div class="row">
+                        {% endif %}
+                            <div class="artistsss col-md-4 col-xs-12 mb_25 higher-height">
+                                {% include 'AppBundle:Artist:item.html.twig' with {user: artist} %}
+                            </div>
+                        {% if loop.last %}
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="alert alert-info">
+                            {{ 'artists.nie_znaleziono'|trans }}
+                        </div>
+                    {% endfor %}
+                    <div class="navigation text-center">
+                        {{ knp_pagination_render(pagination) }}
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="container" style="margin-bottom: 50px;">
+
+        <section id="top100" class="stdSection">
+            <h1 class="small">{{ 'artists.top10'|trans }}</h1>
+            <div class="row">
+                <div class="col-md-12" style="display:none;">
+                    <div class="list-group">
+                        <a href="#changeTop" class="col-sm-2 col-md-1 list-group-item active">{{ ('now'|date('m')) }} {{ 'now'|date('Y') }}</a>
+                        <a href="#changeTop" class="col-sm-2 col-md-1 list-group-item">{{ ('-1 month'|date('m')) }} {{ '-1 month'|date('Y') }}</a>
+                        <a href="#changeTop" class="col-sm-2 col-md-1 list-group-item">{{ ('-2 month'|date('m')) }} {{ '-2 month'|date('Y') }}</a>
+                        <a href="#changeTop" class="col-sm-2 col-md-1 list-group-item">{{ ('-3 month'|date('m')) }} {{ '-3 month'|date('Y') }}</a>
+                        <a href="#changeTop" class="col-sm-2 col-md-1 list-group-item">{{ ('-4 month'|date('m')) }} {{ '-4 month'|date('Y') }}</a>
+                        <a href="#changeTop" class="col-sm-2 col-md-1 list-group-item">{{ ('-5 month'|date('m')) }} {{ '-5 month'|date('Y') }}</a>
+                        <a href="#changeTop" class="col-sm-2 col-md-1 list-group-item">{{ ('-6 month'|date('m')) }} {{ '-6 month'|date('Y') }}</a>
+                        <a href="#changeTop" class="col-sm-2 col-md-1 list-group-item">{{ ('-7 month'|date('m')) }} {{ '-7 month'|date('Y') }}</a>
+                        <a href="#changeTop" class="col-sm-2 col-md-1 list-group-item">{{ ('-8 month'|date('m')) }} {{ '-8 month'|date('Y') }}</a>
+                        <a href="#changeTop" class="col-sm-2 col-md-1 list-group-item">{{ ('-9 month'|date('m')) }} {{ '-9 month'|date('Y') }}</a>
+                        <a href="#changeTop" class="col-sm-2 col-md-1 list-group-item">{{ ('-10 month'|date('m')) }} {{ '-10 month'|date('Y') }}</a>
+                        <a href="#changeTop" class="col-sm-2 col-md-1 list-group-item">{{ ('-11 month'|date('m')) }} {{ '-11 month'|date('Y') }}</a>
+                    </div>
+                </div>
+                <div class="col-md-12 text-center">
+                    <div class="row" id="top100Content">
+                        <div class="text-center">{{ 'main.laduje'|trans }}</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="stdSection aktualnosci-artysci">
+            <h1 class="small">{{ 'artists.newsy'|trans }}</h1>
+            <div class="owl-carousel">
+                {% for news in newses %}
+                    {% set title = news.title %}
+                    {% set news = news[0] %}
+                    <div class="item">
+                        <div class="text-center">
+                            <div class="text-center">
+                                <a href="{{ path("news", {id: news.id, slug: title|slugify}) }}"><img src="{{ asset('files/news/'~news.image) | imagine_filter('compress') }}" alt="{{ title }} {{ news.id }}"></a>
+                            </div>
+                            <h2>
+                                <a href="{{ path("news", {id: news.id, slug: title|slugify}) }}">{{ title }}</a>
+                            </h2>
+                            <p>{{ 'artists.powiazani_artysci'|trans }}:
+                                {% for user in news.users %}
+                                    <a href="{{ path('profile', {slug:user.profileSlug|slugify, prefix:user.profilePrefix}) }}">{{ user.fullname ? user.fullname : user.username }}</a>{% if not loop.last %}, {% endif %}
+                                {% endfor %}
+                            </p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+
+        {% if ads[0] is defined and ads[0] %}
+            {{ ads[0].content|raw }}
+        {% endif %}
+
+        {% if not is_granted('ROLE_ARTYSTA') %}
+            <div class="text-center">
+                <a href="{{ path("footer_information", {page: 'artists'}) }}" class="btn btn-fineart">{{ 'artists.chcesz_byc_artysta'|trans }}</a>
+            </div>
+        {% endif %}
+
+    </div>
+
+{% endblock %}
+
+{% block css %}
+    <!-- Owl Carousel Assets -->
+    <link href="{{ asset('assets/vendor/owl.carousel/owl-carousel/owl.carousel.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/owl.carousel/owl-carousel/owl.theme.default.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/vendor/owl.carousel/owl-carousel/owl.carousel.js') }}"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(".owl-carousel").owlCarousel({
+                itemsScaleUp: false,
+                navigationText: false,
+                navigation: true,
+                pagination: false,
+                autoPlay: false,
+                items : 2,
+                itemsDesktop : [1199,3],
+                itemsDesktopSmall : [979,3],
+                autoHeight: true
+            });
+            
+            $('a[href="#changeTop"]').click(function(e) {
+                e.preventDefault();
+                
+                var month = $(this).index();
+                $('a[href="#changeTop"]').removeClass('active');
+                $(this).addClass('active');
+                $('#top100Content').html('<div class="text-center">{{ 'main.laduje'|trans }}</div>');
+                
+                $.get('{{ path("artists_top_month") }}', {month: month}, function(data) {
+                    $('#top100Content').html(data);
+                });
+            });
+            $.get('{{ path("artists_top_month") }}', {month: 0}, function(data) {
+                $('#top100Content').html(data);
+            });
+            {% if app.request.get('_filter') %}
+            $('html,body').animate({
+                scrollTop: $('section#filters').offset().top - 70
+            }, 500);
+            {% endif %}
+        });
+    </script>
+{% endblock %}

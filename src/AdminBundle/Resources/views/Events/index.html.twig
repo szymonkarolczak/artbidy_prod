@@ -1,0 +1,56 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="container-fluid">
+            <div class="page-header mt_0">
+                <h1 class="mt_0">
+                    {{ 'wydarzenia.przegladaj'|trans }}
+                </h1>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-hover">
+            <tbody>
+            <tr>
+                <th>ID</th>
+                <th>{{ 'admin.tytul'|trans }}</th>
+                <th>{{ 'admin.opis'|trans }}</th>
+                <th>{{ 'main.data_start'|trans({}, 'messages') }}</th>
+                <th>{{ 'main.data_koniec'|trans({}, 'messages') }}</th>
+                <th>{{ 'admin.grafika'|trans }}</th>
+                <th>{{ 'aktualnosci.wyroznione'|trans }}</th>
+                <th>{{ 'admin.akcja'|trans }}</th>
+            </tr>
+            {% for event in pagination %}
+                {% set title = event.title %}
+                {% set description = event.description %}
+                {% set event = event[0] %}
+                <tr>
+                    <td>{{ event.id }}</td>
+                    <td>{{ title }}</td>
+                    <td>{{ description }}</td>
+                    <td>{{ event.startDate|date('Y-m-d H:i:s') }}</td>
+                    <td>{{ event.endDate|date('Y-m-d H:i:s') }}</td>
+                    <td><img src="{{ asset('files/event/'~event.image) }}" style="max-height: 70px;" alt="{{ title }} {{ event.id }}" /></td>
+                    <td>{{ event.pinned ? '<i class="glyphicon glyphicon-ok"></i>' }}</td>
+                    <td>
+                        <a class="btn btn-xs btn-info" href="{{ path("admin_events_edit", {id: event.id}) }}">{{ 'admin.edytuj'|trans }}</a>
+                        <a class="btn btn-xs btn-danger pull-right" href="{{ path("admin_events_delete", {id: event.id}) }}">{{ 'admin.usun'|trans }}</a>
+                    </td>
+                </tr>    
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    </div>
+
+{% endblock %}

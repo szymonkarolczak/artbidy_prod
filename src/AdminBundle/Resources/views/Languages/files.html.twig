@@ -1,0 +1,35 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="container-fluid">
+            <div class="page-header mt_0">
+                <h1 class="mt_0">{{ 'ogolne.jezyki.pliki'|trans }}</h1>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-hover">
+            <tbody>
+            <tr>
+                <th>{{ 'admin.nazwa'|trans }}</th>
+                <th>{{ 'admin.akcja'|trans }}</th>
+            </tr>
+            {% for file in files %}
+            
+                <tr>
+                    <td>{{ file }}</td>
+                    <td>
+                        <a class="btn btn-xs btn-info" href="{{ path("admin_general_languages_files_edit", {file: file}) }}">{{ 'admin.edytuj'|trans }}</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+{% endblock %}

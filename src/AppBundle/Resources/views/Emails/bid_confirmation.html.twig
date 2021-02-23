@@ -1,0 +1,11 @@
+{% extends 'AppBundle:Emails:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block content %}
+    <h3>{{ 'mail.witaj'|trans({'%username%': author.username}) }}</h3>
+
+    <p>{{ 'mail.auction.oferta_potwierdzona'|trans({'%work%': work.title, '%auction%': auction.title}, 'messages') }}</p>
+    <p>{{ 'mail.auction.aktualna_stawka'|trans({}, 'messages') }} {{ bid.amount }} {{ bid.currency.code|upper }}</p>
+
+{% endblock %}

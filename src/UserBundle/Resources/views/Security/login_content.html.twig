@@ -1,0 +1,49 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div class="container">
+
+    <div class="page-header mt_0">
+        <h1 class="mt_0">{{ 'main_menu.zaloguj_sie'|trans([], 'messages') }}</h1>
+    </div>
+
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    <form class="form-horizontal" action="{{ path("fos_user_security_check") }}" method="post">
+        {% if csrf_token %}
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+        {% endif %}
+
+        <div class="form-group">
+{#            <label class="col-sm-2 control-label" for="username">{{ 'security.login.username'|trans }}</label>#}
+            <label class="col-sm-2 control-label" for="username">{{ 'security.login.email'|trans }}</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="username" name="_username" value="{{ last_username }}" required="required" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="password">{{ 'security.login.password'|trans }}</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" id="password" name="_password" required="required" />
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id="remember_me" name="_remember_me" value="on" /> {{ 'security.login.remember_me'|trans }}
+                    </label>
+                </div>
+            </div>
+        </div>
+            
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <input type="submit" id="_submit" class="btn btn-success" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+            </div>
+        </div>
+    </form>
+    
+</div>

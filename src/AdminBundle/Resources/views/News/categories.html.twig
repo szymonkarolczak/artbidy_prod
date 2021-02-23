@@ -1,0 +1,48 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="container-fluid">
+            <div class="page-header mt_0">
+                <h1 class="mt_0">{{ 'aktualnosci.kategorie.kategorie'|trans }}</h1>
+            </div>
+        </div>
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <td colspan="3"><a class="btn btn-primary" href="{{ path("admin_news_categories_add") }}">{{ 'aktualnosci.kategorie.dodaj'|trans }}</a></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>ID</th>
+                    <th>{{ 'admin.tytul'|trans }}</th>
+                    <th>{{ 'admin.akcja'|trans }}</th>
+                </tr>
+                {% for categoryLang in categories %}
+                    <tr>
+                        <td>{{ categoryLang.category.id }}</td>
+                        <td>{{ categoryLang.title }} ({{ categoryLang.lang.shortcut|upper }})</td>
+                        <td>
+                            <a href="{{ path("admin_news_categories_languages", {id: categoryLang.category.id}) }}" class="btn btn-xs btn-info">{{ 'admin.jezyki'|trans }}</a>
+                            <a href="{{ path("admin_news_categories_delete", {id: categoryLang.category.id}) }}" onclick="return confirm('{{ 'aktualnosci.kategorie.czy_na_pewno_usunac'|trans }}')" class="btn btn-xs btn-danger pull-right">{{ 'admin.usun'|trans }}</a>
+                        </td>
+                    </tr>
+
+                {% else %}
+                    <tr>
+                        <td colspan="3">
+                            <div class="alert alert-info mb_0">{{ 'aktualnosci.kategorie.brak'|trans }}</div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,10 @@
+<div class="text-center">
+    <a style="display: block" class="text-center" href="{{ path("profile", {id: user.id, prefix: user.profilePrefix, slug: user.profileSlug|slugify}) }}">
+        <img src="{{ asset('files/user/'~user.image) | imagine_filter('compress') }}" style="max-width: 100%;" alt="{{ user.fullname }}"></a>
+    <h2 style="font-size: 18px;">
+        <a href="{{ path("profile", {id: user.id, prefix: user.profilePrefix, slug: user.profileSlug|slugify}) }}">{{ user.fullname ? user.fullname : user.username }}</a>
+    </h2>
+    {% if user.city %}
+        <p>{{ country.convert(user.city, app.session.get('_locale')) }}</p>
+    {% endif %}
+</div>

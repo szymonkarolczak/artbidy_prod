@@ -1,0 +1,343 @@
+Fotografia: Fotografia
+Grafika: Grafika
+Malarstwo: Malarstwo
+Rysunek: Rysunek
+Rzeźba: Rzeźba
+'Sztuka użytkowa': 'Sztuka użytkowa'
+Akryl: Akryl
+Akryl/Karton: Akryl/Karton
+Akryl/Olej: Akryl/Olej
+Akryl/Olej/Płótno: Akryl/Olej/Płótno
+Akryl/Olej/Płyta: Akryl/Olej/Płyta
+Akryl/Papier: Akryl/Papier
+Akryl/Płótno: Akryl/Płótno
+Akryl/Płyta: Akryl/Płyta
+'Akryl/Płyta HDF': 'Akryl/Płyta HDF'
+'Akryl/Płyta HDV': 'Akryl/Płyta HDV'
+'Akryl/Technika własna': 'Akryl/Technika własna'
+Akryl/Tektura: Akryl/Tektura
+Akryl/Tusz/Werniks: Akryl/Tusz/Werniks
+Akryl/Wycinek/Deska: Akryl/Wycinek/Deska
+Akwaforta: Akwaforta
+Akwarele/Papier: Akwarele/Papier
+Akwarele/Tusz/Papier: Akwarele/Tusz/Papier
+Akwatinta: Akwatinta
+Aluminum: Aluminum
+Asamblaż: Asamblaż
+Autocynkografia/Papier: Autocynkografia/Papier
+'Białe złoto/Szafir': 'Białe złoto/Szafir'
+Biskwit: Biskwit
+Brąz: Brąz
+Brown: Brąz
+Gold: Złoto
+Glass: Szkło
+Ceramika: Ceramika
+Drewno: Drewno
+Druk: Druk
+Drzeworyt: Drzeworyt
+Enkaustyka/Płótno: Enkaustyka/Płótno
+Fajans: Fajans
+Fotografia/Płótno: Fotografia/Płótno
+Graffit: Graffit
+'Grafika cyfrowa': 'Grafika cyfrowa'
+Gwasz: Gwasz
+Gwasz/Deska: Gwasz/Deska
+Gwasz/Papier: Gwasz/Papier
+Gwasz/Płótno: Gwasz/Płótno
+Gwasz/Płyta: Gwasz/Płyta
+Gwasz/Sklejka: Gwasz/Sklejka
+Gwasz/Tusz/Karton: Gwasz/Tusz/Karton
+Haft: Haft
+Inkografia: Inkografia
+Kamień: Kamień
+'Kamień szlachetny': 'Kamień szlachetny'
+Kolaż: Kolaż
+Kość: Kość
+'Kredki olejne/Płótno': 'Kredki olejne/Płótno'
+Linoryt: Linoryt
+'Linoryt kolorowy': 'Linoryt kolorowy'
+Litografia: Litografia
+Marmur: Marmur
+'Metal nieszlachetny': 'Metal nieszlachetny'
+'Metal szlachetny': 'Metal szlachetny'
+Mezzotinta: Mezzotinta
+Mieszana: Mieszana
+Mieszana/Płótno: Mieszana/Płótno
+Mieszana/Płyta: Mieszana/Płyta
+Monotypia: Monotypia
+'Monotypia barwna': 'Monotypia barwna'
+Mosiądz: Mosiądz
+Odlew: Odlew
+Olej: Olej
+Olej/Deska: Olej/Deska
+Olej/Fornir: Olej/Fornir
+Olej/Karton: Olej/Karton
+Olej/Papier: Olej/Papier
+Olej/Pilśń: Olej/Pilśń
+Olej/Płótno: Olej/Płótno
+Olej/Płótno/Sklejka: Olej/Płótno/Sklejka
+Olej/Płyta: Olej/Płyta
+Olej/Sklejka: Olej/Sklejka
+Olej/Tektura: Olej/Tektura
+Olej/Tempera: Olej/Tempera
+Ołówek: Ołówek
+Papier: Papier
+Pastel: Pastel
+'Pastel olejny': 'Pastel olejny'
+Pastel/Gwasz/Akryl/Papier: Pastel/Gwasz/Akryl/Papier
+Pastel/Gwasz/Papier: Pastel/Gwasz/Papier
+Pastel/Papier: Pastel/Papier
+Piórko: Piórko
+Pisak: Pisak
+Plater: Plater
+Platyna: Platyna
+Platyna/Brylant: Platyna/Brylant
+Płótno: Płótno
+Porcelana: Porcelana
+Sangwina: Sangwina
+Serigrafia: Serigrafia
+Sitodruk: Sitodruk
+Sklejka: Sklejka
+Skóra: Skóra
+Spray: Spray
+'Spray olejny': 'Spray olejny'
+Srebro: Srebro
+'Sucha Igła': 'Sucha Igła'
+'Suchy pastel/Karton': 'Suchy pastel/Karton'
+Szkło: Szkło
+Szkło/Bursztyn: Szkło/Bursztyn
+'Szlag aluminium': 'Szlag aluminium'
+Szlagmetal: Szlagmetal
+Szlagmetal/Deska: Szlagmetal/Deska
+Tempera: Tempera
+Tempera/Papier: Tempera/Papier
+Terakota: Terakota
+Tkanina/Wełna: Tkanina/Wełna
+Tusz: Tusz
+Tusz/Papier: Tusz/Papier
+Tusz/Pastel: Tusz/Pastel
+Tusz/Płótno: Tusz/Płótno
+Węgiel: Węgiel
+Węgiel/Kredka/Papier: Węgiel/Kredka/Papier
+Własna: Własna
+Własna/Płótno: Własna/Płótno
+Wydruk: Wydruk
+Złocenie/Szlagmetal: Złocenie/Szlagmetal
+Złocenie/Szlagmetal/Piasek: Złocenie/Szlagmetal/Piasek
+Złoto/Ametyst/Diament: Złoto/Ametyst/Diament
+Złoto/Diament: Złoto/Diament
+Abstrakcja: Abstrakcja
+'Art déco': 'Art déco'
+'Art Nouveau': 'Art Nouveau'
+Barok: Barok
+Bauhaus: Bauhaus
+Biedermeier: Biedermeier
+Dadaizm: Dadaizm
+Eklektyzm: Eklektyzm
+Ekspresjonizm: Ekspresjonizm
+Figuratywizm: Figuratywizm
+Gustawiański: Gustawiański
+Hiperrealizm: Hiperrealizm
+Impresjonizm: Impresjonizm
+Klasycyzm: Klasycyzm
+Kubizm: Kubizm
+'Ludwik Filip': 'Ludwik Filip'
+Manieryzm: Manieryzm
+Minimalizm: Minimalizm
+Modernizm: Modernizm
+Myśliwski: Myśliwski
+Neobarok: Neobarok
+Neogotyk: Neogotyk
+Neoimpresjonizm: Neoimpresjonizm
+Neoklasycyzm: Neoklasycyzm
+Neorenesans: Neorenesans
+'Pop art': 'Pop art'
+'Pop banalizm': 'Pop banalizm'
+Postimpresjonizm: Postimpresjonizm
+Prymitywizm: Prymitywizm
+Realizm: Realizm
+'Realizm ekspresyjny': 'Realizm ekspresyjny'
+'Realizm magiczny': 'Realizm magiczny'
+'Realizm poetyczny': 'Realizm poetyczny'
+Renesans: Renesans
+Rokoko: Rokoko
+Romantyzm: Romantyzm
+Sakralny: Sakralny
+Secesja: Secesja
+Surrealizm: Surrealizm
+Symbolizm: Symbolizm
+Autocynkografia: Autocynkografia
+Kredka/Papier: Kredka/Papier
+Karykatura: Karykatura
+Painting: Malarstwo
+Graphic: Grafika
+Sculpture: Rzeźba
+Photography: Fotografia
+Acrylic: Akryl
+Oil/Canvas: Olej/Płótno
+Symbolism: Symbolizm
+Surrealism: Surrealizm
+Secession: Secesja
+Sacred: Sakralny
+Romanticism: Romantyzm
+Renaissance: Renesans
+Rococo: Rokoko
+'Poetic realism': 'Realizm poetyczny'
+'Magical realism': 'Realizm magiczny'
+'Expressive realism': 'Realizm ekspresyjny'
+Realism: Realizm
+Primitiveness: Prymitywizm
+Post-impressionism: Postimpresjonizm
+'Pop banalism': 'Pop banalizm'
+Neo-renaissance: Neorenesans
+Neoclassicism: Neoklasycyzm
+Neoimpressionism: Neoimpresjonizm
+Neogothic: Neogotyk
+Neo-baroque: Neobarok
+Hunting: Myśliwski
+Modernism: Modernizm
+Minimalism: Minimalizm
+Mannerism: Manieryzm
+'Louis Philippe': 'Ludwik Filip'
+Cubism: Kubizm
+Classicism: Klasycyzm
+Impressionism: Impresjonizm
+Hyperrealism: Hiperrealizm
+Gustavian: Gustawiański
+'Figurative art': Figuratywizm
+Expressionism: Ekspresjonizm
+Eclecticism: Eklektyzm
+Dadaism: Dadaizm
+Baroque: Barok
+Abstract: Abstrakcja
+Gold/Diamond: Złoto/Diament
+Gold/Amethyst/Diamond: Złoto/Ametyst/Diament
+Gilding/Schlagmetal/Sand: Złocenie/Szlagmetal/Piasek
+Gilding/Schlagmetal: Złocenie/Szlagmetal
+Print: Wydruk
+Own/Canvas: Własna/Płótno
+Own: Własna
+Ink/Canvas: Tusz/Płótno
+Carbon/Chalk/Paper: Węgiel/Kredka/Papier
+Carbon: Węgiel
+Ink/Crayon: Tusz/Pastel
+Ink/Paper: Tusz/Papier
+Ink: Tusz
+Fabric/Wool: Tkanina/Wełna
+Terracotta: Terakota
+Distemper/Paper: Tempera/Papier
+Distemper: Tempera
+Schlagmetal/Board: Szlagmetal/Deska
+Schlagmetal: Szlagmetal
+Glass/Amber: Szkło/Bursztyn
+Glass: Szkło
+'Dry pastel/Cardboard': 'Suchy pastel/Karton'
+'Dry point': 'Sucha Igła'
+Silver: Srebro
+'Oil spray': 'Spray olejny'
+Leather: Skóra
+Plywood: Sklejka
+'Screen printing': Sitodruk
+Seriography: Serigrafia
+Sanguine: Sangwina
+Porcelain: Porcelana
+Canvas: Płótno
+Platinium/Briliant: Platyna/Brylant
+Platinium: Platyna
+Marker: Pisak
+Feather: Piórko
+'Oil pastel': 'Pastel olejny'
+Crayon/Paper: Kredka/Papier
+Crayon/Govache/Paper: Pastel/Gwasz/Papier
+Crayon/Govache/Acrylk/Paper: Pastel/Gwasz/Akryl/Papier
+Paper: Papier
+Pencil: Ołówek
+Oil/Distemper: Olej/Tempera
+Oil/Texture: Olej/Tektura
+Oil/Plywood: Olej/Sklejka
+Oil/Board: Olej/Deska
+Oil/Canvas/Plywood: Olej/Płótno/Sklejka
+Oil/Felt: Olej/Pilśń
+Oil/Paper: Olej/Papier
+Oil/Cardboard: Olej/Karton
+Oil/Veneer: Olej/Fornir
+Oil: Olej
+Cast: Odlew
+Brass: Mosiądz
+'Colorful monotype': 'Monotypia barwna'
+Monotype: Monotypia
+Mixed/Board: Mieszana/Płyta
+Mixed/Canvas: Mieszana/Płótno
+Mixed: Mieszana
+Mezzotint: Mezzotinta
+'Noble metal': 'Metal szlachetny'
+'Base metal': 'Metal nieszlachetny'
+Marble: Marmur
+Lithography: Litografia
+'Colored linocut': 'Linoryt kolorowy'
+Linocut: Linoryt
+'Crayons oil/Canvas': 'Kredki olejne/Płótno'
+Bone: Kość
+Collage: Kolaż
+Gemstone: 'Kamień szlachetny'
+Stone: Kamień
+Incographic: Inkografia
+Embroidery: Haft
+Govache/Ink/Cardboard: Gwasz/Tusz/Karton
+Govache/Plywood: Gwasz/Sklejka
+Govache/Board: Gwasz/Płyta
+Govache/Canvas: Gwasz/Płótno
+Govache/Paper: Gwasz/Papier
+Govche/Board: Gwasz/Deska
+Govache: Gwasz
+Graffiti: Graffit
+Photography/Canvas: Fotografia/Płótno
+Faience: Fajans
+Encaustic/Canvas: Enkaustyka/Płótno
+Woodcut: Drzeworyt
+Printing: Druk
+Wood: Drewno
+Ceramics: Ceramika
+Bronze: Brąz
+'White gold/Sapphire': 'Białe złoto/Szafir'
+Assemblage: Asamblaż
+Aluminium: Aluminum
+Watercolor/Ink/Paper: Akwarele/Tusz/Papier
+Watercolor/Paper: Akwarele/Papier
+Etching: Akwaforta
+Acrylic/Section/Board: Akryl/Wycinek/Deska
+Acrylic/Ink/Varnish: Akryl/Tusz/Werniks
+Acrylic/Texture: Akryl/Tektura
+Acrylic/Owntechnique: 'Akryl/Technika własna'
+'Acrylic/Board HDV': 'Akryl/Płyta HDV'
+'Acrylic/Board HDF': 'Akryl/Płyta HDF'
+Acrylic/Board: Akryl/Płyta
+Acrylic/Canvas: Akryl/Płótno
+Acrylic/Paper: Akryl/Papier
+Acrylic/Oil/Board: Akryl/Olej/Płyta
+Acrylic/Oil/Canvas: Akryl/Olej/Płótno
+Acrylic/Oil: Akryl/Olej
+Acrylic/Cardboard: Akryl/Karton
+Bisque: Biskwit
+'Silver leaf': 'Szlag aluminium'
+Zincography: Autocynkografia
+Drawing: Rysunek
+Caricature: Karykatura
+'Digital graphics': 'Grafika cyfrowa'
+Design: 'Sztuka użytkowa'
+Craft: 'Rzemiosło'
+Furnitures: 'Meble'
+Lamps: 'Lampy'
+'Porcelain / Ceramics' : 'Porcelana / Ceramika'
+Fabrics: 'Tkaniny'
+'Silver / Plater': 'Srebro / Plater'
+'Clocks / Watches': 'Zegary / Zegarki'
+Jewelry: 'Biżuteria'
+'Precious stones': 'Kamienie szlachetne'
+Numismatics: 'Numizmatyka'
+Bibliophilia: 'Bibliofilia'
+Military: 'Militaria'
+'Collector`s objects': 'Obiekty kolekcjonerskie'
+'Wines / Alcohols': 'Wina / Alkohole'
+Vehicles: 'Pojazdy'
+'Real estate': 'Nieruchomości'

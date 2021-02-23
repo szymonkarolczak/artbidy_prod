@@ -1,0 +1,37 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% set title = auction.title %}
+{% set description = auction.description %}
+{% set auction = auction[0] %}
+
+{% block title %} {{ 'auctions.dodaj_obiekt'|trans }} - {{title}} - {{ parent() }}{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        <section id="addWork" class="stdSection pt_0">
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-md-6 text-right">
+                        <img src="{{ asset("files/houseauction/"~auction.image) | imagine_filter('compress') }}" alt="{{ title }} image" style="max-height: 80px;" />
+                    </div>
+                    <div class="col-md-6 text-left">
+                        <h4 class="mt_0">{{ 'auctions.zglos_obiekt_na_aukcje'|trans }}</h4>
+                        <h1 class="small mb_15">{{ title }}</h1>
+                        <h4 class="mt_0">{{ auction.startDate|date('Y-m-d H:i:s') }}</h4>
+                    </div>
+                </div>
+            </div>
+
+                {{ form_start(form) }}
+
+                {{ form_row(form.work) }}
+
+                {{ form_end(form) }}
+
+        </section>
+
+    </div> <!-- /container -->
+
+{% endblock %}

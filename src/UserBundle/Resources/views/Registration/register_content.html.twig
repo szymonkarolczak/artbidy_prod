@@ -1,0 +1,27 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div class="container">
+
+    <div class="page-header mt_0">
+        <h1 class="mt_0">{{ 'register.zarejestruj_sie'|trans([], 'messages') }}</h1>
+    </div>
+
+    <div class="registerPlans">
+        {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+        <input type="hidden" id="role_user" name="registerPlan" value="ROLE_USER"  />
+        {{ form_widget(form) }}
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <input type="submit" class="btn btn-success" value="{{ 'registration.submit'|trans }}" />
+            </div>
+        </div>
+
+        {{ form_end(form) }}
+
+{#        {% if ads[0] is defined and ads[0] %}#}
+{#            {{ ads[0].content|raw }}#}
+{#        {% endif %}#}
+    </div>
+</div>
+    

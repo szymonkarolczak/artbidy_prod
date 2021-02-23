@@ -1,0 +1,112 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ 'profile.platnosci.dokonaj'|trans }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+
+        <div class="page-header mt_0">
+            <h1 class="mt_0">{{ 'profile.platnosci.dokonaj'|trans }}</h1>
+        </div>
+        {% if afterRegister %}
+        <p>
+            {{ 'profile.platnosci.dokonaj_p1'|trans }}<br />
+            {{ 'profile.platnosci.dokonaj_p2'|trans }}
+        </p>
+        {% endif %}
+
+        <h3>{{ afterRegister ? user.username : user.fullname }},</h3>
+        {% if app.user.roleEnd > 'now'|date('Y-m-d H:i:s') %}
+            <h4>{{ 'profile.platnosci.o_ile_przedluzyc'|trans }}</h4>
+        {% else %}
+            <h4>{{ 'profile.platnosci.wybierz_pakiet'|trans({'%nazwa%': roleName}) }}</h4>
+        {% endif %}
+
+        <hr />
+
+        <form method="post" target="_top" class="form-horizontal">
+            <div class="form-group">
+            <label for="package" class="col-sm-2 control-label">{{ 'main.pakiet'|trans }}</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="package">
+                    <option data-price="{{ currency.convert('PLN', app.session.get('_currency'), price['3']) }} {{ app.session.get('_currency') }}" value="3">{{ 'profile.platnosci.3msc'|trans }} - {{ currency.convert('PLN', app.session.get('_currency'), price['3']) }} {{ app.session.get('_currency') }}</option>
+                    <option data-price="{{ currency.convert('PLN', app.session.get('_currency'), price['6']) }} {{ app.session.get('_currency') }}" value="6">{{ 'profile.platnosci.6msc'|trans }} - {{ currency.convert('PLN', app.session.get('_currency'), price['6']) }} {{ app.session.get('_currency') }}</option>
+                    <option data-price="{{ currency.convert('PLN', app.session.get('_currency'), price['12']) }} {{ app.session.get('_currency') }}" value="12">{{ 'profile.platnosci.12msc'|trans }} - {{ currency.convert('PLN', app.session.get('_currency'), price['12']) }} {{ app.session.get('_currency') }}</option>
+                </select>
+            </div>
+            </div>
+        </form>
+
+        <h4 style="margin-top: 35px">{{ 'transfer.dokonaj_platnosci'|trans }}</h4>
+        <table class="table">
+            <tr>
+                <td class="text-right">{{ 'transfer.odbiorca'|trans }}:</td>
+                <td>
+                    {{ bank_owner }}<br />
+                    {{ bank_city|trans }}<br />
+                    {{ bank_street|trans }}
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right">{{ 'transfer.numer_rachunku'|trans }}:</td>
+                <td>
+                    {{ bank_number }}<br />
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right">IBAN:</td>
+                <td>
+                    {{ bank_iban }}<br />
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right">BIC/SWIFT:</td>
+                <td>{{ bank_bic }}</td>
+            </tr>
+            <tr>
+                <td class="text-right">{{ 'transfer.tytul'|trans }}</td>
+                <td>{{ user.username }}-{{ role }}-<span id="role-title">3</span></td>
+            </tr>
+            <tr>
+                <td class="text-right">{{ 'main.kwota'|trans }}</td>
+                <td id="amount">{{ currency.convert('PLN', app.session.get('_currency'), price['3']) }} {{ app.session.get('_currency') }}</td>
+            </tr>
+        </table>
+
+        <p>{{ 'transfer.nota'|trans }}</p>
+
+        {#<form method="post" target="_top" class="form-horizontal">#}
+            {#<div class="form-group">#}
+                {#<label for="package" class="col-sm-2 control-label">{{ 'main.pakiet'|trans }}</label>#}
+                {#<div class="col-sm-10">#}
+                    {#<select class="form-control" name="package" id="package">#}
+                        {#<option value="3">{{ 'profile.platnosci.3msc'|trans }} - {{ currency.convert('PLN', app.session.get('_currency'), price['3']) }} {{ app.session.get('_currency') }}</option>#}
+                        {#<option value="6">{{ 'profile.platnosci.6msc'|trans }} - {{ currency.convert('PLN', app.session.get('_currency'), price['6']) }} {{ app.session.get('_currency') }}</option>#}
+                        {#<option value="12">{{ 'profile.platnosci.12msc'|trans }} - {{ currency.convert('PLN', app.session.get('_currency'), price['12']) }} {{ app.session.get('_currency') }}</option>#}
+                    {#</select>#}
+                {#</div>#}
+            {#</div>#}
+            {#<div class="form-group">#}
+                {#<div class="col-sm-offset-2 col-sm-10">#}
+                    {#<button type="submit" name="submit" class="btn btn-success">{{ 'main.zaplac_paypal'|trans }}</button>#}
+                {#</div>#}
+            {#</div>#}
+        {#</form>#}
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript">
+    $(function() {
+        $('select#package').change(function() {
+            var months = $(this).val();
+            var $options = $('select#package option:selected');
+            var amount = $options.data('price');
+            $('#amount').html(amount);
+            $('#role-title').html(months);
+        });
+        $('select#package').trigger('change');
+    });
+</script>
+{% endblock %}

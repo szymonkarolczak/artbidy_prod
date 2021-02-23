@@ -1,0 +1,156 @@
+{% if users %}
+    <h4>{{ 'main_menu.users'|trans }}</h4>
+    <ul>
+        {% for user in users %}
+        <li>
+{#            <a href="{{ path('profile', {id: user.id, prefix: user.profilePrefix, slug: user.fullname|slugify}) }}">#}
+            <a href="{{ path('profile', {slug:user.profileSlug|slugify, prefix:user.profilePrefix}) }}">
+                <div class="pull-left" style="margin-right: 10px;">
+                    <img src="{{ asset('files/user/'~user.image) | imagine_filter('compress') }}" style="width: 40px; height: 40px;" />
+                </div>
+                <div class="pull-left content">
+                    {{ user.fullname }}<br />
+                    <small>
+                        {% if 'ROLE_ARTYSTA' in user.roles %}
+                            {{ 'roles.artysta'|trans }}
+                        {% elseif 'ROLE_DOM_AUKCYJNY' in user.roles %}
+                            {{ 'roles.dom_aukcyjny'|trans }}
+                        {% endif %}
+                    </small>
+                </div>
+                <div class="clearfix"></div>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% if newses %}
+    <h4>{{ 'main_menu.aktualnosci'|trans }}</h4>
+    <ul>
+        {% for news in newses %}
+            <li>
+                <a href="{{ path('news', {id: news[0].id, slug: news.title|slugify}) }}">
+                    <div class="pull-left" style="margin-right: 10px;">
+                        <img src="{{ asset('files/news/'~news[0].image) | imagine_filter('compress') }}" style="width: 40px; height: 40px;" />
+                    </div>
+                    <div class="pull-left content">
+                        {{ news.title }}<br />
+                        <small>
+                            {{ news.catTitle }}
+                        </small>
+                    </div>
+                    <div class="clearfix"></div>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% if events %}
+    <h4>{{ 'main_menu.wydarzenia'|trans }}</h4>
+    <ul>
+        {% for event in events %}
+            <li>
+                <a href="{{ path('event', {slug: event[0].slug|slugify}) }}">
+{#                <a href="{{ path('event', {id: event[0].id, slug: event.title|slugify}) }}">#}
+                    <div class="pull-left" style="margin-right: 10px;">
+                        <img src="{{ asset('files/event/'~event[0].image) | imagine_filter('compress') }}" style="width: 40px; height: 40px;" />
+                    </div>
+                    <div class="pull-left content">
+                        {{ event.title }}<br />
+                        <small>
+                            {{ event.catTitle }}
+                        </small>
+                    </div>
+                    <div class="clearfix"></div>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% if auctions %}
+    <h4>{{ 'main_menu.aukcje'|trans }}</h4>
+    <ul>
+        {% for auction in auctions %}
+            <li>
+                <a href="{{ path('auction', {id: auction[0].id, slug: auction.title|slugify}) }}">
+                    <div class="pull-left" style="margin-right: 10px;">
+                        <img src="{{ asset('files/auction/'~auction[0].image) | imagine_filter('compress') }}" style="width: 40px; height: 40px;" />
+                    </div>
+                    <div class="pull-left content">
+                        {{ auction.title }}
+                    </div>
+                    <div class="clearfix"></div>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+<h4>{{ 'main_menu.aukcje'|trans }}</h4>
+    
+{% endif %}
+{% if works %}
+    <h4>{{ 'main_menu.dziela'|trans }}</h4>
+    <ul>
+        {% for work in works %}
+
+            {% if work.auctionWorks is not empty %}
+                {#Obiekt jest na aukcji!#}
+                {% set auction = work.auctionWorks.first.auction %}
+                {% if auction.startDate|date('Y-m-d H:i:s') < 'now'|date('Y-m-d H:i:s') and auction.endDate|date('Y-m-d H:i:s') > 'now'|date('Y-m-d H:i:s') %}
+                    {#Aukcja trwajaca#}
+{#                    {% set workLink = path('auction_see_work', {id: auction.id, slug: auction.langs.first.title|slugify, work_id: work.auctionWorks.first.id, work_slug: work.title|slugify}) %}#}
+                    {% set workLink = path('auction_see_work', {id: auction.id, slug: auction.langs.first.title|slugify, work_id: work.auctionWorks.first.id, work_slug: work.title|slugify}) %}                                
+                    {% if work.auctionWorks.first.bids.last %}
+                        {% set workPrice = currency.convert('PLN', app.session.get('_currency'), work.auctionWorks.first.bids.last.amount)~' '~app.session.get('_currency') %}
+                    {% else %}
+                        {% set workPrice = currency.convert(work.currency.code, app.session.get('_currency'), work.auctionWorks.first.startPrice)~' '~app.session.get('_currency') %}
+                    {% endif %}
+                {% elseif auction.startDate|date('Y-m-d H:i:s') > 'now'|date('Y-m-d H:i:s') %}
+                    {#Aukcja nadchodzaca#}
+{#                    {% set workLink = path('auction_see_work', {id: auction.id, slug: auction.langs.first.title|slugify, work_id: work.auctionWorks.first.id, work_slug: work.title|slugify}) %}#}
+                    {% set workLink = path('auction_see_work', {id: auction.id, slug: auction.langs.first.title|slugify, work_id: work.auctionWorks.first.id, work_slug: work.title|slugify}) %}                                
+                    {% set workPrice = currency.convert(work.currency.code, app.session.get('_currency'), work.auctionWorks.first.startPrice)~' '~app.session.get('_currency') %}
+                {% else %}
+                    {#Aukcja zakonczona#}
+{#                    {% set workLink = path('auction_see_work', {id: auction.id, slug: auction.langs.first.title|slugify, work_id: work.auctionWorks.first.id, work_slug: work.title|slugify}) %}#}
+                    {% set workLink = path('auction_see_work', {id: auction.id, slug: auction.langs.first.title|slugify, work_id: work.auctionWorks.first.id, work_slug: work.title|slugify}) %}                                
+                    {% if not app.user %}
+                        {% set workPrice = 'auctions.cena_sprzedazy_ukryta'|trans %}
+                    {% else %}
+                        {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_SUPER_ADMIN") or app.user.database|date('Y-m-d H:i:s') > 'now'|date('Y-m-d H:i:s') %}
+                            {% if work.auctionWorks.first.bids.last %}
+                                {#work.auctionWorks.first.bids.last.currency.code#}
+                                {% set workPrice = currency.convert(work.auctionWorks.first.bids.last.currency.code, app.session.get('_currency'), work.auctionWorks.first.bids.last.amount)~' '~app.session.get('_currency') %}
+                            {% else %}
+                                {% set workPrice = 'auctions.nie_sprzedano'|trans %}
+                                {% if work.auctionWorks.first.allowBuyNow %}
+                                    {% set poaukcyjna = 'auctions.dostepne_w_poaukcyjnej'|trans %}
+                                {% endif %}
+                            {% endif %}
+                        {% else %}
+                            {% set workPrice = 'auctions.wykup_baza_cen'|trans %}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                    {% set workLink = path('work_see', {slug: work.slug|slugify}) %}
+                    {% set workPrice = work.artist %}
+            {% endif %}
+
+            <li>
+{#                {% set workLink = path('work_see', {slug: work.slug|slugify}) %}#}
+                <a href="{{ workLink }}">
+                    <div class="pull-left" style="margin-right: 10px;">
+                        <img src="{{ asset('files/work/'~work.image) | imagine_filter('compress') }}" style="width: 40px; height: 40px;" />
+                    </div>
+                    <div class="pull-left content">
+                        {{ work.title }}<br />
+                        <small>
+                            {{ workPrice }}
+                        </small>
+                    </div>
+                    <div class="clearfix"></div>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

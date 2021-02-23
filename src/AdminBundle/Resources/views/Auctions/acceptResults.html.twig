@@ -1,0 +1,43 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="container-fluid">
+            <div class="page-header mt_0">
+                <h1 class="mt_0">{{ 'aukcje.wyniki_do_akceptacji'|trans }}</h1>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-hover">
+            <tr>
+                <th>{{ 'admin.nazwa'|trans }}</th>
+                <th>{{ 'admin.grafika'|trans }}</th>
+                <th>{{ 'aukcje.data_rozpoczecia'|trans }}</th>
+                <th>{{ 'aukcje.liczba_obiektow'|trans }}</th>
+                <th>{{ 'admin.akcja'|trans }}</th>
+            </tr>
+            {% for auction in pagination %}
+                {% set title = auction.title %}
+                {% set description = auction.description %}
+                {% set auction = auction[0] %}
+                <tr>
+                    <td>{{ title }}</td>
+                    <td><img src="{{ asset('files/houseauction/'~auction.image| imagine_filter('thumbnail')) }}" style="max-height: 50px;" /></td>
+                    <td>{{ auction.startDate|date('Y-m-d') }}</td>
+                    <td>{{ auction.works|length }}</td>
+                    <td>
+                        <a class="btn btn-xs btn-primary" href="{{ path("admin_auctions_results_see", {id: auction.id}) }}">{{ 'aukcje.zobacz_wyniki'|trans }}</a>
+                        <a href="{{ path("admin_auctions_results_accept", {id: auction.id}) }}" class="btn btn-xs btn-success">{{ 'aukcje.dziela.akceptuj'|trans }}</a>
+                        <a href="{{ path("admin_auctions_results_reject", {id: auction.id}) }}" class="btn btn-xs btn-danger">{{ 'admin.odrzuc'|trans }}</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ 'licytacja.page.title.notice'|trans }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        <div class="page-header mt_0">
+            <h1 class="mt_0">{{ 'licytacja.page.title.notice'|trans }} - ID {{ notice.id }}</h1>
+        </div>
+        <div>
+            <a href="{{ path('user_notices') }}" class="btn btn-xs btn-primary">{{ 'licytacja.buttons.back'|trans }}</a>    
+        </div>
+
+        <table class="table table-striped table-hover">
+            <tr>                
+                <td><b>{{ 'licytacja.tabel.title.time'|trans }}</b></td>
+                <td>{{ notice.CreatedAt|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <td><b>{{ 'licytacja.tabel.title.status'|trans }}</b></td>
+                <td>{% if notice.IsReaded %} {{ 'notice.statusese.readed'|trans }} {% else %} {{ 'notice.statusese.new'|trans }}{% endif %}</td>
+            </tr>
+            <tr>
+                <td><b>{{ 'licytacja.tabel.title.title'|trans }}</b></td>
+                <td>{{ notice.title }}</td>
+            </tr>
+            {#<tr>
+                <td><b>{{ 'licytacja.tabel.title.object'|trans }}</b></td>
+                <td>{{ notice.title }}</td>                
+            </tr>#}
+            <tr>
+                <td colspan="2"><b>{{ 'licytacja.tabel.title.content'|trans }}</b></td>
+            </tr>
+            <tr>
+                <td colspan="2">{{ notice.content|raw }}</td>
+            </tr>
+        </table>
+
+    </div> <!-- /container -->
+
+{% endblock %}

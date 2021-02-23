@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="{{ absolute_url(asset("assets/vendor/bootstrap/dist/css/bootstrap.min.css")) }}" rel="stylesheet">
+</head>
+
+<body>
+
+    <div style="padding: 30px;">
+        <table style="width: 100%;" border="0">
+            <tr>
+                <td style="width: 70%"><h1>Artbidy</h1></td>
+                <td>
+                    <h3>{{ 'faktura.faktura_vat'|trans }}</h3>
+                    <table>
+                        <tr>
+                            <td>{{ 'faktura.numer'|trans }}: </td>
+                            <td>{{ invoice.number }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ 'faktura.data_sprzedazy'|trans }}: </td>
+                            <td>{{ invoice.sellDate|date('Y-m-d') }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ 'faktura.data_wystawienia'|trans }}: </td>
+                            <td>{{ invoice.exposeDate|date('Y-m-d') }}</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+        <table style="width: 100%; margin-top: 50px;" border="0">
+            <tr>
+                <td valign="top">
+                    <b>{{ 'faktura.sprzedawca'|trans }}</b><br />
+                    BDB Investments Łukasz Kuca<br />
+                    ul. Nowomiejska 9<br />
+                    96-100 Skierniewice, {{ country.convert('Polska', app.session.get('_locale')) }}<br />
+                    NIP: 8361821946<br />
+                    {{ bank_iban }}
+                </td>
+                <td valign="top">
+                    <b>{{ 'faktura.nabywca'|trans }}</b><br />
+                    {{ invoice.buyer|nl2br }}
+                </td>
+            </tr>
+        </table>
+
+        <table style="width: 100%; margin-top: 50px;" class="table">
+            <tr>
+                <th style="width: 70%; background-color: #ffbb93">{{ 'faktura.nazwa'|trans }}</th>
+                <th style="background-color: #ffbb93">{{ 'faktura.ilosc'|trans }}</th>
+                <th style="width: 70%; background-color: #ffbb93">{{ 'faktura.cena_netto'|trans }}</th>
+            </tr>
+            {% for product in invoice.products %}
+            <tr>
+                <td>{{ product.title }}</td>
+                <td>{{ product.qty }}</td>
+                <td>{{ product.netto }} {{ invoice.currency.code }}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="3" align="right">
+                    {{ 'faktura.razem'|trans }}: {{ total }} {{ invoice.currency.code }}
+                </td>
+            </tr>
+        </table>
+
+        <div style="width: 50%; margin-top: 20px; float: right;">
+            <table class="table">
+                <tr>
+                    <td>{{ 'faktura.razem_netto'|trans }}: </td>
+                    <td>{{ total }} {{ invoice.currency.code }}</td>
+                </tr>
+                <tr>
+                    <td>VAT ({{ invoice.tax }}%) </td>
+                    <td>{{ vat }} {{ invoice.currency.code }}</td>
+                </tr>
+                <tr style="background-color: #ffbb93">
+                    <td>{{ 'faktura.razem_netto'|trans }}: </td>
+                    <td>{{ total_vat }} {{ invoice.currency.code }}</td>
+                </tr>
+            </table>
+            {#<p>{{ 'faktura.slownie'|trans }}: {{ in_word_zlotych }} zł {% if in_word_groszy %}{{ in_word_groszy }} gr{% endif %}</p>#}
+            <p>{{ 'faktura.slownie'|trans }}: {{ in_word_all }} {{ invoice.currency.code }}</p>
+            <p>{{ 'faktura.uprawniony_do_wystawienia'|trans }}: Łukasz Kuca</p>
+            <div style="clear: both;"></div>
+        </div>
+
+    </div>
+
+</body>
+</html>

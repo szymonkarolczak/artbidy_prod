@@ -1,0 +1,27 @@
+{% extends 'AppBundle:Emails:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block content %}
+
+      <h3>{{ 'mail.witaj'|trans({'%username%': bid.author.fullname}) }}</h3>
+
+      <p>
+            {{ 'notifications.work_payment_reminders'|trans({
+                '%oferta_data%': ( bid.bidDate.date|date('Y-m-d') ), 
+                '%oferta_time%': ( bid.bidDate.date|date('H:i:s') ), 
+                '%now%': ( "now"|date('Y-m-d') ), 
+                '%oferta_price%': ( bid.amount),
+                '%oferta_provision%': ( bid.amount * (auction_provision/100) ),
+                '%oferta_currency%': ( bid.currency.code ),
+                '%work_title%': ( work.title ),
+                '%work_pay_link%': absolute_url(
+                    path(
+                        'user_auctions_bid_payment',
+                        {id: bid.id}
+                    )
+                )
+            }, 'messages', lang)|raw }}
+      </p>
+
+{% endblock %}

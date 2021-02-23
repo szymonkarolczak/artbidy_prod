@@ -1,0 +1,151 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="page-header mt_0">
+            {% if exhibition is defined %}
+            <h1 class="mt_0">{{ 'wystawy.edytuj'|trans({'%tytul%': exhibition.langs.last.title}) }}</h1>
+            {% else %}
+                <h1 class="mt_0">{{ 'wystawy.dodaj'|trans }}</h1>
+            {% endif %}
+        </div>
+
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-md-9">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'admin.jezyki'|trans }}</div>
+                    <div class="panel-body">
+                        <button id="add-another-lang" type="button" class="btn btn-info">{{ 'aktualnosci.kategorie.dodaj_jezyk'|trans }}</button>
+                        <hr />
+                        <div id="admin_auction_langs" class="langs" data-prototype="{{ form_widget(form.langs.vars.prototype)|e('html_attr') }}">
+                            {% for lang in form.langs %}
+                                {{ form_row(lang) }}
+                                <hr />
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'exhibition.dane'|trans({}, 'messages') }}</div>
+                    <div class="panel-body">
+                        {{ form_row(form.address) }}
+                        {{ form_row(form.city) }}
+                        {{ form_row(form.startDate) }}
+                        {{ form_row(form.endDate) }}
+                        {{ form_row(form.approved) }}
+                        {{ form_row(form.pinned) }}
+                        {{ form_row(form.enabled) }}
+                        {{ form_row(form.finearts) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'main.opcje'|trans({}, 'messages') }}</div>
+                    <div class="panel-body">
+                        {{ form_widget(form.submit) }}
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'add_work.grafika'|trans({}, 'messages') }}</div>
+                    <div class="panel-body">
+                        {% if exhibition is defined and exhibition.image %}
+                        <img src="{{ asset('files/exhibition/'~exhibition.image.filename) }}" style="max-width: 100%; max-height: 250px;" />
+                        {% endif %}
+                        {{ form_row(form.image) }}
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'exhibition.przypisz_artystow'|trans({}, 'messages') }}</div>
+                    <div class="panel-body">
+                        <div id="users-fields-list"
+                             data-prototype="{{ form_widget(form.users.vars.prototype)|e }}">
+                            {% for userField in form.users %}
+                                <div class="users-field-item">
+                                    {{ form_errors(userField) }}
+                                    <div class="input-group">
+                                        {{ form_widget(userField) }}
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-danger user-field-remove" type="button">{{ 'admin.usun'|trans({}, 'admin') }}</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <hr />
+                        <a class="btn btn-xs btn-info" href="#" id="add-another-user">{{ 'exhibition.dodaj_nowego_artyste'|trans({}, 'messages') }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+
+    </div> <!-- /container -->
+
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/jquery-ui/jquery-ui.css') }}" />
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('assets/vendor/jquery-ui/jquery-ui.js') }}"></script>
+    <script type="text/javascript">
+        $(function() {
+
+            $( ".user-box" ).autocomplete({
+                source: "{{ path('artists_search') }}",
+                minLength: 2
+            });
+
+            var langCount = '{{ form.langs|length }}';
+            var userCount = '{{ form.users|length }}';
+
+            $('#add-another-lang').click(function(e) {
+                e.preventDefault();
+
+                var userList = $('#admin_auction_langs');
+
+                var newWidget = userList.attr('data-prototype');
+                newWidget = newWidget.replace(/__name__/g, langCount);
+                langCount++;
+
+                var newLi = $('<div></div>').html(newWidget+'<hr />');
+                newLi.prependTo(userList);
+            });
+
+            $('#add-another-user').click(function(e) {
+                e.preventDefault();
+
+                var userList = $('#users-fields-list');
+
+                var newWidget = userList.attr('data-prototype');
+                newWidget = newWidget.replace(/__name__/g, userCount);
+                userCount++;
+
+                var newLi = $('<div id="user-field'+userCount+'" class="users-field-item"></div>').html('<div class="input-group">\
+                    '+newWidget+'\
+                    <span class="input-group-btn">\
+                        <button class="btn btn-danger user-field-remove" type="button">{{ 'admin.usun'|trans({}, 'admin') }}</button>\
+                    </span>\
+                </div>');
+                newLi.appendTo(userList);
+
+                $( "#user-field"+userCount+' input' ).autocomplete({
+                    source: "{{ path('admin_users_search_username') }}",
+                    minLength: 2,
+                });s
+            });
+
+            $(document).on('click', 'button.user-field-remove', function(e) {
+                e.preventDefault();
+                $(this).parents('div.users-field-item').remove();
+            });
+        });
+    </script>
+{% endblock %}

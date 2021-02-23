@@ -1,0 +1,86 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ 'profile.bids.twoje'|trans }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+
+        <div class="page-header mt_0">
+            <h1 class="mt_0">{{ 'profile.bids.twoje'|trans }}</h1>
+        </div>
+
+        <table class="table table-bordered table-striped table-hover">
+            <tr>
+                <th>{{ 'main.aukcja'|trans }}</th>
+                <th>{{ 'main.dzielo'|trans }}</th>
+                <th>{{ 'main.kwota'|trans }}</th>
+                <th>{{ 'main.data'|trans }}</th>
+                <th>{{ 'main.wygrana'|trans }}</th>
+                <th>{{ 'main.akcja'|trans }}</th>
+            </tr>
+            {% for bid in pagination %}
+                {% set title = bid.title %}
+                {% set bid = bid[0] %}
+                {% set auction = bid.auctionWork.auction %}
+                <tr class="offers">
+                    <td><a href="{{ path("auction", {id: auction.id, slug: title|slugify}) }}">{{ title }}</a></td>
+                    <td><a class="dzielo"
+                           href="{{ path("auction_see_work", {id: auction.id, slug: title|slugify, work_id: bid.auctionWork.work.id, work_slug: bid.auctionWork.work.title|slugify}) }}">{{ bid.auctionWork.work.title }}</a>
+                    </td>
+                    <td>{{ currency.convert(bid.currency.code, app.session.get('_currency'), bid.amount) }} {{ app.session.get('_currency') }}</td>
+                    <td>{{ bid.bidDate|date('Y-m-d H:i:s') }}</td>
+                    <td>
+                        {% if auction.endDate|date('Y-m-d H:i:s') < 'now'|date('Y-m-d H:i:s') %}
+                            {% if bid.auctionWork.bids.last.author.id == app.user.id %}
+                                <i class="glyphicon glyphicon-ok"></i>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if auction.endDate|date('Y-m-d H:i:s') < 'now'|date('Y-m-d H:i:s') %}
+                            {% if bid.auctionWork.bids.last.author.id == app.user.id %}
+                                {% if bid.auctionWork.provisionPaid %}
+                                    {% set seller = bid.auctionWork.work.author %}
+                                    {{ 'auctions.sprzedajacy'|trans }}:<br/>
+                                    {{ seller.fullname }}<br/>
+                                    {{ seller.email }}<br/>
+                                    {{ seller.phone }}
+                                {% else %}
+                                    <a class="btn btn-success btn-xs"
+                                       href="{{ path("user_auctions_bid_payment", {id: bid.id}) }}">{{ 'main.platnosc'|trans }}</a>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            var dzielo = new Array();
+            var prevDzielo = new Array();
+            var i = 0;
+
+            $('.offers ').each(function () {
+                dzielo[i] = $(this).find('.dzielo').text();
+                prevDzielo = dzielo[i - 1];
+
+                if (i > 0 && prevDzielo == dzielo[i]) {
+                    $(this).remove();
+                    console.log('tak');
+                }
+                i++;
+            });
+
+        });
+    </script>
+{% endblock %}

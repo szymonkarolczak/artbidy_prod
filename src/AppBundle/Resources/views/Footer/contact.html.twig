@@ -1,0 +1,90 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ 'stopka.kontakt'|trans }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+
+
+    <div class="container">
+
+        <div class="page-header mt_0">
+            <h1>{{ 'stopka.kontakt'|trans }}</h1>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                {{ form_start(form) }}
+                <div class="form-group">
+                    {{ form_label(form.email) }}
+                    <div class="col-sm-10">
+                        {{ form_widget(form.email) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.title) }}
+                    <div class="col-sm-10">
+                        {{ form_widget(form.title) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.content) }}
+                    <div class="col-sm-10">
+                        {{ form_widget(form.content) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-2"></div>
+                    <div class="g-recaptcha col-sm-10" data-sitekey="{{ google_recaptcha_api_key }}"></div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-10">
+                        {{ form_widget(form.submit) }}
+                    </div>
+                </div>
+                {{ form_end(form) }}
+
+                {#                                {{ form(form) }}#}
+            </div>
+            <div class="col-md-6">
+                <div id="map" class="mb_25" style="height: 200px;">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2441.6082823054708!2d20.942958215352345!3d52.268657962578516!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471ecbb6ee27cac5%3A0x8eff057c04508471!2sKochanowskiego%2C+Warszawa!5e0!3m2!1sen!2spl!4v1517844041583"
+                            width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+
+                </div>
+                <address>
+                    <strong>{{ bank_owner }}
+                        {#                        {{ 'head.description'|trans }}#}
+                    </strong><br>
+                    {{ bank_country|trans }}<br>
+                    {{ bank_city|trans }}<br>
+                    {{ bank_street|trans }}<br>
+                    <a href="mailto:&#099;&#111;&#110;&#116;&#097;&#099;&#116;&#064;&#097;&#114;&#116;&#098;&#105;&#100;&#121;&#046;&#099;&#111;&#109;">&#099;&#111;&#110;&#116;&#097;&#099;&#116;&#064;&#097;&#114;&#116;&#098;&#105;&#100;&#121;&#046;&#099;&#111;&#109;</a><br/>
+                    {{ bank_phone|trans }}
+                </address>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDLVs4QntZehiHo7FHTyHhSfIYvVV-KI0"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+
+    <script type="text/javascript">
+        {#$(function() {
+            var uluru = {lat: 52.2686547, lng: 20.945146900000054};
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: uluru
+            });
+            var marker = new google.maps.Marker({
+                position: uluru,
+                map: map
+            });
+        });#}
+    </script>
+{% endblock %}

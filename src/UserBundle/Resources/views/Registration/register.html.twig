@@ -1,0 +1,21 @@
+{% extends "AppBundle::base.html.twig" %}
+
+{% block title %}{{ 'register.zarejestruj_sie'|trans([], 'messages') }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+    {% include "FOSUserBundle:Registration:register_content.html.twig" %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <script type="text/javascript">
+        $(function() {
+            $('input[name=registerPlan]').change(function() {
+                var $elem = $('input[name=registerPlan]:checked');
+                $('label').removeClass('selected');
+                var $plan = $('label[for='+$elem.attr('id')+']').addClass('selected');
+            });
+            $('input[name=registerPlan]').trigger('change');
+        });
+    </script>
+{% endblock %}

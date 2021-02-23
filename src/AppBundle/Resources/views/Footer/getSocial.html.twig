@@ -1,0 +1,5 @@
+<li class="social-media">
+    {% for social in media %}
+    <a href="{{ social.url }}" target="_blank"><img src="{{ asset('assets/images/social/'~social.icon) }}" alt="social media {{ social.id }}" style="{% if header %}position: relative; top: -2px; max-height: 15px;{% else %}max-height: 25px;{% endif %}" /></a>
+    {% endfor %}
+</li>

@@ -1,0 +1,61 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="x_panel tile">
+            <div class="x_title">
+                <h2>Banner</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li style="float: right"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <a href="{{ path('admin_banner_add') }}" class="btn btn-primary">Dodaj nowy banner</a>
+                <table class="table table-bordered table-hover table-striped">
+                    <tr>
+                        <th>Treść</th>
+                        <th>Przycisk</th>
+                        <th>Grafika</th>
+                        <th>Url</th>
+                        <th>Styl</th>
+                        <th>Pozycja</th>
+                        <th>Aktywność</th>
+                        <th>Akcja</th>
+                    </tr>
+                    {% for banner in banners %}
+                    <tr>
+                        <td>
+                            <small class="text-uppercase">{{ banner.langs.first.head }}</small>
+                            <h4 class="text-uppercase" style="margin: 5px 0;">{{ banner.langs.first.mainText }}</h4>
+                            <p>{{ banner.langs.first.description }}</p>
+                        </td>
+                        <td>{{ banner.langs.first.buttonText }}</td>
+                        <td><img src="{{ asset('files/banner/'~banner.image)}}" style="max-height: 70px" /></td>
+                        <td><a href="{{ banner.url }}" target="_blank">{{ banner.url }}</a></td>
+                        <td>{{ banner.color }}</td>
+                        <td>{{ banner.position }}</td>
+                        <td>{{ banner.active ? 'Tak' }}</td>
+                        <td>
+                            <a href="{{ path('admin_banner_edit', {id: banner.id}) }}" class="btn btn-xs btn-info">Edytuj</a>
+                            <a onclick="return confirm('Na pewno chcesz usunąć ten banner?')" href="{{ path('admin_banner_delete', {id: banner.id}) }}" class="btn btn-xs btn-danger">Usuń</a>
+                        </td>
+                    </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="8">
+                                <div class="alert alert-info">
+                                    Nie istnieją żadne dodane bannery
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

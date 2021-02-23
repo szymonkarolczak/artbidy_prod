@@ -1,0 +1,373 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: services.yml }
+    - { resource: "@UserBundle/Resources/config/services.yml" }
+    - { resource: "@AdminBundle/Resources/config/services.yml" }
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: pl
+    mail_address_from: 'admin@artbidy.com'
+    contact_address_from: 'admin@artbidy.com'
+    news_files_directory: '%kernel.root_dir%/../web/files/news'
+    work_files_directory: '%kernel.root_dir%/../web/files/work'
+    user_files_directory: '%kernel.root_dir%/../web/files/user'
+    auction_files_directory: '%kernel.root_dir%/../web/files/auction'
+    exhibition_files_directory: '%kernel.root_dir%/../web/files/exhibition'
+    houseauction_files_directory: '%kernel.root_dir%/../web/files/houseauction'
+    event_files_directory: '%kernel.root_dir%/../web/files/event'
+    banner_files_directory: '%kernel.root_dir%/../web/files/banner'
+    reports_directory: '%kernel.root_dir%/../web/reports'
+    library_directory: '%kernel.root_dir%/../web/files/library'
+    tmp_directory: '%kernel.root_dir%/../web/tmp'
+    # Registration prices
+    artysta_3msc: 49
+    artysta_6msc: 69
+    artysta_12msc: 99
+    galeria_3msc: 99
+    galeria_6msc: 159
+    galeria_12msc: 199
+    dom_aukcyjny_3msc: 199
+    dom_aukcyjny_6msc: 299
+    dom_aukcyjny_12msc: 399
+    muzeum_3msc: 69
+    muzeum_6msc: 99
+    muzeum_12msc: 149
+    # Additional prices
+    database_3msc: 49
+    database_6msc: 69
+    database_12msc: 99
+    annoucements_3msc: 19
+    annoucements_6msc: 39
+    annoucements_12msc: 69
+    auction_provision: 10 # 2%
+    auction_free_limit: 5 # ilość zgłoszonych obiektów na aukcję w ciągu roku dla darmowych userow
+    # Config
+    autocomplete_work_style: "Abstrakcja, Art déco, Art Nouveau, Barok, Bauhaus, Biedermeier, Dadaizm, Eklektyzm, Ekspresjonizm, Figuratywizm, Gustawiański, Hiperrealizm, Impresjonizm, Klasycyzm, koloryzm, Kubizm, Ludwik Filip, Manieryzm, Minimalizm, Modernizm, Myśliwski, Neobarok, Neogotyk, Neoimpresjonizm, Neoklasycyzm, Neorenesans, Pop art, Pop banalizm, Postimpresjonizm, Prymitywizm, Realizm, Realizm ekspresyjny, Realizm magiczny, Realizm poetyczny, Renesans, Rokoko, Romantyzm, Sakralny, Secesja, Surrealizm, Symbolizm"
+    autocomplete_work_technique: "Akryl, Akryl/Karton, Akryl/Olej, Akryl/Olej/Płótno, Akryl/Olej/Płyta, Akryl/Papier, Akryl/Płótno, Akryl/Płyta, Akryl/Płyta HDF, Akryl/Płyta HDV, Akryl/Technika własna, Akryl/Tektura, Akryl/Tusz/Werniks, Akryl/Wycinek/Deska, Akwaforta, Akwarele/Papier, Akwarele/Tusz/Papier, Akwatinta, Aluminum, Asamblaż, Autocynkografia/Papier, Białe złoto/Szafir, Biskwit, Brąz, Ceramika, Drewno, Druk, Drzeworyt, Enkaustyka/Płótno, Fajans, Fotografia, Fotografia/Płótno, Graffit, Grafika cyfrowa, Gwasz, Gwasz/Deska, Gwasz/Papier, Gwasz/Płótno, Gwasz/Płyta, Gwasz/Sklejka, Gwasz/Tusz/Karton, Haft, Inkografia, Kamień, Kamień szlachetny, Kolaż, Kość, Kredki olejne/Płótno, Linoryt, Linoryt kolorowy, Litografia, Marmur, Metal nieszlachetny, Metal szlachetny, Mezzotinta, Mieszana, Mieszana/Płótno, Mieszana/Płyta, Monotypia, Monotypia barwna, Mosiądz, Odlew, Olej, Olej/Deska, Olej/Fornir, Olej/Karton, Olej/Papier, Olej/Pilśń, Olej/Płótno, Olej/Płótno/Sklejka, Olej/Płyta, Olej/Sklejka, Olej/Tektura, Olej/Tempera, Ołówek, Papier, Pastel, Pastel olejny, Pastel/Gwasz/Akryl/Papier, Pastel/Gwasz/Papier, Pastel/Papier, Piórko, Pisak, Plater, Platyna, Platyna/Brylant, Płótno, Porcelana, Sangwina, Serigrafia, Sitodruk, Sklejka, Skóra, Spray, Spray olejny, Srebro, Sucha Igła, Suchy pastel/Karton, Szkło, Szkło/Bursztyn, Szlag aluminium, Szlagmetal, Szlagmetal/Deska, Tempera, Tempera/Papier, Terakota, Tkanina/Wełna, Tusz, Tusz/kredka, Tusz/Papier, Tusz/Pastel, Tusz/Płótno, Węgiel, Węgiel/Kredka/Papier, Własna, Własna/Pleksi, Własna/Płótno, Wydruk, Żeliwo, Złocenie/Szlagmetal, Złocenie/Szlagmetal/Piasek, Złoto, Złoto/Ametyst/Diament, Złoto/Diament, Żywica/Płyta"
+    work_types: "Fotografia,Grafika,Malarstwo,Rysunek,Rzeźba,Sztuka użytkowa"
+    newsletter_limit: 5
+    # Bank
+    bank_owner: 'Artbidy'
+    bank_country: 'Polska'
+    bank_city: '01-864 Warszawa'
+    bank_street: 'ul. Kochanowskiego'
+    bank_number: '32 1140 2004 0000 3102 7651 4631'
+    bank_iban: 'PL32 1140 2004 0000 3102 7651 4631'
+    bank_bic: 'BREXPLPWMBK'
+    bank_phone: '+48 604 238 369'
+
+framework:
+    #esi:             ~
+    default_locale: pl
+    translator:      ~
+    secret:          "%secret%"
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    #serializer:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+    default_locale:  "%locale%"
+    trusted_hosts:   [ 'artbidy.com', 'pl.artbidy.com', 'en.artbidy.com' ]
+    #trusted_hosts:   [ 'artbidy.l', 'pl.artbidy.local', 'en.artbidy.local' ]
+    trusted_proxies: ~
+    session:
+        # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
+        cookie_domain: '.artbidy.com'
+        handler_id:  session.handler.native_file
+        save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
+    fragments:       ~
+    http_method_override: true
+    assets: ~
+
+# Twig Configuration
+twig:
+#    exception_controller: AppBundle:Exception:showException
+    cache: false
+    globals:
+      fos_csrf_provider: "@security.csrf.token_manager"
+      bank_owner: '%bank_owner%'
+      bank_number: '%bank_number%'
+      bank_iban: '%bank_iban%'
+      bank_bic: '%bank_bic%'
+      bank_country: '%bank_country%'
+      bank_city: '%bank_city%'
+      bank_street: '%bank_street%'
+      bank_phone: '%bank_phone%'
+      currency: '@app.currency'
+      country: '@app.country'
+      auction_provision: '%auction_provision%'
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+    form_themes:
+      - 'bootstrap_3_horizontal_layout.html.twig'
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   pdo_mysql
+        host:     "%database_host%"
+        port:     "%database_port%"
+        dbname:   "%database_name%"
+        user:     "%database_user%"
+        password: "%database_password%"
+        charset:  UTF8
+        mapping_types:
+            enum:   string
+        # if using pdo_sqlite as your database driver:
+        #   1. add the path in parameters.yml
+        #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
+        #   2. Uncomment database_path in parameters.yml.dist
+        #   3. Uncomment next line:
+        #     path:     "%database_path%"
+        options:
+            # PDO::MYSQL_ATTR_INIT_COMMAND
+            1002: "SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))"
+        mapping_types:
+            enum:   string
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
+
+
+# Swiftmailer Configuration
+swiftmailer:
+    #delivery_addresses: ['contact@fineartsbase.com', 'konrad.kozaczenko@gmail.com']
+    transport: "%mailer_transport%"
+    host:      "%mailer_host%"
+    username:  "%mailer_user%"
+    password:  "%mailer_password%"
+
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: UserBundle\Entity\User
+    service:
+        mailer: fos_user.mailer.twig_swift
+    from_email:
+        address: "%mailer_user%"
+        sender_name: "Artbidy"
+    registration:
+      confirmation:
+        enabled: true
+        template:   UserBundle:Registration:email.html.twig
+      form:
+        type: UserBundle\Form\RegistrationType
+
+knp_paginator:
+    page_range: 5                      # default page range used in pagination control
+    default_options:
+      sort_field_name: ~ # Disable sorting
+    template:
+        pagination: KnpPaginatorBundle:Pagination:twitter_bootstrap_v3_pagination.html.twig     # sliding pagination controls template
+        sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
+
+knp_snappy:
+    temporary_folder: "%tmp_directory%"
+    pdf:
+        enabled:    true
+        binary:     /usr/local/bin/wkhtmltopdf
+#        binary:     "\"C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe\""
+        options:    []
+
+liip_imagine:
+  resolvers:
+    default:
+      web_path: ~
+  filter_sets:
+    cache: ~
+    finearts_auction:
+      quality: 80
+      filters:
+        thumbnail:
+          size: [300, 300]
+          mode: outbound
+    artist_big:
+      quality: 80
+      filters:
+        thumbnail:
+          size: [378, 1000]
+          mode: inset
+    artist_378:
+      quality: 80
+      filters:
+        thumbnail:
+          size: [378, 1000]
+          mode: inset
+    thumb_480x621:
+      quality: 80
+      filters:
+        thumbnail:
+          size: [480, 621]
+          mode: inset
+          allow_upscale: false
+        background:
+          size: [482, 623]
+          position: center
+          color: '#F0F0F0'
+    thumb_276x179:
+          quality: 80
+          filters:
+            thumbnail:
+              size: [276, 179]
+              mode: outbound
+              allow_upscale: true
+    thumb_200x150:
+          quality: 80
+          filters:
+            thumbnail:
+              size: [200, 150]
+              mode: outbound
+    thumb_200x300:
+          quality: 80
+          filters:
+            thumbnail:
+              size: [200, 300]
+              mode: inset
+    thumb_40x40:
+          quality: 80
+          filters:
+            thumbnail:
+              size: [40, 40]
+              mode: outbound
+    thumb_500x500:
+      quality: 80
+      filters:
+        thumbnail:
+          size: [500, 500]
+          mode: inset
+          allow_upscale: true
+        background :
+          size : [500, 500]
+          position : center
+          color : '#F0F0F0'
+    thumb_583x380v2:
+      quality: 80
+      filters:
+        thumbnail:
+          size: [583, 380]
+          mode: inset
+          allow_upscale: true
+        background :
+          size : [585, 382]
+          position : center
+          color : '#F0F0F0'		  
+    thumb_583x380:
+      quality: 80
+      filters:
+        thumbnail:
+          size: [583, 380]
+          mode: outbound
+          allow_upscale: true
+    thumb_655x390:
+      quality: 80
+      filters:
+        thumbnail:
+          size: [655, 390]
+          mode: outbound
+          allow_upscale: true
+    thumb_667x390:
+      quality: 80
+      filters:
+        thumbnail:
+          size: [667, 390]
+          mode: outbound
+          allow_upscale: true
+    thumb_276x250:
+      quality: 80
+      filters:
+        thumbnail:
+          size: [276, 250]
+          mode: outbound
+          allow_upscale: true
+    thumb_250x140:
+      quality: 80
+      filters:
+        thumbnail:
+          size: [250, 140]
+          mode: outbound
+          allow_upscale: true
+    thumb_548x400:
+      quality: 80
+      filters:
+        thumbnail:
+          size: [548, 400]
+          mode: outbound
+          allow_upscale: true
+    thumb_568x350:
+      quality: 80
+      filters:
+        thumbnail:
+          size: [568, 350]
+          mode: outbound
+          allow_upscale: true
+    thumb_1195x380:
+      quality: 80
+      filters:
+        thumbnail:
+          size: [1195, 380]
+          mode: outbound
+          allow_upscale: true
+    thumb_200x200:
+      quality: 80
+      filters:
+        thumbnail:
+          size: [200,200]
+          mode: inset
+          allow_upscale: true
+        background :
+          size : [204, 204]
+          position : center
+          color : '#F0F0F0'
+    thumb_368x270:
+      quality: 80
+      filters:
+        thumbnail:
+          size: [368, 270]
+          mode: outbound
+    thumb_378x250:
+      quality: 80
+      filters:
+        thumbnail:
+          size: [378, 250]
+          mode: outbound
+    thumb_176x250:
+      quality: 80
+      filters:
+        thumbnail:
+          size: [176, 250]
+          mode: inset
+    compress:
+      quality: 80
+      filters:
+        thumbnail:
+          size: [2000, 2000]
+          mode: inset
+    thumb_348x250:
+      quality: 80
+      filters:
+        thumbnail:
+          size: [348, 250]
+          mode: outbound
+
+jms_i18n_routing:
+  default_locale: pl
+  locales: [pl, en]
+  strategy: custom
+  hosts:
+    pl: 'pl.artbidy.com'
+    en: 'en.artbidy.com'
+  redirect_to_host: true
+kc_finder:
+  base_path : "%kernel.root_dir%/../vendor/sunhater/kcfinder"
+  config:
+    disabled : false
+    uploadURL: "https://pl.artbidy.com/uploads/"
+    uploadDir: "%kernel.root_dir%/../web/uploads/"

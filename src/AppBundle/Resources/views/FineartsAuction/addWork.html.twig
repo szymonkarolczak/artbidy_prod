@@ -1,0 +1,123 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %} {{ 'auctions.dodaj_obiekt'|trans }} - {{ auction.title }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+
+    {% set title = auction.title %}
+    {% set description = auction.description %}
+    {% set auction = auction[0] %}
+    {% if workAvailableForFree is not defined %}
+        {% set workAvailableForFree = 0 %}
+    {% endif %}
+    <div class="container">
+
+{#        {% if workAvailableForFree %}#}
+{#            <div class="alert alert-info">{{ 'auctions.ilosc_darmowych_zgloszen'|trans({'%ilosc%': workAvailableForFree}) }}</div>#}
+{#        {% endif %}#}
+
+        <section id="auction" class="stdSection pt_0">
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-md-6 text-right">
+                        <img src="{{ asset("files/auction/"~auction.image)|imagine_filter('finearts_auction') }}"
+                             alt="{{ title }} image" style="max-height: 80px;"/>
+                    </div>
+                    <div class="col-md-6 text-left">
+                        <h4 class="mt_0">{{ 'auctions.zglos_obiekt_na_aukcje'|trans }}</h4>
+                        <h1 class="small mb_15">{{ title }}</h1>
+                        <h4 class="mt_0">{{ auction.startDate|date('Y-m-d H:i:s') }}
+                            - {{ auction.endDate|date('Y-m-d H:i:s') }}</h4>
+                    </div>
+                </div>
+            </div>
+
+            {% if not app.user %}
+                <div class="alert alert-danger">
+                    {{ 'auctions.musisz_byc_zalogowany'|trans }}
+                </div>
+            {% elseif bidLimit is defined %}
+                <div class="alert alert-danger">
+                    {{ 'auctions.limit'|trans }}
+                </div>
+            {% else %}
+
+                {{ form_start(form) }}
+
+                <div{% if work %} style="visibility: hidden"{% endif %} class="form-group">
+                    {{ form_label(form.work) }}
+                    <div class="col-sm-10">
+                        <div class="input-group">
+                            {{ form_widget(form.work) }}
+                            <span class="input-group-btn">
+                                <a class="btn btn-default"
+                                   href="{{ path("work_add", {auction: auction.id}) }}">{{ 'auctions.lub_dodaj_nowy'|trans }}</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                {% if work %}
+                    <div style="position: relative; top: -40px;" class="row">
+                        <div class="col-md-3">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">{{ 'add_work.grafika'|trans }}</div>
+                                <div class="panel-body">
+                                    <img src="{{ asset("files/work/"~work.image) | imagine_filter('compress') }}" style="max-height: 150px;"
+                                         alt="{{ work.id }} image"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <table class="table table-striped">
+                                <tr>
+                                    <td>{{ 'add_work.tytul'|trans }}</td>
+                                    <td>{{ work.title }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ 'add_work.artysta'|trans }}</td>
+                                    <td>{{ work.artist }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ 'add_work.opis'|trans }}</td>
+                                    <td>{{ work.description }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if form.startPrice is defined %}
+                    {{ form_row(form.startPrice) }}
+                {% endif %}
+                {{ form_row(form.payment) }}
+                {{ form_row(form.shipsFrom) }}
+                {{ form_row(form.condition) }}
+                {{ form_row(form.allowBuyNow) }}
+                <div id="butNowPrice" class="hidden">
+                    {{ form_row(form.buyNowPrice) }}
+                </div>
+
+                {{ form_end(form) }}
+
+            {% endif %}
+
+        </section>
+
+    </div> <!-- /container -->
+
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(function () {
+            $('#app_auction_work_allowBuyNow').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#butNowPrice').removeClass('hidden');
+                } else {
+                    $('#butNowPrice').addClass('hidden');
+                }
+            });
+            $('#app_auction_work_allowBuyNow').trigger('change');
+        });
+    </script>
+{% endblock %}

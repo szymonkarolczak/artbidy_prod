@@ -1,0 +1,111 @@
+{% extends 'UserBundle:Default:base.html.twig' %}
+
+{% block content %}
+    <div class="row mt_20">
+        <div class="col-md-3">
+            <form method="get">
+                {% if "ROLE_ARTYSTA" not in user.roles %}
+                    <div class="form-group form-group-sm">
+                        <label for="artist">{{ 'add_work.artysta_lub_producent'|trans }}</label>
+                        <input type="text"
+                               name="_filter[artist]"{% if app.request.get('_filter').artist is defined %} value="{{ app.request.get('_filter').artist }}"{% endif %}
+                               class="form-control" id="artist">
+                    </div>
+                {% endif %}
+                <div class="form-group form-group-sm">
+                    <label for="title">{{ 'add_work.tytul'|trans }}</label>
+                    <input type="text"
+                           name="_filter[title]"{% if app.request.get('_filter').title is defined %} value="{{ app.request.get('_filter').title }}"{% endif %}
+                           class="form-control" id="title">
+                </div>
+                <div class="form-group form-group-sm">
+                    <label for="technique">{{ 'add_work.technika'|trans }}</label>
+                    <input type="text"
+                           name="_filter[technique]"{% if app.request.get('_filter').technique is defined %} value="{{ app.request.get('_filter').technique }}"{% endif %}
+                           class="form-control" id="technique">
+                </div>
+                <div class="form-group form-group-sm">
+                    <label for="style">{{ 'add_work.styl'|trans }}</label>
+                    <input type="text"
+                           name="_filter[style]"{% if app.request.get('_filter').style is defined %} value="{{ app.request.get('_filter').style }}"{% endif %}
+                           class="form-control" id="style">
+                </div>
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <input type="submit" value="{{ 'main.filtruj'|trans }}" class="btn btn-primary"/>
+                        <a href="{{ path("profile_works", {id: user.id, prefix: user.profilePrefix, slug: user.profileSlug|slugify}) }}"
+                           class="btn btn-default">{{ 'main.wyczysc'|trans }}</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-9">
+            <div class="page-header mt_0">
+                <h4>{{ 'works.znaleziono_liczba'|trans }} {{ pagination.getTotalItemCount }}</h4>
+            </div>
+            {% for work in pagination %}
+
+                {% if work.auctionWorks is not empty and work.priceOnRequest is not null %}
+                    {#Obiekt jest na aukcji!#}
+                    {% set auction = work.auctionWorks.first.auction %}
+                    {% if auction.startDate|date('Y-m-d H:i:s') < 'now'|date('Y-m-d H:i:s') and auction.endDate|date('Y-m-d H:i:s') > 'now'|date('Y-m-d H:i:s') %}
+                        {#Aukcja trwajaca#}
+                        {% set workLink = path('auction_see_work', {id: auction.id, slug: auction.langs.first.title|slugify, work_id: work.auctionWorks.first.id, work_slug: work.title|slugify}) %}
+                        {% if work.auctionWorks.first.bids.last %}
+                            {% set workPrice = currency.convert('PLN', app.session.get('_currency'), work.auctionWorks.first.bids.last.amount)~' '~app.session.get('_currency') %}
+                        {% else %}
+                            {% set workPrice = currency.convert(work.currency.code, app.session.get('_currency'), work.auctionWorks.first.startPrice)~' '~app.session.get('_currency') %}
+                        {% endif %}
+                    {% elseif auction.startDate|date('Y-m-d H:i:s') > 'now'|date('Y-m-d H:i:s') %}
+                        {#Aukcja nadchodzaca#}
+                        {% set workLink = path('auction_see_work', {id: auction.id, slug: auction.langs.first.title|slugify, work_id: work.auctionWorks.first.id, work_slug: work.title|slugify}) %}
+                        {% set workPrice = currency.convert(work.currency.code, app.session.get('_currency'), work.auctionWorks.first.startPrice)~' '~app.session.get('_currency') %}
+                    {% else %}
+                        {#Aukcja zakonczona#}
+                        {% set workLink = path('auction_see_work', {id: auction.id, slug: auction.langs.first.title|slugify, work_id: work.auctionWorks.first.id, work_slug: work.title|slugify}) %}
+
+                        {% if work.auctionWorks.first.bids.last %}
+                            {% set workPrice = currency.convert(work.auctionWorks.first.bids.last.currency.code, app.session.get('_currency'), work.auctionWorks.first.bids.last.amount)~' '~app.session.get('_currency') %}
+                        {% else %}
+                            {% set workPrice = 'auctions.nie_sprzedano'|trans %}
+                        {% endif %}
+                    {% endif %}
+                {% else %}
+                    {% set workLink = path('work_see', {slug: work.slug|slugify}) %}
+                    {% if work.priceOnRequest is not null %}
+                        {% set workPrice = work.priceOnRequest ? 'add_work.price_on_request'|trans : currency.convert(work.currency.code, app.session.get('_currency'), work.price)~' '~app.session.get('_currency') %}
+                    {% endif %}
+                {% endif %}
+
+                {% if loop.index % 4 == 1 %}
+                    <div class="row">
+                {% endif %}
+                <div class="col-md-3 col-xs-12 text-center" style="margin-bottom: 15px;">
+                    <a href="{{ workLink }}">
+                        <img class="imgFit"
+                             src="{{ asset('files/work/'~work.image) | imagine_filter('thumb_200x150') }}"
+                             style="max-width: 100%;" alt="{{ work.title }}"/></a>
+                    <div class="caption">
+                        <small>{{ work.artist }}</small>
+                        <h4 class="mb_0 mt_0">
+                            <a href="{{ workLink }}">{{ work.title }}</a>
+                        </h4>
+                        {% if work.priceOnRequest is not null %}
+                            <p class="small">{{ workPrice }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% if loop.index is divisible by(4) or loop.last %}
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="alert alert-info">
+                    {{ 'works.nie_znaleziono'|trans }}
+                </div>
+            {% endfor %}
+            <div class="navigation text-center">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,251 @@
+<form method="get" class="navbar-form navbar-left">
+    <div class="form-group">
+        <input type="text" class="form-control searchInputDes" placeholder="{{ 'main_menu.search'|trans }}">
+    </div>
+</form>
+
+<div class="floating-part">
+    <ul class="nav navbar-nav">
+
+        <li class="dropdown change-lang">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+               aria-expanded="false">{{ app.request.locale|upper }} <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                {% for lang in ['pl', 'en'] %}
+                    {% if lang != app.request.locale %}
+                        <li>
+                            <a href="{{ path(app.request.get("_route"), app.request.get('_route_params')|merge({"_locale": lang})) }}">{{ lang|upper }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </li>
+
+        {{ render(controller('AppBundle:Currencies:get')) }}
+
+        {{ render(controller('AppBundle:Footer:getSocial', {header: true})) }}
+
+    </ul>
+</div>
+
+<ul class="nav navbar-nav">
+    <li{% if app.request.attributes.get('_route') == 'auctions' %} class="active"{% endif %}><a
+                href="{{ path("auctions") }}">{{ 'main_menu.aukcje'|trans }}</a></li>
+    <li{% if app.request.attributes.get('_route') == 'works_all' %} class="active"{% endif %}><a
+                href="{{ path("works_all") }}">{{ 'main_menu.galerie'|trans }}</a></li>
+    <li{% if app.request.pathInfo == '/information/how-to-buy' %} class="active"{% endif %}><a
+                class="col-md-12 col-xs-6"
+                href="{{ path("footer_information", {page: 'how-to-buy'}) }}">{{ 'stopka.jak_kupic'|trans }}</a></li>
+    <li{% if app.request.pathInfo == '/information/how-to-sell' %} class="active"{% endif %}><a
+                class="col-md-12 col-xs-6"
+                href="{{ path("footer_information", {page: 'how-to-sell'}) }}">{{ 'stopka.jak_sprzedac'|trans }}</a>
+    </li>
+    <li{% if app.request.pathInfo == '/information/services' %} class="active"{% endif %}><a class="col-md-12 col-xs-6"
+                                                                                             href="{{ path("footer_information", {page: 'services'}) }}">{{ 'stopka.uslugi'|trans }}</a>
+    </li>
+    <li{% if app.request.pathInfo == '/information/about-us' %} class="active"{% endif %}><a class="col-md-12 col-xs-6"
+                                                                                             href="{{ path("footer_information", {page: 'about-us'}) }}">{{ 'stopka.o_nas'|trans }}</a>
+    </li>
+    <li{% if app.request.attributes.get('_route') == 'contact' %} class="active"{% endif %}><a
+                class="col-md-12 col-xs-6" href="{{ path("contact") }}">{{ 'stopka.kontakt'|trans }}</a></li>
+</ul>
+
+
+<ul class="nav navbar-nav navbar-right">
+    {% if not app.user %}
+        <li{% if app.request.attributes.get('_route') == 'fos_user_registration_register' %} class="dropdown active"{% endif %}>
+            <a href="#" class="open-modal register">{{ 'main_menu.zarejestruj_sie'|trans }}</a>
+        </li>
+    {% endif %}
+    <li class="dropdown">
+
+        {% if app.user %}
+
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ app.user.fullname }}</a>
+            <ul class="dropdown-menu multi-column columns-2">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <ul class="multi-column-dropdown black">
+                            {% if is_granted("ROLE_USER") %}
+                                <li class="dropdown-header">{{ 'main.galeria'|trans }}</li>
+                            {% endif %}
+
+                            {% if is_granted("ROLE_USER") %}
+                                <li><a href="{{ path("work_add") }}">{{ 'add_work.dodaj'|trans }}</a></li>
+                                <li><a href="{{ path("user_works") }}">{{ 'works.twoje'|trans }}</a></li>
+                                <li><a href="{{ path("user_works_bids") }}">{{ 'works.kupione'|trans }}</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    <div class="col-sm-7">
+                        <ul class="multi-column-dropdown">
+                            {% if is_granted("ROLE_USER") %}
+                                <li class="dropdown-header">{{ 'main_menu.aukcje'|trans }}</li>
+                                <li><a href="{{ path("user_auctions_bids") }}">{{ 'main.zlozone_oferty'|trans }}</a>
+                                </li>
+                                <li><a href="{{ path("auctions") }}">{{ 'auctionhouse.dodaj_aukcje'|trans }}</a></li>
+                                <li><a href="{{ path("user_auctions_works") }}">{{ 'auctions.zgloszone'|trans }}</a>
+                                </li>
+                                <li><a href="{{ path("user_observes") }}">{{ 'obserwuj.obserwowane'|trans }}</a></li>
+                                <li class="dropdown-header">{{ 'main.konto'|trans }}</li>
+                                <li><a href="{{ path("user_invoice") }}">{{ 'main.faktury'|trans }}</a></li>
+                                <li><a href="{{ path("profile_settings_general") }}">{{ 'user.ustawienia'|trans }}</a>
+                                </li>
+                            {% endif %}
+                            <li><a href="{{ path("fos_user_security_logout") }}">{{ 'user.wyloguj'|trans }}</a></li>
+                            {% if is_granted("ROLE_ADMIN") %}
+                                <li role="separator" class="divider"></li>
+                                <li><a href="{{ path("admin_homepage") }}">{{ 'admin.panel'|trans([], 'admin') }}</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+
+            </ul>
+
+        {% else %}
+
+            <a href="#" class="open-modal login">{{ 'main_menu.zaloguj_sie'|trans }}</a>
+            <ul id="my-modal" class="dropdown-modal">
+                <li>
+                    <div class="row">
+                        <div class="modal-content">
+                            <span class="close-modal">&times;</span>
+                            <div style="margin-bottom: 25px; text-align: center">
+                                <a href="{{ absolute_url(path('homepage')) }}"><img
+                                            src="{{ absolute_url(asset('assets/images/logo-bez-napisow.png')) }}"
+                                            alt="Artbidy Logo" style="    max-width: 70px;"/></a>
+                            </div>
+                            <div class="tab1">
+                                <div class="login-facebook">
+                                    {#                                    <a href="{{ getFacebookLoginLink() }}" class="btn btn-primary" style="width:100%;">{{ 'Zaloguj się przez Facebook'|trans }}</a>#}
+                                </div>
+                                <form class="form" role="form" action="{{ path("fos_user_security_check") }}"
+                                      method="post" accept-charset="UTF-8" id="login-nav">
+                                    {% if csrf_token('authenticate') %}
+                                        <input type="hidden" name="_csrf_token"
+                                               value="{{ fos_csrf_provider.refreshToken('authenticate') }}"/>
+                                    {% endif %}
+                                    <div class="form-group">
+                                        {#                                        <label class="sr-only" for="username">{{ 'security.login.username'|trans([], 'FOSUserBundle') }}</label>#}
+                                        {#                                        <input type="text" name="_username" class="form-control" id="username" placeholder="{{ 'security.login.username'|trans([], 'FOSUserBundle') }}" required>#}
+                                        <input type="text" name="_username" class="form-control" id="username"
+                                               placeholder="{{ 'kontakt.adres_email'|trans }}" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="sr-only"
+                                               for="password">{{ 'security.login.password'|trans([], 'FOSUserBundle') }}</label>
+                                        <input type="password" class="form-control" name="_password" id="password"
+                                               placeholder="{{ 'security.login.password'|trans([], 'FOSUserBundle') }}"
+                                               required>
+                                        <div class="help-block text-right"><a
+                                                    href="{{ path("fos_user_resetting_request") }}">{{ 'login.zapomniales_hasla'|trans }}</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button type="submit" id="_submit" name="_submit"
+                                                class="btn btn-primary btn-block">{{ 'security.login.submit'|trans([], 'FOSUserBundle') }}</button>
+                                    </div>
+
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" id="remember_me" name="_remember_me"
+                                                   value="on"/> {{ 'security.login.remember_me'|trans([], 'FOSUserBundle') }}
+                                        </label>
+                                    </div>
+                                </form>
+                                <div class="to-register bottom text-center">
+                                    {{ 'login.jestes_nowy'|trans({'%link_start%': '<a href="#" class="button2"><b>', '%link_end%': '</b></a>'})|raw }}
+                                </div>
+                            </div>
+                            <div class="tab2">
+                                <div class="login-facebook">
+                                    {#                                    <a href="{{ getFacebookLoginLink() }}" class="btn btn-primary" style="width:100%;">{{ 'Zarejestruj się przez Facebook'|trans }}</a>#}
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" id="_submit" name="_submit"
+                                            class="btn btn-primary btn-block to-form">{{ 'Zarejestruj się przez e-mail'|trans }}</button>
+                                </div>
+                                <div class="to-login bottom text-center">
+                                    {{ 'Masz już konto?'|trans }} <a href="#"
+                                                                     class="button2"><b>{{ 'Zaloguj'|trans }}</b></a>
+                                </div>
+                            </div>
+                            <div class="tab3">
+                                <form class="form" role="form" action="{{ path("fos_user_registration_register") }}"
+                                      method="get" accept-charset="UTF-8">
+                                    {#                                    {% if csrf_token('authenticate') %}#}
+                                    {#                                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />#}
+                                    {#                                    {% endif %}#}
+                                    <div id="fos_user_registration_form">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label required"
+                                                   for="fos_user_registration_form_email">E-mail</label>
+                                            <div class="col-sm-8">
+                                                <input type="email" id="fos_user_registration_form_email"
+                                                       name="fos_user_registration_form[email]" required="required"
+                                                       class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label required"
+                                                   for="fos_user_registration_form_fullname">{{ 'Imię i nazwisko lub nazwa firmy'|trans }}</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="fos_user_registration_form_fullname"
+                                                       name="fos_user_registration_form[fullname]" required="required"
+                                                       class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-4"></div>
+                                            <div class="col-sm-10">
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox"
+                                                               id="fos_user_registration_form_newsletter"
+                                                               name="fos_user_registration_form[newsletter]"
+                                                               value="1"> {{ 'Chcę otrzymywać informacje z serwisu na mój adres e-mail'|trans }}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-12">
+                                                <div class="checkbox">
+                                                    <label class="required">
+                                                        <input type="checkbox" id="fos_user_registration_form_terms"
+                                                               name="fos_user_registration_form[terms]"
+                                                               required="required"
+                                                               value="1"> {{ 'Akceptuję Regulamin oraz Politykę prywatności serwisu'|trans }}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="fos_user_registration_form__token"
+                                               name="fos_user_registration_form[_token]"
+                                               value="0XL31mVufwzWKHA6dDDyLDLnmgDw4A4sZMkdB5Gx8uU"></div>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            <input type="submit" class="btn btn-primary"
+                                                   value="{{ 'main_menu.przejdz_dalej'|trans }}" style="width:100%;">
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="to-login2 bottom text-center">
+                                    {{ 'Masz już konto?'|trans }} <a href="#"
+                                                                     class="button2"><b>{{ 'Zaloguj'|trans }}</b></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+        {% endif %}
+
+    </li>
+</ul>

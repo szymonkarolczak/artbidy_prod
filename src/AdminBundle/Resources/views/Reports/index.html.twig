@@ -1,0 +1,53 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="page-header ">
+            <h1>{{ 'raporty.przegladaj'|trans }}</h1>
+        </div>
+
+        <a class="btn btn-primary" href="{{ path("admin_reports_add") }}">{{ "raporty.dodaj"|trans }}</a>
+
+        <table class="table table-bordered table-striped table-hover">
+            <tbody>
+            <tr>
+                <th>Okładka</th>
+                <th>Tytuł</th>
+                <th>Opis</th>
+                <th>Cena</th>
+                <th>Plik</th>
+                <th>Akcja</th>
+            </tr>
+            {% for report in pagination %}
+                <tr>
+                    <td><img src="{{ asset('files/library/'~report.image) }}" style="max-width: 90px" alt="{{ report.image }} image" /></td>
+                    <td>{{ report.title }}</td>
+                    <td>{{ report.description }}</td>
+                    <td>{{ report.price }} PLN</td>
+                    <td>
+                        {% if report.filename %}
+                            <a target="_blank" href="{{ asset('files/library/'~report.filename) }}">{{ report.filename }}</a>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path("admin_reports_edit", {id: report.id}) }}" class="btn btn-xs btn-info">{{ 'admin.edytuj'|trans }}</a>
+                        <a href="{{ path("admin_reports_users", {id: report.id}) }}" class="btn btn-xs btn-warning">Użytkownicy</a>
+
+                        <a href="{{ path("admin_reports_delete", {id: report.id}) }}" onclick="return confirm('Czy na pewno chcesz usunąć ten raport?')" class="btn btn-xs btn-danger pull-right">{{ 'admin.usun'|trans }}</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    </div>
+
+{% endblock %}

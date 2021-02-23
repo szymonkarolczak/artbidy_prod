@@ -1,0 +1,80 @@
+<ul class="nav navbar-nav">
+
+    {% if not app.user %}
+        <li{% if app.request.attributes.get('_route') == 'fos_user_registration_register' %} class="active"{% endif %}>
+            <a href="{{ path("fos_user_registration_register") }}">{{ 'main_menu.zarejestruj_sie'|trans }}</a></li>
+        <li{% if app.request.attributes.get('_route') == 'fos_user_security_login' %} class="active"{% endif %}><a
+                    href="{{ path('fos_user_security_login') }}">{{ 'main_menu.zaloguj_sie'|trans }}</a></li>
+        <li{% if app.request.attributes.get('_route') == 'facebook_login' %} class="active"{% endif %}>
+            {#            <a href="{{ getFacebookLoginLink() }}">{{ 'main_menu.Login_by_Facebook'|trans }}</a>#}
+        </li>
+    {% else %}
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ app.user.username }} <span
+                        class="caret"></span></a>
+            <ul class="dropdown-menu multi-column columns-2">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <ul class="multi-column-dropdown">
+                            {#                        <li>
+                                                        <a  class="notice-contaner" href="{{ path('user_notices') }}" data-link="{{ path('user_notices_have_not_readed') }}" class="btn btn-xs btn-primary">
+                                                            {{ 'licytacja.page.title.notice'|trans }}
+                                                            <big class="notice-count"></big>
+                                                        </a>
+                                                    </li>#}
+
+                            {# UPRAWNIENIA #}
+                            {% if is_granted("ROLE_USER") %}
+                                <li class="dropdown-header">{{ 'main.galeria'|trans }}</li>
+                            {% endif %}
+
+                            {% if is_granted("ROLE_USER") %}
+                                <li><a href="{{ path("work_add") }}">{{ 'add_work.dodaj'|trans }}</a></li>
+                                <li><a href="{{ path("user_works") }}">{{ 'works.twoje'|trans }}</a></li>
+                                <li><a href="{{ path("user_works_bids") }}">{{ 'works.kupione'|trans }}</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    <div class="col-sm-7">
+                        <ul class="multi-column-dropdown">
+                            {% if is_granted("ROLE_USER") %}
+                                <li class="dropdown-header">{{ 'main_menu.aukcje'|trans }}</li>
+                                <li><a href="{{ path("user_auctions_bids") }}">{{ 'main.zlozone_oferty'|trans }}</a></li>
+                                <li><a href="{{ path("auctions") }}">{{ 'auctionhouse.dodaj_aukcje'|trans }}</a></li>
+                                <li><a href="{{ path("user_auctions_works") }}">{{ 'auctions.zgloszone'|trans }}</a></li>
+                                <li><a href="{{ path("user_observes") }}">{{ 'obserwuj.obserwowane'|trans }}</a></li>
+                                <li class="dropdown-header">{{ 'main.konto'|trans }}</li>
+                                <li><a href="{{ path("user_invoice") }}">{{ 'main.faktury'|trans }}</a></li>
+                                <li><a href="{{ path("profile_settings_general") }}">{{ 'user.ustawienia'|trans }}</a></li>
+                            {% endif %}
+                            <li><a href="{{ path("fos_user_security_logout") }}">{{ 'user.wyloguj'|trans }}</a></li>
+                            {% if is_granted("ROLE_ADMIN") %}
+                                <li role="separator" class="divider"></li>
+                                <li><a href="{{ path("admin_homepage") }}">{{ 'admin.panel'|trans([], 'admin') }}</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+
+            </ul>
+        </li>
+    {% endif %}
+
+    <li{% if app.request.attributes.get('_route') == 'auctions' %} class="active"{% endif %}><a
+                href="{{ path("auctions") }}">{{ 'main_menu.aukcje'|trans }}</a></li>
+    <li{% if app.request.attributes.get('_route') == 'works_all' %} class="active"{% endif %}><a
+                href="{{ path("works_all") }}">{{ 'main_menu.galerie'|trans }}</a></li>
+    <li{% if app.request.pathInfo == '/information/how-to-buy' %} class="active"{% endif %}><a
+                href="{{ path("footer_information", {page: 'how-to-buy'}) }}">{{ 'stopka.jak_kupic'|trans }}</a></li>
+    <li{% if app.request.pathInfo == '/information/how-to-sell' %} class="active"{% endif %}><a
+                href="{{ path("footer_information", {page: 'how-to-sell'}) }}">{{ 'stopka.jak_sprzedac'|trans }}</a>
+    </li>
+    <li{% if app.request.pathInfo == '/information/services' %} class="active"{% endif %}><a
+                href="{{ path("footer_information", {page: 'services'}) }}">{{ 'stopka.uslugi'|trans }}</a></li>
+    <li{% if app.request.pathInfo == '/information/about-us' %} class="active"{% endif %}><a
+                href="{{ path("footer_information", {page: 'about-us'}) }}">{{ 'stopka.o_nas'|trans }}</a></li>
+    <li{% if app.request.attributes.get('_route') == 'contact' %} class="active"{% endif %}><a
+                href="{{ path("contact") }}">{{ 'stopka.kontakt'|trans }}</a></li>
+
+
+</ul>

@@ -1,0 +1,433 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ auction.title }} - {{ parent() }}{% endblock %}
+
+{% block metatitle %}
+    {% if auction.metatitle is not empty %}
+        <title>{{ auction.metatitle }}</title>
+    {% else %}
+        <title>{% if (app.request.get('_route') in ['homepage']) and app.request.locale == 'pl' %}
+                {{ ('head.title' ~ app.request.get('_route')) |trans }}{% elseif (app.request.get('page') == 'galleries')  and app.request.locale == 'pl' %}
+                Galeria sztuki współczesnej Warszawa galeria obrazów, malarstwa{% elseif (app.request.get('page') == 'auction-houses')  and app.request.locale == 'pl' %}
+                Dom aukcyjny Artbidy - Partnerstwo Domów Aukcyjnych{% elseif (app.request.getUri() == 'https://pl.artbidy.com/news/icaboston')  and app.request.locale == 'pl' %}
+                Sztuka współczesna Artbidy sztuka współczesna w dobie Internetu
+            {% elseif (app.request.getUri() == 'https://pl.artbidy.com/news/ob') and app.request.locale == 'pl' %}
+                Sztuka współczesna, obrazy współczesne Artbidy{% elseif (app.request.getUri() == 'https://pl.artbidy.com/news/mw') and app.request.locale == 'pl' %}
+                Malarstwo współczesne Artbidy{% elseif (app.request.getUri() == 'https://pl.artbidy.com/news/mahak') and app.request.locale == 'pl' %}Malarstwo abstrakcyjne Artbidy{% else %}Artbidy{% endif %}</title>
+
+    {% endif %}
+{% endblock %}
+
+{% block meta %}
+    <meta property="og:image" content="{{ absolute_url(asset('files/auction/'~auction[0].image)) }}"/>
+    <meta name="auction" property="og:title" content="{{ auction.title }}"/>
+{% endblock %}
+
+{% block body %}
+
+    {% set title = auction.title %}
+    {% set description = auction.description %}
+    {% set auction = auction[0] %}
+
+    {% set AuctionStarted = auction.startDate|date('Y-m-d H:i:s') < "now"|date('Y-m-d H:i:s') %}
+    {% set AuctionEnded = auction.endDate|date('Y-m-d H:i:s') < "now"|date('Y-m-d H:i:s') %}
+
+    <div class="container">
+
+        <section id="auction" class="stdSection text-left pt_0">
+
+            <div class="row mb_25">
+                <div class="col-md-6 image-full  text-left">
+                    <a class="lightbox" href="{{ asset('files/work/'~auction.image) }}">
+                        <img src="{{ asset("files/auction/"~auction.image)| imagine_filter('thumb_583x380') }}"
+                             class="mb_25" alt="{{ title }} image" style="width: 100%; object-fit: cover;"/><br/>
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <div class="page-header text-left mt_0">
+                        <h4 class="mt_0 text-left">{{ 'auctions.data_rozpoczecia'|trans }} {{ auction.startDate|date('Y-m-d H:i:s') }}</h4>
+                        <h4 class="mt_0 text-left">{{ 'auctions.data_zakonczenia'|trans }} {{ auction.endDate|date('Y-m-d H:i:s') }}</h4>
+                        <h1 class="mb_25">{{ title }}</h1>
+                        <p>{{ description }}</p>
+                        {% if not AuctionEnded and not AuctionStarted %}
+                            <a class="center-button btn btn-fineart"
+                               href="{{ path("auction_add_work", {id: auction.id, slug: title|slugify}) }}">{{ 'auctions.zglos_obiekt'|trans }}</a>
+                        {% endif %}
+                        {% if not AuctionEnded and not observe %}
+                            <a class="btn btn-primary btn-fineart small-center"
+                               href="{{ path("auction_observe", {id: auction.id}) }}">{{ 'main.obserwuj'|trans }}</a>
+                        {% endif %}
+                        <div class="addthis_inline_share_toolbox"
+                             style="margin-top: 15px;text-align: left !important;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-header text-left">
+                <h3>{{ 'auctionhouse.dziela_przypisane' |trans }}</h3>
+            </div>
+            <div class="row">
+                {% for work in pagination %}
+                    {% if loop.index % 4 == 1 %}
+                        <div class="row">
+                    {% endif %}
+                    {% set artist_id = work.id %}
+                    {% set work = work[0] %}
+                    {% set workAuctionId = work.id %}
+                    {% set AuctionWork = work %}
+                    {% set work = work.work %}
+                    <div class="img-Fit more-class col-md-3 col-xs-12 text-center mb_15">
+                        <a href="{{ path('auction_see_work', {id: auction.id, slug: title|slugify, work_id: workAuctionId, work_slug: work.title|slugify}) }}">
+                            <img src="{{ asset('files/work/'~work.image) | imagine_filter('thumb_200x200') }}"
+                                 style="max-width: 100%;" alt="{{ work.title }}"/></a>
+                        <div class="caption">
+                            <small>
+                                {% if artist_id %}
+                                    <a href="{{ path('profile', {id: artist_id, slug: work.artist|slugify, prefix: 'artists'}) }}">{{ work.artist }}</a>
+                                {% else %}
+                                    {{ work.artist }}
+                                {% endif %}
+                            </small>
+                            <h4 style="font-style: italic" class="mb_0 mt_0">
+                                <a href="{{ path('auction_see_work', {id: auction.id, slug: title|slugify, work_id: workAuctionId, work_slug: work.title|slugify}) }}">{{ work.title }} {{ work.year ? ', '~work.year }}</a>
+                            </h4>
+                            {% set dimensions = work.dimensions|split('x') %}
+                            <p class="small" style="text-transform: lowercase;">{{ work.technique|trans({},'work') }}
+                                {% if work.technique is not empty %}
+                                    ,
+                                {% endif %}
+                                {{ dimensions[0] }}{% if dimensions[1] is not empty %}x {{ dimensions[1] }}
+                                {% endif %} {% if dimensions[0] is not empty %}cm{% endif %}</p>
+                            {% if AuctionStarted %}
+                                {% if AuctionWork.bids.last.amount is defined %}
+                                    {% if AuctionEnded %}
+                                        <p class="small">
+                                            {{ 'auctions.sprzedano_za'|trans({'%cena%': currency.convert(AuctionWork.bids.last.currency.code, app.session.get('_currency'), AuctionWork.bids.last.amount)~' '~app.session.get('_currency')}) }}
+                                        </p>
+                                    {% else %}
+                                        <p class="small">{{ currency.convert(AuctionWork.bids.last.currency.code, app.session.get('_currency'), AuctionWork.bids.last.amount) }} {{ app.session.get('_currency') }}
+                                            ({{ AuctionWork.bids.count }})</p>
+                                    {% endif %}
+                                {% else %}
+                                    {% if AuctionEnded %}
+                                        {% if AuctionWork.allowBuyNow %}
+                                            {#                                            {% set workPrice = work.priceOnRequest ? 'add_work.price_on_request'|trans : currency.convert(work.currency.code, app.session.get('_currency'), work.auctionWorks.first.buyNowPrice)~' '~app.session.get('_currency') %}#}
+                                            <p class="small">
+                                                {% if AuctionWork.buyNowPrice > 0 %}
+                                                    {{ currency.convert(AuctionWork.work.currency.code, app.session.get('_currency'), AuctionWork.buyNowPrice)~' '~app.session.get('_currency') }}
+                                                {% else %}
+                                                    {{ currency.convert(AuctionWork.work.currency.code, app.session.get('_currency'), AuctionWork.startPrice)~' '~app.session.get('_currency') }}
+                                                {% endif %}
+                                            </p>
+                                        {% else %}
+                                            <p class="small">
+                                                {{ currency.convert(AuctionWork.work.currency.code, app.session.get('_currency'), AuctionWork.startPrice)~' '~app.session.get('_currency') }}
+                                            </p>
+                                        {% endif %}
+                                    {% else %}
+                                        <p class="small">{{ currency.convert(work.currency.code, app.session.get('_currency'), AuctionWork.startPrice) }} {{ app.session.get('_currency') }}</p>
+                                    {% endif %}
+                                {% endif %}
+                            {% else %}
+                                {% if AuctionWork.estimationStart %}
+                                    <p class="small">{{ currency.convert(work.currency.code, app.session.get('_currency'), AuctionWork.estimationStart) }}
+                                        -{{ currency.convert(work.currency.code, app.session.get('_currency'), AuctionWork.estimationEnd) }} {{ app.session.get('_currency') }}</p>
+                                {% else %}
+                                    <p class="small">{{ currency.convert(work.currency.code, app.session.get('_currency'), AuctionWork.startPrice) }} {{ app.session.get('_currency') }}</p>
+                                {% endif %}
+                            {% endif %}
+
+
+                        </div>
+                    </div>
+                    {% if loop.index is divisible by(4) or loop.last %}
+                        </div>
+                    {% endif %}
+
+
+                {% else %}
+                    <div class="col-md-12">
+                        <div class="alert alert-info">
+                            {{ 'auctions.obiekt.nie_znaleziono'|trans }}
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="navigation" style="text-align: center;">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
+            </div>
+
+            <a style="margin-top: 50px;" href="{{ path("auctions") }}"
+               class="center-text center-button btn btn-fineart">{{ 'home.zobacz_wszystkie_aukcje'|trans }}</a>
+
+        </section>
+
+    </div> <!-- /container -->
+
+    <!-- Modal -->
+    {% if app.user %}
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    {#{{ form_start(form) }}
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">{{ 'auctions.zglos_obiekt'|trans }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        {{ form_widget(form.content) }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'main.zamknij'|trans }}</button>
+                        <button type="submit" class="btn btn-primary">{{ 'main.wyslij'|trans }}</button>
+                    </div>
+                    {{ form_end(form) }}#}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">{{ 'auctions.zglos_obiekt'|trans }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger">{{ 'auctions.zapytaj_zalogowany'|trans }}</div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">{{ 'main.zamknij'|trans }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+
+
+
+    {#<div class="container">
+
+        <section id="auction" class="stdSection text-center pt_0">
+            <div class="page-header text-center{% if AuctionStarted %} mt_0{% endif %}">
+                {% if AuctionStarted %}
+                    {% if AuctionEnded %}
+                        <div class="alert alert-warning text-left">{{ 'auctions.zakonczona'|trans }}</div>
+                    {% else %}
+                        {% set difference = date(auction.endDate).diff(date('now')) %}
+
+                        {% set hoursEnd = difference.h == 1 ? 'godzinę'|trans : difference.h > 1 and difference.h < 5 ? 'godziny'|trans : 'godzin'|trans %}
+                        {% set daysEnd = difference.days == 1 ? 'dzień'|trans : 'dni'|trans %}
+
+                        {% set days = difference.days~' '~daysEnd %}
+                        {% set hours = difference.h~' '~hoursEnd %}
+                        {% set minutes = difference.i~' '~ 'minut'|trans %}
+                        <div class="alert alert-warning text-left">{{ 'aukcja_konczy_sie_za'|trans({'%dni%': days, '%godzin%': hours, '%minut%': minutes, '%pelna%': auction.startDate|date('Y-m-d H:i:s')}) }}</div>
+                    {% endif %}
+                {% endif %}
+                {% if not AuctionStarted %}
+                    {% set difference = date(auction.startDate).diff(date('now')) %}
+
+                    {% set hoursEnd = difference.h == 1 ? 'godzinę'|trans : difference.h > 1 and difference.h < 5 ? 'godziny'|trans : 'godzin'|trans %}
+                    {% set daysEnd = difference.days == 1 ? 'dzień'|trans : 'dni'|trans %}
+
+                    {% set days = difference.days~' '~daysEnd %}
+                    {% set hours = difference.h~' '~hoursEnd %}
+                    {% set minutes = difference.i~' '~ 'minut'|trans %}
+                    <div class="alert alert-warning text-left">{{ 'aukcja_rozpoczyna_sie_za'|trans({'%dni%': days, '%godzin%': hours, '%minut%': minutes, '%pelna%': auction.startDate|date('Y-m-d H:i:s')}) }}</div>
+                {% endif %}
+                <h4 class="mt_0 text-center">{{ auction.startDate|date('Y-m-d H:i:s') }} - {{ auction.endDate|date('Y-m-d H:i:s') }}</h4>
+                <h1>{{ title }}</h1>
+                <p>{{ description }}</p>
+            </div>
+
+            <div class="text-center">
+                <img src="{{ asset("files/auction/"~auction.image) }}" class="mb_25" alt="{{ title }} image" style="max-height: 250px;" /><br />
+                {% if not AuctionEnded and not AuctionStarted %}
+                        <a class="btn btn-primary btn-fineart mb_15" href="{{ path("auction_add_work", {id: auction.id, slug: title|slugify}) }}">{{ 'auctions.dodaj'|trans }}</a>
+                {% endif %}
+                {% if not AuctionEnded and not observe %}
+                    <a class="btn btn-primary btn-fineart mb_15" href="{{ path("auction_observe", {id: auction.id}) }}">{{ 'main.obserwuj'|trans }}</a>
+                {% endif %}
+                <div class="addthis_inline_share_toolbox"></div>
+            </div>
+
+            <div class="row text-left mt_20 mb_25">
+  
+                <div class="col-md-9">
+                    <div class="page-header mt_0">
+                        <h4 class="pull-left">{{ 'auctions.liczba_obiektow'|trans }}: {{ pagination.getTotalItemCount }}</h4>
+                        
+                        <div class="clearfix"></div>
+                    </div>
+                    {% for work in pagination  %}
+                        {% if loop.index % 4 == 1 %}
+                            <div class="row">
+                        {% endif %}
+                            {% set artist_id = work.id %}
+                            {% set work = work[0] %}
+                            {% set workAuctionId = work.id %}
+                            {% set AuctionWork = work %}
+                            {% set work = work.work %}
+                            <div class="col-md-3 col-xs-12 text-center mb_15">
+                                <a href="{{ path('auction_see_work', {id: auction.id, slug: title|slugify, work_id: workAuctionId, work_slug: work.title|slugify}) }}"><img src="{{ asset('files/work/'~work.image) }}" style="max-width: 100%;" alt="{{ work.title }}" /></a>
+                                <div class="caption">
+                                    <small>
+                                        {% if artist_id %}
+                                            <a href="{{ path('profile', {id: artist_id, slug: work.artist|slugify, prefix: 'artists'}) }}">{{ work.artist }}</a>
+                                        {% else %}
+                                            {{ work.artist }}
+                                        {% endif %}
+                                    </small>
+                                    <h4 style="font-style: italic" class="mb_0 mt_0">
+                                        <a href="{{ path('auction_see_work', {id: auction.id, slug: title|slugify, work_id: workAuctionId, work_slug: work.title|slugify}) }}">{{ work.title }} {{ work.year ? ', '~work.year }}</a>
+                                    </h4>
+                                    {% if AuctionStarted %}
+                                        {% if AuctionWork.bids.last.amount is defined %}
+                                            {% if AuctionEnded %}
+                                                <p class="small">
+                                                    {% if not app.user %}
+                                                        {{ 'auctions.cena_sprzedazy_ukryta'|trans }}
+                                                    {% else %}
+                                                        {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_SUPER_ADMIN") or app.user.database|date('Y-m-d H:i:s') > 'now'|date('Y-m-d H:i:s') %}
+                                                            {{ 'auctions.sprzedano_za'|trans({'%cena%': currency.convert(AuctionWork.bids.last.currency.code, app.session.get('_currency'), AuctionWork.bids.last.amount)~' '~app.session.get('_currency')}) }}
+                                                        {% else %}
+                                                            <a href="{{ path('footer_information', {page: 'database'}) }}">{{ 'auctions.wykup_baza_cen'|trans }}</a>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </p>
+                                            {% else %}
+                                                <p class="small">{{ currency.convert(AuctionWork.bids.last.currency.code, app.session.get('_currency'), AuctionWork.bids.last.amount) }} {{ app.session.get('_currency') }} ({{ AuctionWork.bids.count }})</p>
+                                            {% endif %}
+                                        {% else %}
+                                            {% if AuctionEnded %}
+                                                {% if AuctionWork.allowBuyNow %}
+                                                    <p class="small">{{ 'auctions.dostepne_w_poaukcyjnej'|trans }}</p>
+                                                {% else %}
+                                                    {% if not app.user %}
+                                                        {{ 'auctions.cena_sprzedazy_ukryta'|trans }}
+                                                    {% else %}
+                                                        {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_SUPER_ADMIN") or app.user.database|date('Y-m-d H:i:s') > 'now'|date('Y-m-d H:i:s') %}
+                                                            <p class="small">{{ 'auctions.nie_sprzedano'|trans }}</p>
+                                                        {% else %}
+                                                            <a href="{{ path('footer_information', {page: 'database'}) }}">{{ 'auctions.wykup_baza_cen'|trans }}</a>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% else %}
+                                                <p class="small">{{ currency.convert(work.currency.code, app.session.get('_currency'), AuctionWork.startPrice) }} {{ app.session.get('_currency') }}</p>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% else %}
+                                        {% if AuctionWork.estimationStart %}
+                                            <p class="small">{{ currency.convert(work.currency.code, app.session.get('_currency'), AuctionWork.estimationStart) }}-{{ currency.convert(work.currency.code, app.session.get('_currency'), AuctionWork.estimationEnd) }} {{ app.session.get('_currency') }}</p>
+                                        {% else %}
+                                            <p class="small">{{ currency.convert(work.currency.code, app.session.get('_currency'), AuctionWork.startPrice) }} {{ app.session.get('_currency') }}</p>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% if loop.index is divisible by(4) or loop.last %}
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="col-md-12">
+                            <div class="alert alert-info">
+                                {{ 'auctions.obiekt.nie_znaleziono'|trans }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <hr />
+            <a href="{{ path("auctions") }}">{{ 'home.zobacz_wszystkie_aukcje'|trans }}</a>
+
+            {% if ads[0] is defined and ads[0] %}
+                {{ ads[0].content|raw }}
+            {% endif %}
+
+        </section>
+
+    </div> <!-- /container -->#}
+
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/fancybox/dist/jquery.fancybox.css') }}">
+    <link href="{{ asset("assets/css/zoom.css") }}" rel="stylesheet"/>
+    <style>
+        .lightbox:hover img {
+            color: #000;
+            opacity: 0.5;
+        }
+    </style>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/vendor/openseadragon/built-openseadragon/openseadragon/openseadragon.js') }}"></script>
+    <script type="text/javascript">
+        $('.lightbox').fancybox({
+            buttons: [
+                'close'
+            ],
+            fullScreen: {
+                autoStart: true,
+                requestOnStart: true
+            },
+            zoom: false,
+            onUpdate: function (instance, current) {
+                $(current.$content)
+                    .width($(window).width())
+                    .height($(window).height())
+                    .css('transform', 'translate(0px,0px)');
+            },
+            'afterLoad': function (instance, current) {
+                let html = '<div width="100%" class="sc-bwzfXH gwBNch"><div style="transition: opacity 300ms ease-in-out 0s; opacity: 1;"><div class="LightboxSlider__SliderContainer-sc-2u6frb-1 bBDRtM"><div height="100%" width="100%" class="sc-bwzfXH cQSUhA"><svg class="LightboxSlider__ZoomSymbolContainer-sc-2u6frb-2 fJfAwr"><line x1="0" y1="50%" x2="100%" y2="50%" stroke="#FFF" stroke-width="2px"></line></svg>' +
+                    '<input min="0.22326708847336002" max="2.5659777424483305" step="0.001" type="range" class="LightboxSlider__StyledSlider-sc-2u6frb-0 gvJvRr">' +
+                    '<svg class="LightboxSlider__ZoomSymbolContainer-sc-2u6frb-2 fJfAwr"><line x1="50%" y1="0" x2="50%" y2="100%" stroke="#FFF" stroke-width="2px"></line><line x1="0" y1="50%" x2="100%" y2="50%" stroke="#FFF" stroke-width="2px"></line></svg></div></div></div></div>';
+                $(html).appendTo($(current.$content));
+                $(current.$content).attr('id', 'lightbox-content');
+                $(current.$content).css(';')
+                $(current.$content).find('.fancybox-image').hide();
+                let viewer = OpenSeadragon({
+                    id: "lightbox-content",
+                    tileSources: {
+                        type: 'image',
+                        url: current.src
+                    },
+                    showHomeControl: false,
+                    panHorizontal: true,
+                    defaultZoomLevel: 1,
+                    minZoomLevel: 0.22326708847336002,
+                    maxZoomLevel: 2.5659777424483305,
+                    visibilityRatio: 0.001,
+                    showNavigator: false,
+                    showFullPageControl: false,
+                    showZoomControl: false,
+                });
+
+                $('input[type=range]').on('change', function () {
+                    viewer.viewport.zoomTo($(this).val());
+                });
+
+                viewer.addHandler("canvas-click", eventHandler, {eventType: "viewer canvas-click"});
+                viewer.addHandler("canvas-press", eventHandler, {eventType: "viewer canvas-click"});
+                viewer.addHandler("pan", eventHandler, {eventType: "viewer pan"});
+                viewer.addHandler('canvas-scroll', eventHandler, {eventType: "viewer mousewheel"});
+
+                function eventHandler(event, obj) {
+                    let zoom = viewer.viewport.getZoom();
+                    $('input[type=range]').val(zoom);
+                }
+
+                $(window).resize();
+            },
+            'autoSize': false,
+            'autoScale': false,
+            'autoDimensions': true,
+            'fitToView': false,
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="container-fluid">
+            <div class="page-header mt_0">
+                <h1 class="mt_0">Aukcje Artbidy <small>{{ pagination.getTotalItemCount }}</small></h1>
+            </div>
+        </div>
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs nav-justified" role="tablist">
+            <li{% if not app.request.get('type') %} class="active"{% endif %}><a href="{{ path("admin_fineartsauctions") }}">Trwające</a></li>
+            <li{% if app.request.get('type') is defined and app.request.get('type') == 'next' %} class="active"{% endif %}><a href="{{ path("admin_fineartsauctions", {type: 'next'}) }}">Zaplanowane</a></li>
+            <li{% if app.request.get('type') is defined and app.request.get('type') == 'ended' %} class="active"{% endif %}><a href="{{ path("admin_fineartsauctions", {type: 'ended'}) }}">Zakończone</a></li>
+        </ul>
+
+        <table class="table table-bordered table-striped table-hover">
+            <tbody>
+            <tr>
+                <th>ID</th>
+                <th>{{ 'aukcje.tytul'|trans }}</th>
+                <th>{{ 'admin.grafika'|trans }}</th>
+                <th>{{ 'admin.opis'|trans }}</th>
+                <th>{{ 'aukcje.data_rozpoczecia'|trans }}</th>
+                <th>{{ 'aukcje.data_zakonczenia'|trans }}</th>
+                <th>{{ 'aktualnosci.wyroznione'|trans }}</th>
+                <th>{{ 'admin.akcja'|trans }}</th>
+            </tr>
+            {% for auction in pagination %}
+                {% set title = auction.title %}
+                {% set description = auction.description %}
+                {% set auction = auction[0] %}
+                <tr>
+                    <td>{{ auction.id }}</td>
+                    <td>{{ title }}</td>
+                    <td><img src="{{ asset('files/auction/'~auction.image) }}" style="max-height: 50px;" alt="auction {{ auction.id }}" /></td>
+                    <td>{{ description }}</td>
+                    <td>{{ auction.startDate|date('Y-m-d H:i:s') }}</td>
+                    <td>{{ auction.endDate|date('Y-m-d H:i:s') }}</td>
+                    <td>{{ auction.pinned ? '<i class="glyphicon glyphicon-ok"></i>' }}</td>
+                    <td>
+                        {% if auction.endDate < 'now'|date('Y-m-d H:i:s') %}
+                            {#Zakończona#}
+                        {% elseif auction.startDate > 'now'|date('Y-m-d H:i:s') %}
+                            {#Zaplanowana#}
+                        {% elseif auction.startDate < 'now'|date('Y-m-d H:i:s') and auction.endDate > 'now'|date('Y-m-d H:i:s') %}
+                            {#Trwająca#}
+                        {% endif %}
+                        <a class="btn btn-xs btn-warning" href="{{ path('admin_fineartsauctions_works', {id: auction.id}) }}">Dzieła</a>
+                        <a class="btn btn-xs btn-info" href="{{ path("admin_auctions_edit", {id: auction.id}) }}">{{ 'admin.edytuj'|trans }}</a>
+                        <a class="btn btn-xs btn-danger" onclick="return confirm('{{ 'aukcje.czy_na_pewno_usunac'|trans }}')" href="{{ path("admin_auctions_delete", {id: auction.id}) }}">{{ 'admin.usun'|trans }}</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8">
+                        <div class="alert alert-info mb_0">{{ 'aukcje.brak'|trans }}</div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    </div>
+
+{% endblock %}

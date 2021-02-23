@@ -1,0 +1,9 @@
+{% extends 'AppBundle:Emails:base.html.twig' %}
+
+{% block content %}
+      <h3>{{ 'mail.witaj'|trans({'%username%': user.fullname}, 'admin', lang) }}</h3>
+
+      <p>
+            {{ 'notifications.user_dzielo_text'|trans({'%fullname%': target.fullname, '%work%': work.title, '%link%': absolute_url(path('work_see', {id: work.id, slug: work.title|slugify}))}, 'messages', lang)|raw }}
+      </p>
+{% endblock %}

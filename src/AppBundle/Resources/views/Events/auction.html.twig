@@ -1,0 +1,132 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% set title = auction.title %}
+{% set description = auction.description %}
+{% set auction = auction[0] %}
+
+{% block title %}{{title}} - {{ parent() }}{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        <section id="auction" class="stdSection text-center pt_0">
+            <div class="page-header text-center mt_0">
+                <h4 class="mt_0 text-center">{{ auction.startDate|date('Y-m-d H:i:s') }}</h4>
+                <h1 class="mb_25">{{ title }}</h1>
+                <p>{{ description }}</p>
+                <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-fineart">{{ 'auctions.zglos_obiekt'|trans }}</button>
+                <a href="{{ path("houseauction_observe", {id: auction.id}) }}" class="btn btn-fineart">{{ 'main.obserwuj'|trans }}</a>
+                <div class="addthis_inline_share_toolbox"></div>
+            </div>
+
+            <div class="row mb_25">
+                <div class="col-md-4 text-right">
+                    <img src="{{ asset("files/houseauction/"~auction.image) | imagine_filter('compress') }}" alt="{{ title }} image" style="max-height: 250px; width:100%;" />
+                </div>
+                <div class="col-md-8">
+                    <table class="table mt_20 text-left">
+                        <tr>
+                            <td class="text-right">{{ 'exhibition.autor'|trans }}</td>
+                            <td>
+                                <a href="{{ path("profile", {id: auction.author.id, prefix: auction.author.profilePrefix, slug: auction.author.profileSlug|slugify}) }}">
+                                    {{ auction.author.fullname ? auction.author.fullname : auction.author.username }}
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">{{ 'main.data_start'|trans }}</td>
+                            <td>
+                                {{ auction.startDate|date('Y-m-d H:i:s') }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">{{ 'user.adres'|trans }}</td>
+                            <td>
+                                {{ auction.address }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">{{ 'user.miasto'|trans }}</td>
+                            <td>
+                                {{ country.convert(auction.city, app.session.get('_locale')) }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="page-header text-left">
+                <h3>{{ 'auctionhouse.dziela_przypisane' |trans}}</h3>
+            </div>
+            <div class="row">
+                {% for work in works  %}
+                    {% set workAuctionId = work.id %}
+                    {% set work = work.work %}
+                    <div class="col-md-3 col-xs-12 text-center">
+                        {% set workLink = path('work_see', {slug: work.slug|slugify}) %}
+                        <a href="{{  workLink }}">
+                            <img src="{{ asset('files/work/'~work.image) | imagine_filter('compress') }}" style="max-width: 100%;" alt="{{ work.title }}" /></a>
+                        <div class="caption">
+                            <small>{{ work.artist }}</small>
+                            <h4 class="mb_0 mt_0">                                
+                                <a href="{{ workLink }}">{{ work.title }}</a>
+                            </h4>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-md-12">
+                        <div class="alert alert-info">
+                            {{ 'auctions.obiekt.nie_znaleziono'|trans }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <a style="margin-top: 50px;" href="{{ path("events") }}" class="btn btn-fineart">{{ 'wydarzenia.zobacz_wszystkie_wydarzenia'|trans }}</a>
+
+        </section>
+
+    </div> <!-- /container -->
+
+    <!-- Modal -->
+    {% if app.user %}
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    {{ form_start(form) }}
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">{{ 'auctions.zglos_obiekt'|trans }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        {{ form_widget(form.content) }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'main.zamknij'|trans }}</button>
+                        <button type="submit" class="btn btn-primary">{{ 'main.wyslij'|trans }}</button>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">{{ 'auctions.zglos_obiekt'|trans }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger">{{ 'auctions.zapytaj_zalogowany'|trans }}</div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'main.zamknij'|trans }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

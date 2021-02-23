@@ -1,0 +1,232 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ 'main_menu.aukcje'|trans }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="container" style="margin-bottom: 50px;">
+
+        <section id="popular" class="stdSection">
+            <h1 class="small">{{ 'auctionhouse.trwajace'|trans }}</h1>
+            <div class="row">
+                {% for auction in ongoing %}
+                    {% set title = auction.title %}
+                    {% set description = auction.description %}
+                    {% set auction = auction[0] %}
+                    <div class="col-xs-12">
+                        <div>
+                            <a style="display: block; text-align: center;" href="{{ path("auction", {id: auction.id, slug: title|slugify}) }}">
+                                <div class="countDownTimer main-view alert alert-info" data-time="{{ auction.startDate|date('Y-m-d H:i:s') }}"  data-time-end="{{ auction.endDate|date('Y-m-d H:i:s') }}"style="background-image: url('{{ asset('files/auction/'~auction.image) }}'); background-size: cover; background-position: 50% 20%; text-align: center; color: #fff; font-weight: bold; font-size: 25px;"></div>
+                            </a>
+                            <h2 class=""><a href="{{ path("auction", {id: auction.id, slug: title|slugify}) }}">{{ title }}</a></h2>
+                            <p class="">{{ description }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+                
+            </div>
+        </section>
+                
+        <section id="popular" class="stdSection">
+            <h1 class="small">{{ 'auctions.nadchodzace'|trans }}</h1>
+            <div class="row">
+                {% for auction in nadchodzaceAukcje %}
+                    {% set title = auction.title %}
+                    {% set description = auction.description %}
+                    {% set auction = auction[0] %}
+                    <div class="col-xs-12">
+                        <div>
+                            <a style="display: block; text-align: center;" href="{{ path("auction", {id: auction.id, slug: title|slugify}) }}">
+                                <div class="countDownTimer main-view alert alert-info" data-time="{{ auction.startDate|date('Y-m-d H:i:s') }}" style="background-image: url('{{ asset('files/auction/'~auction.image)| imagine_filter('compress') }}'); background-size: cover; background-position: 50% 20%; text-align: center; color: #fff; font-weight: bold; font-size: 25px;"></div>
+                            </a>
+                            <h2 class=""><a href="{{ path("auction", {id: auction.id, slug: title|slugify}) }}">{{ title }}</a></h2>
+                            <p class="">{{ description }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+                
+            </div>
+        </section>
+                
+
+        <section id="popular" class="stdSection dots-list-item">
+            <h1 class="small">{{ 'auctions.zakonczone'|trans }}</h1>
+                {% for auction in ended %}
+                    {% set title = auction.title %}
+                    {% set description = auction.description %}
+                    {% set auction = auction[0] %}
+                        <a href="{{ path("auction", {id: auction.id, slug: title|slugify}) }}" class="leader-dots-list-item">
+                            <p style="float:left; font-weight: bold;">{{ title }}: </p>
+                            <p style="float: left; padding-left: 10px;">{{ description }}</p>
+                            <p>{{ auction.endDate|date('d-m-Y') }}</p>
+                        </a>
+                        <hr>
+                        <div style="clear:both;"></div>
+                {% endfor %}
+            <div class="navigation text-center">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        </section>
+
+
+{#        {% if ads[0] is defined and ads[0] %}#}
+{#            {{ ads[0].content|raw }}#}
+{#        {% endif %}#}
+    </div>
+
+{% endblock %}
+
+{% block css %}
+    <!-- Owl Carousel Assets -->
+    <link href="{{ asset('assets/vendor/owl.carousel/owl-carousel/owl.carousel.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/owl.carousel/owl-carousel/owl.theme.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/vendor/owl.carousel/owl-carousel/owl.carousel.js') }}"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(".owl-carousel").owlCarousel({
+                itemsScaleUp: false,
+                navigationText: false,
+                navigation: true,
+                pagination: false,
+                autoPlay: 3000,
+                items : 4,
+                itemsDesktop : [1199,3],
+                itemsDesktopSmall : [979,3],
+                autoHeight: true
+            });
+            
+           var counter; 
+           
+        $("div.countDownTimer").each(function(index) {
+            var getTime = $(this).attr('data-time');
+            var countDownDate = new Date(getTime.replace(/-/g, "/")).getTime();
+            var today = new Date().getTime();
+            
+
+            var url = window.location.href;
+
+{#            console.log();#}
+{#            console.log("Data wyliczona" + countDownDate);
+            console.log("Data dzisiejsza" + today);#}
+
+
+            if(countDownDate < today)  {
+                var dateTimeInput = $(this).attr('data-time-end'); 
+                var dateTimeFormatted = dateTimeInput.split(' ');
+                var dateFormatted = dateTimeFormatted[0]; 
+                var timeFormatted = dateTimeFormatted[1];
+                var dateDst = dateFormatted.split('-');
+                var timeDst = timeFormatted.split(':');
+                var countDownDateEnd = new Date(dateDst[0],dateDst[1],dateDst[2],timeDst[0],timeDst[1],timeDst[2]);
+
+                var currentThis = this;
+
+                // Update the count down every 1 second
+                var x = setInterval(function() 
+                {
+
+                    var now = new Date().getTime();
+
+                    var distance = countDownDateEnd - now;
+
+                    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    
+{#                    console.log(days-20);#}
+                    days = days-31;
+
+                    // Display the result in the element
+
+                    if(url != "https://en.artbidy.com/auctions/") {
+                        counter = "<div>" + "Aukcja zakończy się za " + "<br>" + days + " dni " + ": " + hours + " g " + ": " + minutes + " m " + ": " + seconds + " s " + "</div>";
+                    } else {
+                        counter = "<div>" + "The auction will end in " + "<br>" + days + " days " + ": " + hours + " h " + ": " + minutes + " m " + ": " + seconds + " s " + "</div>";
+                    }
+
+                    $(currentThis).html(counter);
+
+                    // If the count down is finished, write some text 
+                    if (distance < 0) {
+                        clearInterval(x);
+                            if(url != "https://en.artbidy.com/auctions/") {
+                                $(currentThis).html("<div>Aukcja już się rozpoczęła{#{{ 'auctions.rozpoczela'|trans }}#}</div>");
+                            } else {
+
+                                $(currentThis).html("<div>The auction has already started{#{{ 'auctions.rozpoczela'|trans }}#}</div>");
+                            }
+
+                        }
+                }, 1000);
+
+
+}
+else {
+
+                var dateTimeInput = $(this).attr('data-time'); 
+                var dateTimeFormatted = dateTimeInput.split(' ');
+                var dateFormatted = dateTimeFormatted[0]; 
+                var timeFormatted = dateTimeFormatted[1];
+                var dateDst = dateFormatted.split('-');
+                var timeDst = timeFormatted.split(':');
+                var countDownDateEnd = new Date(dateDst[0],dateDst[1]-1,dateDst[2],timeDst[0],timeDst[1],timeDst[2]);
+
+
+                var currentThis = this;
+
+                // Update the count down every 1 second
+                var x = setInterval(function() 
+                {
+
+                    var now = new Date().getTime();
+
+                    var distance = countDownDateEnd - now;
+
+                    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    // Display the result in the element
+
+                    if(url != "https://en.artbidy.com/auctions/") {
+                        counter = "<div>" + "Aukcja rozpocznie się za " + "<br>" + days + " dni " + ": " + hours + " g " + ": " + minutes + " m " + ": " + seconds + " s " + "</div>";
+                    } else {
+                        counter = "<div>" + "The auction will start in " + "<br>" + days + " days " + ": " + hours + " h " + ": " + minutes + " m " + ": " + seconds + " s " + "</div>";
+                    }
+
+                    $(currentThis).html(counter);
+
+                    // If the count down is finished, write some text 
+                    if (distance < 0) {
+                        clearInterval(x);
+                            if(url != "https://en.artbidy.com/auctions/") {
+                                $(currentThis).html("<div>Aukcja już się rozpoczęła{#{{ 'auctions.rozpoczela'|trans }}#}</div>");
+                            } else {
+
+                                $(currentThis).html("<div>The auction has already started{#{{ 'auctions.rozpoczela'|trans }}#}</div>");
+                            }
+
+                        }
+                }, 1000);
+
+}
+
+// licznik aukcji
+});
+
+
+        
+        
+            {% if app.request.get('_filter') %}
+            $('html,body').animate({
+                scrollTop: $('section#filters').offset().top - 70
+            }, 500);
+            {% endif %}
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,1196 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 2017-07-07, 12:12:10
+    Author     : Agata
+*/
+html, body
+{
+    font-size: 17px;
+    
+}
+:not(i)
+{
+    font-family: 'Didact Gothic', sans-serif;
+}
+.buyCountOfWork
+{
+    padding-bottom: 25px;
+    color: red;
+}
+body > div:nth-child(5) > div.page-header.mt_0.text-center > .addthis_inline_share_toolbox {
+    text-align: center;
+}
+
+#seeWork .addthis_inline_share_toolbox {
+    text-align: left;
+}
+#events .owl-carousel .owl-prev, #events .owl-carousel .owl-next {
+    top: 20%;
+}
+#auctionWork #atstbx .at-share-btn-elements {
+    text-align: left;
+}
+#filters #atstbx .at-share-btn-elements {
+    text-align: right;
+}
+.workInfo2 .at-share-btn-elements {
+    text-align: center;
+}
+
+.mb_25 {
+    margin-bottom: 40px !important;
+}
+.gallery-field-item .input-group input{width: 90% !important;}
+
+/*#atstbx > .at-share-btn-elements {
+    text-align: center;
+    margin-top: 10px;
+}*/
+.dziela-livebidding-title {
+    font-size: 26px;
+    margin-bottom:25px;
+}
+
+#app_auction_bid_amount {
+    height: 42px;
+    font-size: 16px;
+}
+#mainPhoto {
+    width: 100%;
+}
+#filters > div > div.col-md-12.text-left > form > div.col-md-2.input-group > .input-group-btn, #search > div > div.col-md-12.text-left > form > div.col-md-2.input-group > .input-group-btn, #search > div > div.col-md-12.text-left > form > div.col-md-2.input-group > .input-group-btn {
+    text-align: right;
+}
+section#news .at-share-btn-elements, div.page-header.mt_0.text-center .at-share-btn-elements {
+    text-align: center;
+    margin-top: 10px;
+}
+#mainBanner .owl-theme .owl-controls 
+{
+    margin-top: 0px;
+}
+nav#mainNav div.container-full div.navbar-header a.navbar-brand 
+{
+    height: auto;
+    padding: 20px 15px 15px 15px;
+}
+nav#mainNav div.container-full form.navbar-form 
+{
+    position: relative;
+    margin-top: 20px; 
+}
+nav#mainNav div.container-full .navbar-nav.navbar-right 
+{
+    position: relative;
+    right: 15px;
+}
+nav#mainNav div.container-full div.floating-part li.social-media 
+{
+    margin-right: 10px;
+    margin-left: 10px;
+}
+.dropdown.change-lang 
+{
+    margin-top: -15px;
+}
+.floating-part .navbar-nav 
+{
+    margin-top: 20px;
+    padding-top: 10px;
+    border-right: 1px solid #ccc;
+}
+nav#mainNav div.container-full div.floating-part li.social-media a 
+{
+    display: inline;
+    padding: 0;
+}
+nav#mainNav div.container-full div.floating-part li a 
+{
+    color: #000;
+    font-size: 14px;
+    font-size-adjust:0.5;
+}
+.nav>li>a {
+    padding: 15px 10px;
+}
+#auction > div > div.col-md-6.text-left.mt_20.mb_25 > aside > form > div.input-group > .input-group-btn
+{
+    width: auto;
+    float: right;
+}
+#auction > div > div.col-md-6.text-left.mt_20.mb_25 > aside > form > div.input-group
+{
+    display: inline-block;
+}
+#auction > div > div.col-md-6.text-left.mt_20.mb_25 > aside > form > div.form-group
+{
+    display: inline-block;
+}
+#auction > div > div.col-md-6.text-left.mt_20.mb_25 > aside > form > div.form-group > #title
+{
+    max-width:300px;
+}
+#auction > div > div:nth-child(1) > div:nth-child(2) > .addthis_inline_share_toolbox{
+    text-align: center;
+}
+.form-group[class*=col-] {
+    padding-right: 0;
+    padding-left: 0;
+}
+footer#mainFooter 
+{
+    margin-top: 30px;
+    background: #fff;
+    border-top: 1px solid #e7e7e7;
+}
+section#works .row .item:nth-child(1) img, section#works .row .item:nth-child(2) img, section#news .row .item:nth-child(1) img
+{
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    object-position: 50% 15%;
+}
+section#events.stdSection img, section#works .row .item:nth-child(3) img, section#works .row .item:nth-child(4) img, section#works .row .item:nth-child(5) img, section#works .row .item:nth-child(6) img, section#news .row .item:nth-child(2) img, section#news .row .item:nth-child(3) img, section#news .row .item:nth-child(4) img, #works .owl-carousel img
+{
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    object-position: 50% 10%;
+}
+section img:hover
+{
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}
+section#works .item, section#news .item
+{
+    margin-bottom: 45px;
+}
+#filters.stdSection .artistsss img 
+{
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    object-position: 50% 15%;
+}
+footer#mainFooter h4 
+{
+    text-transform: uppercase;
+    font-size: 17px;
+    color: #000;
+    font-weight: bold;
+}
+footer#mainFooter a 
+{
+    font-size: 17px;
+    color: #000;
+}
+.navbar-nav 
+{
+    margin-top: 15px;
+}
+.navbar-default .navbar-nav>li>a 
+{
+    color: #000;
+    font-family: 'Didact Gothic', sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+#artbidy-artcategories
+{
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+#artbidy-artcategories .boxes 
+{
+    border: 1px solid #ccc;
+    margin: 15px 0;
+    font-size: 15px;
+    font-weight: bold;
+    display: inline-block;
+    width: 100%;
+    font-family: 'Didact Gothic', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    text-decoration: none;
+}
+#artbidy-artcategories .boxes:hover 
+{
+    background-color: #000;
+    color: #fff;
+    border-color: #000;
+}
+.header-artcategories 
+{
+    padding: 0 15px;
+}
+section#mainBanner div.item h1 
+{
+    font-size: 3vw;
+    font-weight: bold;
+    display: inline-block;
+}
+section.stdSection h1.small
+{
+    font-size: 30px;
+    font-weight: bold;
+    display: inline-block;
+}
+a {
+    color: #000;
+    cursor: pointer;
+    -webkit-tap-highlight-color: rgba(26,26,26,0.302);
+}
+.home-browse-all-right 
+{
+    float: right;
+    display: inline-block;
+    margin-top: 50px;
+}
+.home-browse-all-right2 
+{
+    float: right;
+    display: inline-block;
+    margin-top: 5px;
+    margin-bottom: 40px;
+}
+.home-browse-all-right a, .home-browse-all-right2 a
+{
+    border-bottom: 1px solid #777;
+    color: #505050;
+    font-weight: bold;
+    font-size: 17px;
+}
+a:hover 
+{
+    text-decoration: none;
+    color: #000;
+}
+.caption h4 
+{
+    font-size: 17px;
+    color: #000;
+    font-weight: bold;
+}
+footer#mainFooter .copyright 
+{
+    background: #fff;
+    color: #000;
+    font-size: 17px;
+    text-align: center;
+}
+section.stdSection .owl-carousel div.item p 
+{
+    font-size: 15px;
+    color: #666;
+}
+section.stdSection .owl-carousel div.item h2 
+{
+    font-size: 18px;
+    font-weight: bold;
+}
+.form-group-sm .form-control, .form-group-sm select.form-control 
+{
+    height: 40px;
+    font-size: 20px;
+}
+section#mainBanner, section#mainBanner .parallax-window.item.white {
+
+}
+.list-group 
+{
+    font-size: 17px;
+    text-align: center;
+}
+.btn-primary:hover, .btn-primary.active, .btn-primary, .list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover, .nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover, .pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover
+{
+    color: #fff;
+    background-color: #000;
+    border-color: #000;
+}
+.list-group-item:first-child 
+{
+     border-top-left-radius: 0; 
+     border-top-right-radius: 0; 
+}
+.jumbotron .container 
+{
+    max-width: 1225px;
+    width: 100%;
+}
+#mobileCurrencies 
+{
+    margin-top: 40px;
+}
+#mainBanner .owl-theme .owl-controls
+{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+section.stdSection.artysci .owl-carousel div.item img, #artists .owl-carousel-8 img {
+    width: 100%;
+    min-height: 400px;
+    object-fit: cover;
+    object-position: 50% 10%;
+}
+#top100Content img 
+{
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    object-position: 50% 25%;
+}
+#top100Content h2, #filters h2
+{
+    font-size: 24px;
+}
+
+.ui-button.ui-corner-all.ui-widget,
+.ui-button.ui-corner-all.ui-widget:hover,
+.ui-button.ui-corner-all.ui-widget:focus,
+.ui-button.ui-corner-all.ui-widget:active{
+    border-radius: 0 !important;
+    border: 2px solid #222 !important;
+    font-family: 'Didact Gothic', sans-serif !important;
+    color: #222 !important;
+    background: #fff !important;
+}
+
+.ui-dialog-title{
+    color: #fff !important;
+}
+
+
+.container .btn-fineart,.container .btn-fineart:hover
+{
+    margin-top: 40px;
+    margin-right: 0px;
+    border-radius: 0 !important;
+    font-size: 20px !important;
+    border: 2px solid #222 !important;
+    font-family: 'Didact Gothic', sans-serif !important;
+    color: #222 !important;
+    background: #fff !important;
+    padding: 6px 20px;
+    height: 40px;
+}
+
+.container .btn-fineart.center-button,.container .btn-fineart.center-button:hover
+{
+    margin-right: auto;
+}
+
+
+
+#slider-container
+{
+    width: 100%;
+}
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-button, html .ui-button.ui-state-disabled:hover, html .ui-button.ui-state-disabled:active
+{
+    border: 1px solid #454545 !important;
+    border-radius: 25px;
+}
+.ui-state-hover, .ui-state-active, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus, .ui-button:hover, .ui-button:focus
+{
+    border: 1px solid #454545 !important;
+    border-radius: 25px;
+    background: #f6f6f6 !important;
+}
+.ui-widget-header 
+{
+    border: 1px solid #dddddd;
+    background: #000 !important;
+    color: #333333;
+    font-weight: bold;
+}
+.form-group-sm label {
+    font-size: 17px;
+}
+.small, small {
+    font-size: 17px;
+}
+.btn {
+    font-size: 20px;
+}
+#works_pinned.dziela img 
+{
+    height: 280px;
+    object-fit: cover;
+    object-position: 50% 15%;
+}
+#filters.dziela .mb_15
+{
+    height: 340px;
+}
+
+#filters.dziela .mb_15 img
+{
+    height: 200px;
+    width: 100%;
+    object-fit: cover;
+    object-position: 50% 15%;
+}
+#filters .form-group, #search .form-group 
+{
+    padding-left: 0;
+}
+#filters .input-group .btn.btn-primary, #filters .input-group .btn.btn-default, #search .input-group .btn.btn-primary, #search .input-group .btn.btn-default
+{
+    width:49%;
+}
+section.stdSection .owl-carousel .owl-prev, section.stdSection .owl-carousel .owl-next {
+    background: url(../images/slider-arrow.png) no-repeat !important;
+    width: 30px;
+    height: 30px;
+}
+section.stdSection.aktualnosci-artysci .owl-carousel div.item img 
+{
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    object-position: 50% 15%;
+    margin: 0 auto;
+}
+#search img, #filters img
+{
+    width:100%;
+    height: 180px;
+    object-fit: cover;
+    object-position: 50% 15%;
+}
+.checkbox+.checkbox, .radio+.radio 
+{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.imgFit 
+{
+    width:100%;
+    height: 150px;
+    object-fit: cover;
+    object-position: 50% 15%;
+}
+.row-eq-height {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+}
+#search .higher-height img, #filters .higher-height img
+{
+    height: 250px;
+}
+#search .higher-height h3, #filters .higher-height h3
+{
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 20px;
+}
+.btn
+{
+    border-radius: 0px;
+}
+#eventsAllSections .stdSection:nth-child(2), #eventsAllSections .stdSection:nth-child(3), #eventsAllSections .stdSection:nth-child(4)
+{
+    display: none;
+}
+#eventsAllSections img, #pinned-events img
+{
+    width: 100%;
+    height: 450px;
+    object-fit: cover;
+}
+#eventsAllSections .item, #pinned-events .item
+{
+    
+}
+#eventsFilter .dropdown-menu 
+{
+    font-size: 18px;
+}
+#my-modal
+{
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+#my-modal .form-group {
+    min-height: 35px;
+}
+.login-facebook
+{
+    margin-bottom: 20px;
+}
+.modal-content
+{
+    background-color: #fefefe;
+    margin: 2% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 0;
+    width: 100%;
+    max-width: 500px;
+}
+.close-modal {
+    color: #aaa;
+    float: right;
+    font-size: 50px;
+    font-weight: bold;
+}
+.close-modal:hover,
+.close-modal:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+#bidedOferts #countDownTimer
+{
+    width: 100%;
+    min-height: 300px;
+    object-fit: cover;
+    object-position: 50% 20%;
+}
+.countDownTimer
+{
+    min-height: 300px;
+}
+.leader-dots-list-item
+{
+    display: block;
+}
+.leader-dots-list-item > p:last-child
+{
+    float: right;
+    padding-left: .33em;
+    background: #fff;
+    position: relative;
+    z-index: 1;
+}
+.leader-dots-list-item p 
+{
+    text-transform: none;
+    font-size:17px;
+    padding: 10px 0;
+}
+.dots-list-item hr 
+{
+    margin-top: 26px;
+    border-top: 1px dotted lightgray;
+}
+.countDownTimer.main-view div 
+{
+    height: 268px;
+    padding: 115px 0;
+    background: rgba(0,0,0,0.3);
+}
+#mobileCurrencies ul li > ul li {
+    display: block;
+    width: 100%;
+    background-color: #fff;
+    text-align: center;
+}
+section.stdSection .auction-tabs img
+{
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    object-position: 50% 15%;
+}
+.addthis_inline_share_toolbox
+{
+    text-align: right;
+}
+ section#filters .setHeight 
+{
+    width: 100%;
+    height: 390px;
+    object-fit: cover;
+    object-position: 50% 25%;
+}
+section#auction.aukcja-dziela .mt_20 img
+{
+    height: 140px;
+    width: 100%;
+    object-fit: cover;
+    object-position: 50% 15%;
+}
+section.stdSection .owl-carousel .owl-next {
+    right: -20px;
+}
+section.stdSection .owl-carousel .owl-prev {
+    left: -20px;
+}
+nav#mainNav div.container-full div.floating-part li a {
+    font-size: 13px;
+}
+.nav.navbar-nav
+{
+    font-size: 13px;
+}
+.sm-text-center h4, .sm-text-center h3 
+{
+    text-align: right;
+}
+.event-box
+{
+    height: 450px;
+}
+#filters .event-box img 
+{
+    height: 350px;
+    width: 100%;
+    object-fit: cover;
+}
+#mobileCurrencies {
+    width: 25%;
+}
+#all-work-list {
+    height: 280px;
+    overflow: auto;
+}
+[name=app_house_auction_work_bid] {
+    margin-bottom: 25px;
+}
+[data-id=app_work_technique_type], [data-id=app_work_creator], [for=app_work_image], [for=app_work_currency], [for=app_work_edition] {
+    font-size: 14px;
+}
+#all-work-list img {
+    width: 100%;
+    height: 150px;
+    min-height: 150px;
+    object-fit: cover;
+    object-position: 50%;
+}
+#all-work-list > .select {
+    background: #eee;
+    opacity: 1;
+}
+#all-work-list > .auction-work {
+    height: 280px;
+    text-align: center;
+    position: relative;
+    padding: 5px;
+}
+#all-work-list > .auction-work:not(.select), #all-work-list > .auction-work:not(.is_salling) {
+    border: 1px solid #eee;
+}
+#live-bidding-bid-info {
+    height: 328px;
+    overflow: auto;
+}
+.is_salling {
+    background: #000;
+    color: #fff;
+}
+#all-work-list > *{
+    opacity: 0.5;
+}
+#all-work-list > .load {
+    opacity: 0.8;
+}
+#all-work-list > .load button,
+#all-work-list > .select button {
+    display: none;
+}
+#livebidding-title, #auction-name
+{
+    text-align: center;
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom:50px;
+}
+.img-Fit img {
+    height: 200px;
+    object-fit: cover;
+    width:100%;
+}
+.text-left .at-share-btn-elements {
+    text-align: left;
+}
+#auction tr > td:nth-child(1) {
+    width: 200px;
+}
+#lb_user_auction_bid_submit, #lb_console_auction_bid_submit {
+    width: 100%;
+    padding: 2px;
+}
+#app_house_auction_work_bid_submit, #app_house_auction_work_bid_finish
+{
+    width:49%;
+    padding: 2px;
+}
+[class*="user-profile-"] img {
+    width:100%;
+}
+[id*="auction-work-id-"] {
+    position: relative;
+}
+[id*="auction-work-id-"] > .work-sold {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #28A745;
+    color: #fff;
+    font-weight: bold;
+    font-size: 22px;
+    padding: 5px;
+}
+[id*="auction-work-id-"] > .work-not-sold {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #DC3545;
+    color: #fff;
+    font-weight: bold;
+    font-size: 22px;
+    padding: 5px;
+}
+[id*="auction-work-id-"] > .work-in-progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #17A2B8;
+    color: #fff;
+    font-weight: bold;
+    font-size: 22px;
+    padding: 5px;
+}
+[id*="auction-work-id-"] > .work-soon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #FFC107;
+    color: #fff;
+    font-weight: bold;
+    font-size: 22px;
+    padding: 5px;
+}
+.mainSearchResults h4:last-child {
+    display: none;
+}
+#top100Content p.small {
+    text-align: right;
+}
+#app_work_image {
+/*    visibility:hidden;*/
+}
+body > div:nth-child(4) > form > div > div.col-md-4 > div:nth-child(2) > div.panel-body > div > label {
+    width: 110px;
+    text-align: center;
+    color: #fff;
+    background-color: #5bc0de;
+    border-color: #46b8da;
+    margin-left: 15px;
+    padding: 3px;
+    font-size: 18px;
+    font-weight: normal;
+}
+
+.gallery-field-item label.choose-file{
+    width: 110px;
+    color: #fff;
+    background-color: #5bc0de;
+    border-color: #46b8da;
+    margin-left: 0px;
+    padding: 3px !important;
+    font-size: 18px;
+    font-weight: normal;
+    text-align: center !important;
+}
+
+.gallery-field-item .input-group-btn{
+    vertical-align: top;
+}
+
+.gallery-field-item .filename{
+    font-size: 9px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    width: 200px;
+}
+
+.input-group{
+    width: 300px;
+}
+
+.admin_house_auction_image {
+    width: 110px;
+    text-align: center !important;
+    color: #fff;
+    background-color: #5bc0de;
+    border-color: #46b8da;
+    padding: 3px;
+    font-size: 18px;
+    font-weight: normal;
+    float: none;
+}
+@media only screen and (min-width: 1201px) and (max-width: 1331px)
+{
+    nav#mainNav div.container-full div.floating-part li a 
+    {
+        font-size: 11px;
+        font-size-adjust: 0.44;
+    }
+    .nav.navbar-nav 
+    {
+        font-size: 11px;
+        font-size-adjust: 0.44;
+    }
+}
+@media only screen and (max-width: 992px)
+{
+    .img-Fit img {
+        height: auto !important;
+    }
+
+    .more-class img{
+        max-height: max-content;
+    }
+
+    section#extra div.row > div 
+    {
+    border-left: none;
+    }
+    .sm-text-center h4, .sm-text-center h3, .sm-text-center .addthis_inline_share_toolbox, #filters #atstbx .at-share-btn-elements {
+        text-align:center;
+    }
+    .block-index-1 {
+        min-height: 490px;
+    }
+    .block-index-1 .extraHeight {
+        min-height: 390px;
+    }
+    .block-index-1 .col-xs-12 {
+        position: relative;
+    }
+    .block-index-1 .col-xs-12 a.imgPosition-1 {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 390px;
+        width:100%;
+    }
+    .block-index-1 .col-xs-12 a.titlePosition-1 {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100px;
+    }
+    .block-index-1 .col-xs-12 .h3Position-1 {
+        position: absolute;
+        left: 0px;
+        top: 50px;
+    }
+
+    .owl-buttons{
+        display: none !important;
+    }
+}
+@media only screen and (max-width: 767px)
+{
+    .img-Fit img {
+        height: auto !important;
+    }
+
+    .more-class img{
+        max-height: max-content;
+    }
+
+    .caption {
+        margin-bottom: 50px;
+    }
+    section#mainBanner div.item 
+    {
+    padding: 40px 0 40px;
+    min-height: 350px;
+    }
+    .dropdown.change-lang:nth-child(1) 
+    {
+    max-width: 38px;
+    }
+    .dropdown.change-lang:nth-child(2) 
+    {
+        min-width: 35px;
+    }
+    nav#mainNav div.container-full .navbar-nav.navbar-right {
+        right: 5px;
+    }
+    li.change-lang ul.dropdown-menu li 
+    {
+        text-align: left;
+    }
+    nav#mainNav 
+    {
+    max-height: 69px;
+    }
+    #navbar {
+        background-color: #fff;
+    }
+    .dropdown.change-lang.open 
+    {
+        background-color: #fff;
+    }
+    .mobile-width{
+        width: 50%;
+        float:left;
+    }
+    .mobile-width:nth-child(2) 
+    {
+        margin-top: 29px;
+    }
+    .mobile-fullwidth 
+    {
+        width:100% !important;
+    }
+    .navbar-nav .open .dropdown-menu 
+    {
+    position: absolute;
+    border: 1px solid lightgrey;
+    background: #fff;
+    }
+    .home-browse-all-right2 {
+        float: none;
+    }
+    #seeWork .addthis_inline_share_toolbox, #seeWork .page-header {
+        text-align: center;
+    }
+    .block-index-1 .caption {
+        padding: 0;
+    }
+}
+@media only screen and (max-width: 425px)
+{
+    .img-Fit img {
+        height: auto !important;
+    }
+
+    .more-class img{
+        max-height: max-content;
+    }
+
+    div#mobileCurrencies 
+    {
+        margin-left: 20px;
+    }
+    #auction tr > td:nth-child(1) {
+        max-width: 200px;
+    }
+    .block-index-1 .col-xs-12 .h3Position-1 {
+        top: 77px;
+    }
+}
+@media only screen and (max-width: 364px) {
+
+    .img-Fit img {
+        height: auto !important;
+    }
+
+    .more-class img{
+        max-height: max-content;
+    }
+
+    div.workInfo div {
+        min-height: 50px;
+    }
+    ul.pagination {
+        width: 200px;
+        padding-top: 20px;
+    }
+    .pagination>li {
+        display: block;
+    }
+}
+
+
+
+.image-full img{
+    object-fit: contain;
+    width: 100%;
+}
+
+.more-class img {
+    text-align: center;
+    max-height: 300px;
+}
+
+@media(max-width: 990px) {
+
+    .img-Fit img {
+        height: auto !important;
+    }
+
+    .more-class img{
+        max-height: max-content;
+    }
+
+    .center-button {
+       margin-left: calc(50% - 230px/2);
+       width: 230px;
+    }   
+    
+    .text-left .at-share-btn-elements {
+        text-align: center;
+    }
+}
+
+.center-text {
+    display: flex;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;    
+    width: 450px;
+}
+
+
+.news-imgs{
+    margin-right: auto;
+    margin-left: auto;
+    height: 200px;
+    width: 100%;
+    object-fit: cover;
+    object-position: top;
+}
+
+
+@media(max-width: 800px) {
+
+    .img-Fit img {
+        height: auto !important;
+    }
+
+    .more-class img{
+        max-height: max-content;
+    }
+
+    .center-text {
+        display: block!important;
+        width: 100%;
+    }
+    
+    .small-center {
+        text-align: center;
+        display: flex;
+        width: 200px;
+        justify-content: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .more-padding {
+        padding: 24px;
+        box-sizing: border-box;
+    }
+    
+    .text-center-small-display-none {
+        display: none;
+    }
+    
+    .small-device {
+        width: 100%!important;
+    }   
+    
+    .text-center-big-display-none {
+        display: block;
+    }
+    
+    .padding-top-events {
+        padding-top: 40px;
+    }
+
+    #filters.dziela .mb_15
+    {
+        height: auto;
+    }
+
+    #filters.dziela .mb_15 img{
+        height: auto;
+    }
+}
+
+div#map iframe {
+    height: 200px;
+    width: 90%;
+}
+#mainBanner .owl-theme .owl-controls
+{
+    bottom: auto !important;
+    position: static !important;
+}
+
+.owl-theme .owl-controls .owl-buttons
+{
+    margin: auto;
+}
+
+.owl-theme .owl-controls .owl-buttons div
+{
+    position: absolute !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    font-size: 100px !important;
+    color: #000 !important;
+    display: block !important;
+    z-index: 999;
+    top: 0 !important;
+    font-weight: 100;
+}
+
+.owl-theme .owl-controls .owl-buttons div:hover
+{
+    color: #666 !important;
+}
+
+.owl-carousel{
+    position: static !important;
+}
+
+#mainBanner{
+    position: relative !important;
+    max-height: 650px;
+}
+
+.owl-theme .owl-controls .owl-buttons .owl-prev{
+    left: 0 !important;
+    margin:0;
+    top: 35% !important;
+    bottom: 35% !important;
+}
+
+.owl-theme .owl-controls .owl-buttons .owl-next{
+    right:60px !important;
+    margin:0;
+    top: 35% !important;
+    bottom: 35% !important;
+}
+
+@media(min-width: 800px) {
+    .text-center-big-display-none {
+        display: none;
+    }
+    div#map iframe {
+        width: 100%;
+    }
+}
+

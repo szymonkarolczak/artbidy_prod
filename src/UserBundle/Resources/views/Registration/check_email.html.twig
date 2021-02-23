@@ -1,0 +1,16 @@
+{% extends "AppBundle::base.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block body %}
+
+    <div class="container">
+
+        <div class="page-header mt_0">
+            <h1 class="mt_0">{{ 'register.zweryfikuj_adres'|trans([], 'messages') }}</h1>
+        </div>
+
+        <p>{{ 'registration.check_email'|trans({'%email%': user.email}) }}</p>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="container-fluid">
+            <div class="page-header mt_0">
+                <h1 class="mt_0">{{ 'aukcje.wyniki_do_akceptacji'|trans }} <small>{{ 'aukcje.zobacz_wyniki'|trans }}</small></h1>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-hover">
+            <tr>
+                <th>{{ 'admin.nazwa'|trans }}</th>
+                <th>{{ 'admin.cena_sprzedazy'|trans }}</th>
+            </tr>
+            {% for work in auction.works %}
+                <tr>
+                    <td><a href="{{ path("work_see", {id: work.work.id, slug: work.work.title|slugify}) }}" target="_blank">{{ work.work.title }}</a></td>
+                    <td>{{ work.soldPrice }} {{ work.work.currency.code|upper }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+
+{% endblock %}

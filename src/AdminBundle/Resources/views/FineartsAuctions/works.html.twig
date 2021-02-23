@@ -1,0 +1,69 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="container-fluid">
+            <div class="page-header mt_0">
+                <h1 class="mt_0">{{ auction.title }} <small>{{ pagination.getTotalItemCount }}</small></h1>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-hover">
+            <tbody>
+            <tr>
+                <th>ID</th>
+                <th>Zaakceptowane</th>
+                <th>Sprzedaż poaukcyjna</th>
+                <th>{{ 'admin.tytul'|trans }}</th>
+                <th>{{ 'admin.artysta'|trans }}</th>
+                <th>{{ 'admin.autor'|trans }}</th>
+                <th>{{ 'admin.grafika'|trans }}</th>
+                <th>{{ 'admin.akcja'|trans }}</th>
+            </tr>
+            {% for work in pagination %}
+                {% set user = work.work.author %}
+                <tr>
+                    <td>{{ work.id }}</td>
+                    <td>{% if work.approved %}<i class="glyphicon glyphicon-ok"></i>{% endif %}</td>
+                    <td>
+                        {% if work.allowBuyNow %}
+                            {{ work.buyNowPrice }} {{ work.work.currency.code }}
+                        {% endif %}
+                    </td>
+                    <td>{{ work.work.title }}</td>
+                    <td>{{ work.work.artist }}</td>
+                    <td>
+                        <a href="{{ path('profile', {id: user.id, prefix: user.profilePrefix, slug: user.profileSlug|slugify}) }}">
+                            {{ user.fullname ? user.fullname : user.username }}
+                        </a>
+                    </td>
+                    <td><img src="{{ asset('files/work/'~work.work.image) }}" style="max-height: 50px;" alt="work {{ work.work.id }}" /></td>
+                    <td>
+                        <a class="btn btn-xs btn-success" href="{{ path("admin_fineartsauctions_works_edit", {id: auction[0].id, work_id: work.id}) }}">{{ 'admin.edytuj'|trans }}</a>
+                        {% if work.approved %}
+                            <a class="btn btn-xs btn-primary" href="{{ path("admin_fineartsauctions_works_offers", {id: work.id}) }}">Licytacje</a>
+                        {% endif %}
+                        <a class="btn btn-xs btn-danger pull-right" href="{{ path("admin_fineartsauctions_works_delete", {id: auction[0].id, work_id: work.id}) }}">{{ 'admin.usun'|trans }}</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">
+                        <div class="alert alert-info mb_0">{{ 'admin.brak'|trans }}</div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    </div>
+
+{% endblock %}

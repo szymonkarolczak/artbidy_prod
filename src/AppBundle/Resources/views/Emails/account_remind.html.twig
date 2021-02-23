@@ -1,0 +1,10 @@
+{% extends 'AppBundle:Emails:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block content %}
+      <h3>{{ 'mail.witaj'|trans({'%username%': fullname}) }}</h3>
+
+<h4>{{ 'mail.konczace_sie_konto_tekst'|trans({'%data%': data|date('Y-m-d')}, 'messages', locale) }}</h4>
+
+{% endblock %}

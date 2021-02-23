@@ -1,0 +1,26 @@
+{% extends 'UserBundle:Default:base.html.twig' %}
+
+{% block content %}
+    <div class="page-header mt_20">
+        <h4>{{ 'profile.znaleziono_liczba_posrednikow'|trans }} {{ pagination.getTotalItemCount }}</h4>
+    </div>
+    <div class="row">
+        {% for agent in pagination %}
+            {% set user = agent.author %}
+            <div class="col-md-2 col-xs-6 text-center mb_25">
+                <a href="{{ path("profile", {id: user.id, slug: user.profileSlug|slugify, prefix: user.profilePrefix}) }}">
+                    <img src="{{ asset('files/user/'~user.image) | imagine_filter('compress') }}" style="max-width: 100%;" alt="User {{ user.id }}"></a>
+                <h4><a href="{{ path("profile", {id: user.id, slug: user.profileSlug|slugify, prefix: user.profilePrefix}) }}">{{ user.fullname }}</a></h4>
+            </div>
+        {% else %}
+            <div class="col-md-12">
+                <div class="alert alert-info">
+                    {{ 'profile.nie_znaleziono_posrednikow'|trans }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="navigation text-center">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+{% endblock %}

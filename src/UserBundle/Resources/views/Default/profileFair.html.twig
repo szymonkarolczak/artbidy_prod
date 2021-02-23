@@ -1,0 +1,37 @@
+{% extends 'UserBundle:Default:base.html.twig' %}
+
+{% block content %}
+    <div class="row mt_20">
+        <div class="col-md-12">
+            <div class="page-header mt_0">
+                <h4>{{ 'fair.znaleziona_liczba'|trans }} {{ pagination.getTotalItemCount }}</h4>
+            </div>
+            <div class="row">
+                {% for event in pagination %}
+                    {% set title = event.title %}
+                    {% set description = event.description %}
+                    {% set event = event[0] %}
+                    <div class="item">
+                        <div>
+                            <div class="text-center">
+                                <a href="{{ path('event', {id: event.id, slug: title|slugify}) }}">
+                                    <img src="{{ asset('files/event/'~event.image) | imagine_filter('compress') }}" alt="{{ title }} {{ event.id }}"></a>
+                            </div>
+                            <h2 class="mb_5">
+                                <a href="{{ path('event', {id: event.id, slug: title|slugify}) }}">{{ title }}</a>
+                            </h2>
+                            <p>{{ description }}</p>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        {{ 'fair.nie_znaleziono'|trans }}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="navigation text-center">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'AppBundle:Emails:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block content %}
+<h3>{{ 'mail.witaj'|trans({'%username%': author.username}) }}</h3>
+
+<h4>{{ work.title }}</h4>
+<p>Informujemy, że Twoje zgłoszenie obiektu "{{ work.title }}" na aukcję "{{ auction.langs.first.title }}" zostało usunięte przez administratora.</p>
+
+<hr />
+<small>Wiadomość wygenerowana automatycznie. Prosimy na nią nie odpowiadać.</small>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+
+        <div class="page-header mt_0">
+            <h1 class="mt_0">{{ 'profile.aukcje.wystawione_dziela'|trans }}</h1>
+        </div>
+
+        <div class="row mt_20">
+            <div class="col-md-3">
+                <form method="get">
+                    <div class="form-group form-group-sm">
+                        <label for="artist">{{ 'add_work.artysta_lub_producent'|trans }}</label>
+                        <input type="text" name="_filter[artist]"{% if app.request.get('_filter').artist is defined %} value="{{ app.request.get('_filter').artist }}"{% endif %} class="form-control" id="artist">
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label for="title">{{ 'add_work.tytul'|trans }}</label>
+                        <input type="text" name="_filter[title]"{% if app.request.get('_filter').title is defined %} value="{{ app.request.get('_filter').title }}"{% endif %} class="form-control" id="title">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <input type="submit" value="{{ 'main.filtruj'|trans }}" class="btn btn-primary" />
+                            <a href="{{ path("user_auctions_works") }}" class="btn btn-default">{{ 'main.wyczysc'|trans }}</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-9">
+                <div class="page-header mt_0">
+                    <h4>{{ 'works.znaleziono_liczba'|trans }} {{ pagination.getTotalItemCount }}</h4>
+                </div>
+                <div class="row">
+                    <table class="table table-striped table-hover table-condensed">
+                        <tr>
+                            <th width="20%">{{ 'main.tytul'|trans }}</th>
+                            <th>{{ 'add_work.grafika'|trans }}</th>
+                            <th>{{ 'main.aukcja'|trans }}</th>
+                            <th>{{ 'main.zatwierdzone'|trans }}</th>
+                            <th>{{ 'auctions.kupujacy'|trans }}</th>
+                            <th>{{ 'auctions.ilosc_ofert'|trans }}</th>
+                            <th>{{ 'auctions.aktualna_stawka'|trans }}</th>
+                            <th>{{ 'main.akcja'|trans }}</th>
+                        </tr>
+                        {% for work in pagination %}
+                            {% set title = work.title %}
+                            {% set description = work.description %}
+                            {% set work = work[0] %}
+                            <tr>
+                                <td><a href="{{ path('work_see', {id: work.work.id, slug: work.work.title|slugify}) }}">{{ work.work.title }}</a></td>
+                                <td><img src="{{ asset('files/work/'~work.work.image) | imagine_filter('compress') }}" alt="{{ work.work.title }} {{ work.work.id }}" style="max-height: 80px;" /></td>
+                                <td><a href="{{ path('auction', {id: work.auction.id, slug: title|slugify}) }}">{{ title }}</a></td>
+                                <td>{{ work.approved ? '<i class="glyphicon glyphicon-ok"></i>' }}</td>
+                                <td>
+                                    {% if work.provisionPaid %}
+                                        {% set buyer = work.bids.last.author %}
+                                        {{ buyer.fullname }}<br />
+                                        {{ buyer.email }}<br />
+                                        {{ buyer.phone }}
+                                    {% else %}
+                                        {{ 'main.ukryte'|trans }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ work.bids.count }}</td>
+                                <td>
+                                    {% if work.bids.last %}
+                                    {{ currency.convert(work.bids.last.currency.code, app.session.get('_currency'), work.bids.last.amount) }} {{ app.session.get('_currency') }}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if work.approved %}
+                                        <a href="{{ path("auction_see_work", {id: work.auction.id, slug: title|slugify, work_id: work.id, work_slug: work.work.title|slugify}) }}" class="btn btn-xs btn-warning">{{ 'main.zobacz'|trans }}</a>
+                                    {% endif %}
+                                    <a href="{{ path('user_auctions_works_delete', {id: work.id}) }}" class="btn btn-xs btn-danger pull-right">{{ 'wycofaj'|trans }}</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="8">
+                                    <div class="alert alert-info">
+                                        {{ 'works.nie_znaleziono'|trans }}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                <div class="navigation text-center">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

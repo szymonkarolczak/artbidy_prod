@@ -1,0 +1,229 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ 'main_menu.wydarzenia'|trans }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+
+  
+<div class="container" style="margin-bottom: 50px;">
+
+        <section id="filters" class="stdSection">
+            <h1 class="small">{{ 'main_menu.wydarzenia'|trans }}</h1>
+            <div class="row">
+                <div class="col-md-12">
+                    <form method="get" id="filter_events_forms">
+                        <div class="col-sm-4 col-md-2 col-md-offset-3 col-lg-2 form-group form-group-sm" >
+                            <select name="_filter[type]" class="form-control selectpicker" data-none-selected-text="{{ 'nothing_selected'|trans }}">
+                                <option value="">{{ 'wydarzenia.typ'|trans }}</option>
+                                {% for category in categories %}
+                                    <option  {% if category.selected %}selected="selected"{% endif %} value="{{ category.id }}">{{category.title}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-4 col-md-2 col-lg-2 form-group form-group-sm">
+                            <select name="_filter[city]" class="form-control selectpicker" data-none-selected-text="{{ 'nothing_selected'|trans }}">
+                                <option  value="">{{ 'user.miasto'|trans }}</option>
+                                {% for city in cities %}
+                                    <option value="{{city.city}}"{%if city.select %}selected="selected"{%endif%}>{{city.city}}</option>
+
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-4 col-md-2 col-lg-2 form-group form-group-sm">
+                            <select name="_filter[time]" class="form-control selectpicker" data-none-selected-text="{{ 'nothing_selected'|trans }}">
+                                <option value="">{{ 'wydarzenia.czas'|trans }}</option>
+                                    <option {% if times['selected'] and times['time'] == 'now' %}selected="selected"{% endif %}>{{ 'wydarzenia.dzisiaj'|trans }}</option>
+                                    <option  {% if times['selected'] and times['time'] == '+1 week' %}selected="selected"{% endif %}>{{ 'wydarzenia.ten_tydzien'|trans }}</option>
+                                    <option  {% if times['selected'] and times['time'] == 'first day of next month' %}selected="selected"{% endif %}>{{ 'wydarzenia.ten_miesiac'|trans }}</option>
+{#                                    <option value="today" >{{ 'wydarzenia.dzisiaj'|trans }}</option>#}
+{#                                    <option value="+1 week" {%if times["+1 week"]["select"] %}selected="selected"{%endif%}>{{ 'wydarzenia.ten_tydzien'|trans }}</option>#}
+{#                                    <option value="+1 month" {%if times["+1 month"]["select"] %}selected="selected"{%endif%}>{{ 'wydarzenia.ten_miesiac'|trans }}</option>#}
+                            </select>
+                        </div>
+{#                         <div class="col-md-3 input-group">
+                            <div class="input-group-btn">
+                                <input type="submit" value="{{ 'main.filtruj'|trans }}" class="btn btn-primary" />
+                                <a href="{{ path("events") }}" class="btn btn-default">{{ 'main.wyczysc'|trans }}</a>
+                            </div>
+                        </div>#}
+                    </form>
+                </div>
+                <div class="col-md-12"  style="margin-top: 50px;">    
+                    
+                    <div class="">
+                        {% for event in pagination %}
+                        {% set urls = event.slug %}
+    {#                    {{ urls }}#}
+                        <div class="col-md-6 col-xs-12 text-center mb_15 event-box">
+                            <a href="{{ urls }}">
+                               <img src="{{ asset('files/event/'~event.image)| imagine_filter('thumb_568x350') }}" alt="Event {{ event.id }}"">
+                            </a>
+                            <div class="caption text-center">
+                                <h4 class="mb_5">
+                                    <a href="{{ urls }}">{{ event.title }}</a>
+                                </h4>
+                                <p class="mb_0">{{ event.description|length > 100 ? event.description|slice(0, 100) ~ '...' : event.description  }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="">
+                        {% for auction in auctions %}             
+                        {% set url = '../auction/'~auction.id~'-'~auction.title %}
+                        <div class="col-md-6 col-xs-12 text-center mb_15 event-box">
+                               <a href="{{ path("auction", {id: auction.id, slug: auction.title|slugify}) }}">
+                                   <img src="{{ asset("files/auction/"~auction.image)| imagine_filter('thumb_568x350') }}" alt="Event {{ auction.id }}"></a>
+                            <div class="caption text-center">
+                                <h4 class="mb_5">
+                                    <a href="{{ url }}">{{ auction.title }}</a>
+                                </h4>
+                                <p class="mb_0">{{ auction.description|length > 100 ? auction.description|slice(0, 100) ~ '...' : auction.description  }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>    
+
+                    <div class="">
+                        {% for houseAuction in house %}                                   
+                        <div class="col-md-6 col-xs-12 text-center mb_15 event-box">
+                            <a href="">
+                               <a href="{{ path("houseauction", {id: houseAuction.id, slug: houseAuction.title|slugify}) }}">
+                                   <img src="{{ asset("files/houseauction/"~houseAuction.image) | imagine_filter('compress') }}" alt="Event {{ houseAuction.id }}"></a>
+                            </a>
+                            <div class="caption text-center">
+                                <h4 class="mb_5">
+                                    <a href="{{ path("houseauction", {id: houseAuction.id, slug: houseAuction.title|slugify}) }}">{{ houseAuction.title }}</a>
+                                </h4>
+                                <p class="mb_0">{{ houseAuction.description|length > 100 ? houseAuction.description|slice(0, 100) ~ '...' : houseAuction.description  }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>  
+            {#        {% for all in allcities %}
+                        {{ all.city }}
+                    {% endfor %}#}
+                    
+                    <div class="">
+                        {% for museums in museum %} 
+                        <div class="col-md-6 col-xs-12 text-center mb_15 event-box">
+                            <a href="">
+                               <a href="{{ path('exhibition',{id: museums.id}) }}">
+                                   <img src="{{asset('files/exhibition/'~museums.image) | imagine_filter('compress')}}" alt="Event {{ museums.title }}"></a>
+                            </a>
+                            <div class="caption text-center">
+                                <h4 class="mb_5">
+                                    <a href="">{{ museums.title }}</a>
+                                </h4>
+                                <p class="mb_0">{{ museums.description|length > 100 ? museums.description|slice(0, 100) ~ '...' : museums.description  }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>  
+                     
+                    
+                    
+                    {#<div class="navigation text-center">
+                       {{ knp_pagination_render(pagination) }}
+                    </div>#}
+                </div>
+            </div>
+        </section>
+
+
+{#        {% if ads[0] is defined and ads[0] %}#}
+{#            {{ ads[0].content|raw }}#}
+{#        {% endif %}#}
+
+    </div> <!-- /container -->
+
+{% endblock %}
+
+{% block css %}
+    <!-- Owl Carousel Assets -->
+    <link href="{{ asset('assets/vendor/owl.carousel/owl-carousel/owl.carousel.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/owl.carousel/owl-carousel/owl.theme.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.min.css" />
+{% endblock %}
+
+{% block javascripts %}
+<script src="{{ asset('assets/vendor/owl.carousel/owl-carousel/owl.carousel.js') }}"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.min.js"></script>
+<script type="text/javascript">
+    $(function() {
+        
+        $("#filter_events_forms .form-control").on('change',function(){
+            $('#filter_events_forms').submit();
+        });
+        
+        $('.container').on('click', '.form-group', function() {
+            var z = $(this).find('.filter-option').text();
+        
+            if(z == "Aukcje") {
+                $(this).next().find('.btn-default').prop('disabled', true);
+                $(this).next().next().find('.btn-default').prop('disabled', true);
+                console.log('tak');
+            }
+  
+        });
+        
+        
+        // global functions
+        function getCookie(name) {
+            var value = "; " + document.cookie;
+            var parts = value.split("; " + name + "=");
+            if (parts.length == 2) return parts.pop().split(";").shift();            
+        }
+
+        function readCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0;i < ca.length;i++) {
+                var c = ca[i];
+                while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+            }
+            return null;
+        }
+        
+        {#
+    
+        $(".owl-carousel").owlCarousel({
+            itemsScaleUp: false,
+            navigationText: false,
+            navigation: true,
+            pagination: false,
+            autoPlay: 3000,
+            items : 3,
+            itemsDesktop : [1199,3],
+            itemsDesktopSmall : [979,3]
+        });
+
+        $('form#eventsFilter').change(function(e) {
+            e.preventDefault();
+
+            $('#eventsAllSections').hide();
+            $('#eventsFiltersResult').show();
+            $('#eventsFiltersResult').html('<div style="text-align: center; margin: 20px 0">{{ 'main.laduje'|trans }}</div>');
+
+            var params = $(this).serialize();
+            var action = $(this).attr('action');
+            $.ajax({
+                type: 'POST',
+                url: action,
+                data: params,
+                success: function(data) {
+                    $('#eventsFiltersResult').html(data);
+                }
+            });
+
+        });
+
+        {% if app.request.get('_filter') %}
+        $('html,body').animate({
+            scrollTop: $('section#filters').offset().top - 70
+        }, 500);
+        {% endif %}
+        #}
+    });
+</script>
+{% endblock %}

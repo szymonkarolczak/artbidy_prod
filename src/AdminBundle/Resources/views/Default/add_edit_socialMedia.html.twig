@@ -1,0 +1,58 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="page-header mt_0">
+            <h1 class="mt_0">{{ media is defined ? 'ogolne.social_media.edytuj'|trans : 'ogolne.social_media.dodaj'|trans }}</h1>
+        </div>
+
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-md-9 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'ogolne.social_media.dane'|trans }}</div>
+                    <div class="panel-body">
+                        {{ form_row(form.url) }}
+                        {{ form_row(form.icon) }}
+                        <div class="col-md-offset-2 col-md-10" id="icon-preview"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'admin.akcje'|trans }}</div>
+                    <div class="panel-body">
+                        <input type="submit" class="btn btn-success" value="{{ media is defined ? 'admin.edytuj'|trans : 'admin.dodaj'|trans }}" />
+                        <input type="button" class="btn btn-warning" value="{{ 'admin.anuluj'|trans }}" />
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'admin.opcje'|trans }}</div>
+                    <div class="panel-body">
+                        {{ form_row(form.enabled) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(function() {
+            $('select#admin_social_media_icon').change(function() {
+                var img = $(this).val();
+                var $img = $('<img />').attr('src', '/assets/images/social/'+img);
+                $('div#icon-preview').html($img);
+            });
+            $('select#admin_social_media_icon').trigger('change');
+        });
+    </script>
+{% endblock %}

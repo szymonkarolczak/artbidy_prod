@@ -1,0 +1,14 @@
+{% extends 'AppBundle:Emails:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block content %}
+<h3>{{ 'mail.witaj'|trans({'%username%': author.username}) }}</h3>
+
+<h4>Gratulacje!</h4>
+<p>Informujemy, że Twoje dzieło "{{ work.title }}" dodane {{ work.addDate|date('Y-m-d H:i:s') }} zostało zaakceptowane przez administratora i jest dostępne pod linkiem:</p>
+<p><a href="{{ absolute_url(path("work_see", {id: work.id, slug: work.title|slugify})) }}">{{ absolute_url(path("work_see", {id: work.id, slug: work.title|slugify})) }}</a></p>
+
+<hr />
+<small>Wiadomość wygenerowane automatycznie. Prosimy na nią nie odpowiadać.</small>
+{% endblock %}

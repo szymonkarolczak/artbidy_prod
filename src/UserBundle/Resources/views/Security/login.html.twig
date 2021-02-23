@@ -1,0 +1,7 @@
+{% extends "AppBundle::base.html.twig" %}
+
+{% block title %}{{ 'main_menu.zaloguj_sie'|trans }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+    {{ include('FOSUserBundle:Security:login_content.html.twig') }}
+{% endblock %}

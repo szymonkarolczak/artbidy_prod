@@ -1,0 +1,13 @@
+{% extends 'AppBundle:Emails:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block content %}
+      <h3>{{ 'mail.witaj'|trans({'%username%': user.fullname}) }}</h3>
+
+<h4>{{ 'mail.profil'|trans({'%user%': fullname}, 'messages') }}</h4>
+<h5>{{ email }}</h5>
+<h5>{{ phone }}</h5>
+<p>{{ content }}</p>
+
+{% endblock %}

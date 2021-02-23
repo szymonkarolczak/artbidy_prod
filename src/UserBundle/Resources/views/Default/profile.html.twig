@@ -1,0 +1,59 @@
+{% extends 'UserBundle:Default:base.html.twig' %}
+
+{% block content %}
+    <div class="row mt_20">
+        <div class="col-md-4" style="margin-bottom: 20px;">
+            <img src="{{ asset('files/user/'~user.image) | imagine_filter('artist_378') }}" style="max-width: 100%" alt="{{ user.fullname }} Photo" />
+            {% if app.user and user.id == app.user.id %}
+                <hr />
+                <div class="text-center">
+                    <a href="{{ path("profile_card_general") }}" class="btn btn-fineart">{{ 'user.zmien_zdjecie'|trans }}</a>
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+            {% for card in user.card if card.lang == app.request.locale %}
+                {{ card.content|raw }}
+            {% endfor %}
+
+            {% if user.googleMaps %}
+                <hr />
+                <div id="map" style="height: 200px;"></div>
+            {% endif %}
+            {% if user.website %}
+                <hr />
+                <a target="_blank" href="{{ user.website }}">{{ user.website }}</a>
+            {% endif %}
+            {% if user.socialMedia %}
+                <hr />
+                {% for social in user.socialMedia %}
+                <a href="{{ social.url }}" target="_blank"><img src="{{ asset('assets/images/social/'~social.icon) }}" alt="{{ social.icon }}" /></a>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block javascripts %}
+    {% if user.googleMaps %}
+        {% set data = user.googleMaps|split(',') %}
+        {% if data[0] is defined and data[1] is defined %}
+        {{ parent() }}
+        <script type="text/javascript">
+            $(function() {
+
+                var uluru = {lat: {{ data[0] }}, lng: {{ data[1] }}};
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 15,
+                    center: uluru
+                });
+                var marker = new google.maps.Marker({
+                    position: uluru,
+                    map: map
+                });
+            });
+        </script>
+        {% endif %}
+    {% endif %}
+{% endblock %}

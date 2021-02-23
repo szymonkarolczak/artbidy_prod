@@ -1,0 +1,55 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="container-fluid">
+            <div class="page-header mt_0">
+                <h1 class="mt_0">{{ 'ogolne.jezyki.jezyki'|trans }}</h1>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+            <tr>
+                <td colspan="5"><a class="btn btn-primary" href="{{ path("admin_general_languages_add") }}">{{ 'admin.dodaj'|trans }}</a></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th>ID</th>
+                <th>{{ 'ogolne.jezyki.skrot'|trans }}</th>
+                <th>{{ 'admin.aktywnosc'|trans }}</th>
+                <th>{{ 'ogolne.social_media.ikonka'|trans }}</th>
+                <th>{{ 'admin.akcja'|trans }}</th>
+            </tr>
+            {% for lang in langs %}
+            
+                <tr>
+                    <td>{{ lang.id }}</td>
+                    <td>{{ lang.shortcut }}</td>
+                    <td>{% if lang.enabled %}<i class="glyphicon glyphicon-ok"></i>{% endif %}</td>
+                    <td><img src="{{ asset("assets/images/flags/"~lang.shortcut~".png") }}" alt="{{ lang.id }} flag" /></td>
+                    <td>
+                        <a class="btn btn-xs btn-info" href="{{ path("admin_general_languages_edit", {id: lang.id}) }}">{{ 'admin.edytuj'|trans }}</a>
+                        <a class="btn btn-xs btn-warning" href="{{ path("admin_general_languages_files", {id: lang.id}) }}">{{ 'ogolne.jezyki.pliki'|trans }}</a>
+                        <a class="btn btn-xs btn-danger pull-right" onclick="return confirm('{{ 'ogolne.jezyki.czy_na_pewno_usunac'|trans }}')" href="{{ path("admin_general_languages_delete", {id: lang.id}) }}">{{ 'admin.usun'|trans }}</a>
+                    </td>
+                </tr>
+                
+            {% else %}    
+                <tr>
+                    <td colspan="5">
+                        <div class="alert alert-info mb_0">{{ 'ogolne.jezyki.brak'|trans }}</div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+{% endblock %}

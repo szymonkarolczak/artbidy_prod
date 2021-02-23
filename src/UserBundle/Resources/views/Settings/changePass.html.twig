@@ -1,0 +1,25 @@
+{% extends 'UserBundle:Settings:base.html.twig' %}
+
+{% block settings %}
+    
+    <div class="page-header mt_0">
+        <h1 class="mt_0">{{ 'profile.ustawienia.zmiana_hasla'|trans }}</h1>
+    </div>
+    
+    {% if success %}
+        <div class="alert alert-success">{{ success }}</div>
+    {% endif %}
+    
+    {{ form_start(form) }}
+    {{ form(form) }}
+    
+    <div class="form-group">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-10">
+            <button type="submit" class="btn btn-success btn">{{ 'main.zapisz'|trans }}</button>
+        </div>
+    </div>
+    
+    {{ form_end(form) }}
+    
+{% endblock %}

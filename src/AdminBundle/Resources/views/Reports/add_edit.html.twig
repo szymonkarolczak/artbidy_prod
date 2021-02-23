@@ -1,0 +1,49 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="page-header ">
+            <h1>{{ report is defined ? 'raporty.edytuj'|trans : 'raporty.dodaj'|trans }}</h1>
+        </div>
+
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-md-8 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ report is defined ? 'raporty.edytuj'|trans : 'raporty.dodaj'|trans }}</div>
+                    <div class="panel-body">
+                        {{ form_row(form.title) }}
+                        {{ form_row(form.description) }}
+                        <div class="form-group">
+                            {{ form_label(form.price) }}
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    {{ form_widget(form.price) }}
+                                    <span class="input-group-addon">PLN</span>
+                                </div>
+                            </div>
+                        </div>
+                        {{ form_row(form.filename) }}
+                        {{ form_row(form.image) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'admin.akcje'|trans }}</div>
+                    <div class="panel-body">
+                        <input type="submit" class="btn btn-success" value="{{ report is defined ? 'admin.edytuj'|trans : 'admin.dodaj'|trans }}" />
+                        <input type="button" class="btn btn-warning" value="{{ 'admin.anuluj'|trans }}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+
+    </div>
+
+{% endblock %}

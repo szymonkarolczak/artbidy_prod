@@ -1,0 +1,120 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="page-header mt_0">
+            {% if auction is defined %}
+                <h1 class="mt_0">{{ 'aukcje.zmien'|trans }}</h1>
+            {% else %}
+                <h1 class="mt_0">{{ 'aukcje.dodaj'|trans }}</h1>
+            {% endif %}
+        </div>
+
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-md-9 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'admin.jezyki'|trans }}</div>
+                    <div class="panel-body">
+                        <button id="add-another-lang" type="button" class="btn btn-info">{{ 'aktualnosci.kategorie.dodaj_jezyk'|trans }}</button>
+                        <hr />
+                        <div id="admin_auction_langs" class="langs" data-prototype="{{ form_widget(form.langs.vars.prototype)|e('html_attr') }}">
+                            {% for lang in form.langs %}
+                                {{ form_row(lang) }}
+                                <hr />
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Dane dotyczące aukcji</div>
+                    <div class="panel-body">
+                        {{ form_row(form.langs) }}
+                        {{ form_row(form.startDate) }}
+                        {{ form_row(form.endDate) }}
+
+                        <div class="form-group">
+                            {{ form_label(form.startPrice) }}
+                            <div class="col-sm-10">
+                                <div class="input-group" style="width: 100%;">
+                                    {{ form_widget(form.startPrice) }}
+                                    {{ form_widget(form.currency) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.increment) }}
+                            <div class="col-sm-10">
+                            {% for increment in form.increment %}
+                                <div class="form-group">
+                                    {{ form_label(increment, 'aukcje.od_kwoty'|trans({'%kwota%': increment.vars.name})) }}
+                                    <div class="col-sm-10">
+                                        {{ form_widget(increment) }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'admin.akcje'|trans }}</div>
+                    <div class="panel-body">
+                        <input type="submit" class="btn btn-success" value="{{ auction is defined ? 'admin.edytuj'|trans : 'admin.dodaj'|trans }}" />
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'admin.grafika'|trans }}</div>
+                    <div class="panel-body">
+                        {% if auction is defined %}
+                        <img src="{{ asset('files/auction/'~auction.image.filename)}}" style="width: 100%;" />
+                        {% endif %}
+                        {{ form_row(form.image) }}
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'admin.opcje'|trans }}</div>
+                    <div class="panel-body">
+                        {{ form_row(form.enabled) }}
+                        {{ form_row(form.buyNow) }}
+                        {{ form_row(form.customStartPrice) }}
+                        {{ form_row(form.pinned) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('assets/vendor/jquery-ui/jquery-ui.js') }}"></script>
+    <script type="text/javascript">
+        $(function() {
+
+            var langCount = '{{ form.langs|length }}';
+
+            $('#add-another-lang').click(function(e) {
+                e.preventDefault();
+
+                var userList = $('#admin_auction_langs');
+
+                var newWidget = userList.attr('data-prototype');
+                newWidget = newWidget.replace(/__name__/g, langCount);
+                langCount++;
+
+                var newLi = $('<div></div>').html(newWidget+'<hr />');
+                newLi.prependTo(userList);
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block meta %}
+    <meta name="museum" property="og:title" content="{{ user.fullname ? user.fullname : user.username }}" />
+    <meta property="og:image" content="{{ absolute_url(asset('files/user/'~user.image)) }}" />
+{% endblock %}
+
+{% block title %}{{ user.fullname ? user.fullname : user.username }} - {{ parent() }}{% endblock %}
+
+{% block metatitle %}
+    {% if app.request.locale == 'pl' and user.metatitle is not empty %}
+        <title>{{ user.metatitle }}</title>
+    {% elseif app.request.locale == 'en' and user.metatitleEn is not empty %}
+        <title>{{ user.metatitleEn }}</title>
+    {% else %}
+        <title>{{ user.fullname ? user.fullname : user.username }}</title>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="page-header mt_0 text-center">
+            {% if role %}<h4 class="mt_0">{{ role }}</h4>{% endif %}
+            <h1 class="mt_0">{{ user.fullname ? user.fullname : user.username }}</h1>
+            {% if "ROLE_DOM_AUKCYJNY" in user.roles or "ROLE_GALERIA" in user.roles %}
+                {% if user.address and user.city %}
+                    <p>{{ user.address }}, {{ country.convert(user.city, app.session.get('_locale')) }}</p>
+                {% endif %}
+            {% elseif "ROLE_ARTYSTA" in user.roles %}
+                <p>
+                    {% spaceless %}
+                        {{ country.convert(user.country, app.session.get('_locale')) }},
+                        {% if user.deathdate %}
+                            {{ user.birthdate|date('Y') }}-{{ user.deathdate|date('Y') }}
+                        {% else %}
+                            {{ 'artists.ur'|trans({'%rok%': user.birthdate|date('Y')}) }}
+                        {% endif %}
+                    {% endspaceless %}
+                </p>
+            {% endif %}
+
+            {% if not observe %}
+            <a class="btn btn-fineart mb_15 mt_20" href="{{ path("profile_observe", {id: user.id}) }}">{{ 'main.obserwuj'|trans }}</a>
+            {% endif %}
+            {% if app.user and user.id == app.user.id %}
+                <a class="btn btn-fineart mb_15 mt_20" href="{{ path("profile_card_general") }}">{{ 'user.konfiguruj'|trans }}</a>
+            {% endif %}
+            {% if not user.deathDate %}
+            <button class="btn btn-fineart mb_15 mt_20" data-toggle="modal" data-target="myModal">{{ 'user.skontaktuj_sie'|trans }}</button>
+            {% endif %}
+            
+            <div class="addthis_inline_share_toolbox"></div>
+        </div>
+        
+        <ul class="nav nav-tabs nav-justified">
+
+            <li role="presentation"{% if app.request.attributes.get('_route') == 'profile' %} class="active"{% endif %}>
+                <a href="{{ path("profile", {id: user.id, prefix: user.profilePrefix, slug: user.profileSlug|slugify}) }}">{{ 'profile.informacje'|trans }}</a>
+            </li>
+            {% if not ("ROLE_REDAKTOR" in user.roles) %}
+            <li role="presentation"{% if app.request.attributes.get('_route') == 'profile_works' %} class="active"{% endif %}>
+                <a href="{{ path("profile_works", {id: user.id, prefix: user.profilePrefix, slug: user.profileSlug|slugify}) }}">{{ 'main_menu.dziela'|trans }}</a>
+            </li>
+            {% endif %}
+
+            {% if "ROLE_ARTYSTA" in user.roles %}
+                <li role="presentation"{% if app.request.attributes.get('_route') == 'profile_agents' %} class="active"{% endif %}>
+                    <a href="{{ path("profile_agents", {id: user.id, prefix: user.profilePrefix, slug: user.profileSlug|slugify}) }}">{{ 'main.posrednicy'|trans }}</a>
+                </li>
+            {% elseif "ROLE_GALERIA" in user.roles %}
+                <li role="presentation"{% if app.request.attributes.get('_route') == 'profile_artists' %} class="active"{% endif %}>
+                    <a href="{{ path("profile_artists", {id: user.id, prefix: user.profilePrefix, slug: user.profileSlug|slugify}) }}">{{ 'main_menu.artysci'|trans }}</a>
+                </li>
+            {% elseif "ROLE_DOM_AUKCYJNY" in user.roles %}
+                <li role="presentation"{% if app.request.attributes.get('_route') == 'profile_auctions' %} class="active"{% endif %}>
+                    <a href="{{ path("profile_auctions", {id: user.id, prefix: user.profilePrefix, slug: user.profileSlug|slugify}) }}">{{ 'main_menu.aukcje'|trans }}</a>
+                </li>
+            {% endif %}
+
+            {% if "ROLE_GALERIA" in user.roles or "ROLE_MUZEUM" in user.roles or "ROLE_ADMIN" in user.roles or "ROLE_SUPER_ADMIN" in user.roles %}
+                <li role="presentation"{% if app.request.attributes.get('_route') == 'profile_exhibitions' %} class="active"{% endif %}>
+                    <a href="{{ path("profile_exhibitions", {id: user.id, prefix: user.profilePrefix, slug: user.profileSlug|slugify}) }}">{{ 'exhibition.wystawy'|trans }}</a>
+                </li>
+            {% endif %}            
+            {% if "ROLE_DOM_AUKCYJNY" in user.roles or "ROLE_GALERIA" in user.roles or "ROLE_ADMIN" in user.roles or "ROLE_SUPER_ADMIN" in user.roles %}
+                <li role="presentation"{% if app.request.attributes.get('_route') == 'profile_artists_looking' %} class="active"{% endif %}>
+                    
+                    <a href="{{ path("profile_artists_looking", {id: user.id, prefix: user.profilePrefix, slug: user.profileSlug|slugify}) }}">{{ 'profile.poszukiwani_artysci'|trans }}</a>
+{#                    <a href="{{ path("profile_artists_looking", {prefix: user.profilePrefix, slug: user.profileSlug|slugify}) }}">{{ 'profile.poszukiwani_artysci'|trans }}</a>#}
+                </li>
+            {% endif %}
+
+            {% if "ROLE_ARTYSTA" in user.roles or "ROLE_ADMIN" in user.roles %}
+                <li role="presentation"{% if app.request.attributes.get('_route') == 'profile_events' %} class="active"{% endif %}>
+                    <a href="{{ path("profile_events", {id: user.id, prefix: user.profilePrefix, slug: user.profileSlug|slugify}) }}">{{ 'main_menu.wydarzenia'|trans }}</a>
+                </li>
+                <li role="presentation"{% if app.request.attributes.get('_route') == 'profile_auctions_results' %} class="active"{% endif %}>
+                    <a href="{{ path("profile_auctions_results", {id: user.id, prefix: user.profilePrefix, slug: user.profileSlug|slugify}) }}">{{ 'banner.wyniki_aukcji'|trans }}</a>
+                </li>
+            {% endif %}
+            <li role="presentation"{% if app.request.attributes.get('_route') == 'profile_news' %} class="active"{% endif %}>
+                <a href="{{ path("profile_news", {id: user.id, prefix: user.profilePrefix, slug: user.profileSlug|slugify}) }}">{{ 'main_menu.aktualnosci'|trans }}</a>
+            </li>
+        </ul>
+
+        {% block content %}{% endblock %}
+
+    </div> <!-- /container -->
+
+    {{ render(controller('UserBundle:Default:contact', {id: user.id})) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDLVs4QntZehiHo7FHTyHhSfIYvVV-KI0"></script>
+{% endblock %}

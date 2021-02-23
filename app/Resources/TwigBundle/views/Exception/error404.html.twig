@@ -1,0 +1,17 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ parent() }}{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        <div class="page-header">
+            <h1>{{ 'error.er404'|trans }}</h1>
+        </div>
+        
+        <p>{{ 'error.er404p'|trans }}</p>
+        
+    </div> <!-- /container -->
+
+{% endblock %}

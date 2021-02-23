@@ -1,0 +1,52 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="container-fluid">
+            <div class="page-header mt_0">
+                <h1 class="mt_0">{{ 'ogolne.waluty.waluty'|trans }}</h1>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+            <tr>
+                <td colspan="6"><a class="btn btn-primary" href="{{ path("admin_general_currencies_add") }}">{{ 'admin.dodaj'|trans }}</a></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th>ID</th>
+                <th>{{ 'ogolne.waluty.kod'|trans }}</th>
+                <th>Kurs</th>
+                <th>{{ 'admin.aktywnosc'|trans }}</th>
+                <th>{{ 'admin.akcja'|trans }}</th>
+            </tr>
+            {% for currency in currencies %}
+                <tr>
+                    <td>{{ currency.id }}</td>
+                    <td>{{ currency.code }}</td>
+                    <td>{{ currency.bid }}</td>
+                    <td>{% if currency.enabled %}<i class="glyphicon glyphicon-ok"></i>{% endif %}</td>
+                    <td>
+                        <a class="btn btn-xs btn-info" href="{{ path("admin_general_currencies_edit", {id: currency.id}) }}">{{ 'admin.edytuj'|trans }}</a>
+                        <a class="btn btn-xs btn-danger" onclick="return confirm('{{ 'ogolne.waluty.czy_na_pewno_usunac'|trans }}')" href="{{ path("admin_general_currencies_delete", {id: currency.id}) }}">{{ 'admin.usun'|trans }}</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">
+                        <div class="alert alert-info mb_0">{{ 'ogolne.waluty.brak'|trans }}</div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+{% endblock %}

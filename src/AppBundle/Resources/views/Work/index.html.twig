@@ -1,0 +1,345 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ 'main_menu.dziela'|trans }} - {{ parent() }}{% endblock %}
+
+{% set minPrice = currency.convert('PLN', app.session.get('_currency'), min_price)|round(0,'floor') %}
+{% set maxPrice = currency.convert('PLN', app.session.get('_currency'), max_price)|round(0) %}
+
+{% block body %}
+
+    <div class="container">
+        <section id="filters" class="stdSection dziela">
+            <h1 class="small">{{ 'works.przegladaj'|trans }}</h1>
+            <div class="row">
+                <div class="col-md-3 text-left">
+                    <form method="get">
+                        <div class="form-group form-group-sm">
+                            <label for="price_from">{{ 'add_work.cena'|trans }}</label>
+                            <div class="input-group caption" style="width:100%">
+                                <p id="currency" class="small"
+                                   style="float:left;margin-bottom: 8px;">{{ app.session.get('_currency') }}</p>
+                                <p id="price_values" class="small" style="float:right"></p>
+                                <div id="slider-range-price" style="width:98%;clear:both"></div>
+                                <input id="range_price_from" type="hidden"
+                                       name="_filter[price_from]"{% if filterPriceFrom is defined %} value="{{ filterPriceFrom }}"{% endif %}
+                                       class="form-control" id="price_from">
+                                <input id="range_price_to" type="hidden"
+                                       name="_filter[price_to]"{% if filterPriceTo is defined %} value="{{ filterPriceTo }}"{% endif %}
+                                       class="form-control" id="price_to">
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label for="type">{{ 'add_work.typ'|trans }}</label>
+                            <select class="form-control" name="_filter[type]">
+                                <option value=""></option>
+                                {% for typ in types %}
+                                    <option{% if filterType is defined and filterType == typ %} selected="selected"{% endif %}
+                                            value="{{ typ }}">{{ typ }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label for="artist">{{ 'add_work.artysta_lub_producent'|trans }}</label>
+                            <input type="text"
+                                   name="_filter[artist]"{% if filterArtist is defined %} value="{{ filterArtist }}"{% endif %}
+                                   class="form-control" id="artist">
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label for="title">{{ 'add_work.tytul'|trans }}</label>
+                            <input type="text"
+                                   name="_filter[title]"{% if filterTitle is defined %} value="{{ filterTitle }}"{% endif %}
+                                   class="form-control" id="title">
+                        </div>
+
+                        <div class="form-group form-group-sm">
+                            <label for="technique">{{ 'add_work.technika'|trans }}</label>
+                            <select class="form-control" name="_filter[technique]">
+                                <option value=""></option>
+                                {% for technique in techniques %}
+                                    <option{% if filterTechnique is defined and filterTechnique == technique %} selected="selected"{% endif %}
+                                            value="{{ technique }}">{{ technique }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group form-group-sm">
+                            <label for="style">{{ 'add_work.styl'|trans }}</label>
+                            <select class="form-control" name="_filter[style]">
+                                <option value=""></option>
+                                {% for style in styles %}
+                                    <option{% if filterStyle is defined and filterStyle == style %} selected="selected"{% endif %}
+                                            value="{{ style }}">{{ style }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <hr/>
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <input type="submit" value="{{ 'main.filtruj'|trans }}" class="btn btn-primary"/>
+                                <a href="{{ path("works_all",{clear:''}) }}" class="btn btn-default">{{ 'main.wyczysc'|trans }}</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-9">
+                    <div class="page-header mt_0">
+                        <h4 class="pull-left">{{ 'works.znaleziono_liczba'|trans }} {{ pagination.getTotalItemCount }}</h4>
+                        <div{% if is_mobile() %} style="margin: 0px auto; clear: both; float: none ! important; width: 50%;"{% endif %}
+                                class="pull-right mobile-fullwidth">
+                            <form onchange="this.submit()" method="get" class="form-inline mobile-fullwidth">
+                                <div class="mobile-width form-group form-group-sm">
+                                    <label for="onPage">{{ 'filtr.na_stronie'|trans }}:</label>
+                                    <select name="onPage" id="onPage" class="form-control">
+                                        <option{% if not app.request.get('onPage') or app.request.get('onPage')==24 %} selected="selected"{% endif %}
+                                                value="24">24
+                                        </option>
+                                        <option{% if app.request.get('onPage') and app.request.get('onPage')==48 %} selected="selected"{% endif %}
+                                                value="48">48
+                                        </option>
+                                        <option{% if app.request.get('onPage') and app.request.get('onPage')==96 %} selected="selected"{% endif %}
+                                                value="96">96
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="mobile-width form-group form-group-sm">
+                                    <select name="sort" class="form-control">
+                                        <option{% if not app.request.get('sort') or app.request.get('sort')=='id,DESC' %} selected="selected"{% endif %}
+                                                value="id,DESC">{{ 'filtr.ostatnio_dodane'|trans }}</option>
+{#                                        <option{% if app.request.get('sort') and app.request.get('sort')=='price,DESC' %} selected="selected"{% endif %}#}
+{#                                                value="price,DESC">{{ 'filtr.cena_najnizsza_najwyzsza'|trans }}</option>#}
+{#                                        <option{% if app.request.get('sort') and app.request.get('sort')=='price,ASC' %} selected="selected"{% endif %}#}
+{#                                                value="price,ASC">{{ 'filtr.cena_najwyzsza_najnizsza'|trans }}</option>#}
+                                        <option{% if app.request.get('sort') and app.request.get('sort')=='add_date,DESC' %} selected="selected"{% endif %}
+                                                value="add_date,DESC">{{ 'filtr.data_rosnaco'|trans }}</option>
+                                        <option{% if app.request.get('sort') and app.request.get('sort')=='add_date,ASC' %} selected="selected"{% endif %}
+                                                value="add_date,ASC">{{ 'filtr.data_malejaco'|trans }}</option>
+                                        <option{% if app.request.get('sort') and app.request.get('sort')=='title,ASC' %} selected="selected"{% endif %}
+                                                value="title,ASC">{{ 'filtr.tytul_az'|trans }}</option>
+                                        <option{% if app.request.get('sort') and app.request.get('sort')=='title,DESC' %} selected="selected"{% endif %}
+                                                value="title,DESC">{{ 'filtr.tytul_za'|trans }}</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="row">
+                        {% for work in pagination %}
+
+                            {% set poaukcyjna = false %}
+                            {% set workType = 'Type' %}
+                            {% set auctionLeftTime = '' %}
+
+                            {% set artist_id = work.id %}
+                            {% set work = work[0] %}
+
+                            {% if work.work is defined %}
+                                {% set work = work.work %}
+                            {% endif %}
+
+                            {% if work.auctionWorks is not empty %}
+                                {#Obiekt jest na aukcji!#}
+
+                                {% set auction = work.auctionWorks.first.auction %}
+                                {% if auction.startDate|date('Y-m-d H:i:s') < 'now'|date('Y-m-d H:i:s') and auction.endDate|date('Y-m-d H:i:s') > 'now'|date('Y-m-d H:i:s') %}
+                                    {#Aukcja trwajaca#}
+                                    {#                                {% set workLink = path('auction_see_work', {id: auction.id, slug: auction.langs.first.title|slugify, work_id: work.auctionWorks.first.id, work_slug: work.title|slugify}) %}#}
+                                    {#                                {% set workLink = path('work_see', {slug: work.slug|slugify}) %}#}
+                                    {% set workLink = path('auction_see_work', {id: auction.id, slug: auction.langs.first.title|slugify, work_id: work.auctionWorks.first.id, work_slug: work.title|slugify}) %}
+                                    {% set workType = 'Licytacja trwajaca' %}
+
+                                    {% set auctionLeftTime = auction.endDate|date('Y-m-d H:i:s') %}
+
+                                    {% if work.auctionWorks.first.bids.last %}
+                                        {% set workPrice = currency.convert('PLN', app.session.get('_currency'), work.auctionWorks.first.bids.last.amount)~' '~app.session.get('_currency') %}
+                                    {% else %}
+                                        {% set workPrice = currency.convert(work.currency.code, app.session.get('_currency'), work.auctionWorks.first.startPrice)~' '~app.session.get('_currency') %}
+                                    {% endif %}
+                                {% elseif auction.startDate|date('Y-m-d H:i:s') > 'now'|date('Y-m-d H:i:s') %}
+                                    {#Aukcja nadchodzaca#}
+                                    {% set workLink = path('auction_see_work', {id: auction.id, slug: auction.langs.first.title|slugify, work_id: work.auctionWorks.first.id, work_slug: work.title|slugify}) %}
+                                    {#                                {% set workLink = path('work_see', {slug: work.slug|slugify}) %}#}
+                                    {% set workPrice = currency.convert(work.currency.code, app.session.get('_currency'), work.auctionWorks.first.startPrice)~' '~app.session.get('_currency') %}
+
+                                    {% set workType = 'Licytacja nadchodzaca' %}
+                                {% else %}
+                                    {#Aukcja zakonczona#}
+                                    {% set workLink = path('auction_see_work', {id: auction.id, slug: auction.langs.first.title|slugify, work_id: work.auctionWorks.first.id, work_slug: work.title|slugify}) %}
+                                    {% set workType = 'Licytacja zakonczona' %}
+                                    {% if work.auctionWorks.first.bids.last %}
+                                        {% set workPrice = 'works.sprzedano1'|trans %}
+                                        {#work.auctionWorks.first.bids.last.currency.code#}
+                                        {#                                        {% set workPrice = currency.convert(work.auctionWorks.first.bids.last.currency.code, app.session.get('_currency'), work.auctionWorks.first.bids.last.amount)~' '~app.session.get('_currency') %}#}
+                                    {% else %}
+                                        {#                                          {% set workPrice = 'auctions.nie_sprzedano'|trans %}#}
+                                        {% set workPrice = work.priceOnRequest ? 'add_work.price_on_request'|trans : currency.convert(work.currency.code, app.session.get('_currency'), work.auctionWorks.first.startPrice)~' '~app.session.get('_currency') %}
+                                        {% if work.auctionWorks.first.allowBuyNow %}
+                                            {% if work.auctionWorks.first.buyNowPrice is not empty %}
+                                                {% set workPrice = currency.convert(work.currency.code, app.session.get('_currency'), work.auctionWorks.first.buyNowPrice)~' '~app.session.get('_currency') %}
+                                            {% else %}
+                                                {% set workPrice = currency.convert(work.currency.code, app.session.get('_currency'), work.auctionWorks.first.startPrice)~' '~app.session.get('_currency') %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+
+                            {% else %}
+
+                                {% set workLink = path('work_see', {slug: work.slug|slugify}) %}
+                                {% if work.priceOnRequest is null %}
+                                    {% set workPrice = 'w_zbiorach_muzeum'|trans %}
+                                {% else %}
+                                    {% if work.bids.last is empty %}
+                                        {% set workPrice = work.priceOnRequest ? 'add_work.price_on_request'|trans :currency.convert(work.currency.code, app.session.get('_currency'), work.price)~' '~app.session.get('_currency') %}
+                                    {% else %}
+                                        {% set workPrice = 'works.sprzedano1'|trans %}
+                                    {% endif %}
+                                {% endif %}
+
+                            {% endif %}
+
+                            {% set dimensions = work.dimensions|split('x') %}
+
+                            <div class="col-md-3 col-xs-12 price-value text-center mb_15" data-price="{{ work.price }}">
+                                <a href="{{ workLink }}">
+                                    <img class="fitImg"
+                                         src="{{ asset('files/work/'~work.image)| imagine_filter('thumb_200x200') }}"
+                                         style="max-width: 100%;" alt="{{ work.title }}"/></a>
+                                <div class="caption">
+                                    <small>
+                                        {% if artist_id %}
+                                            <a href="{{ workLink }}">{{ work.artist }}</a>
+                                        {% else %}
+                                            {{ work.artist }}
+                                        {% endif %}
+                                    </small>
+                                    <h4 style="font-style: italic" class="mb_0 mt_0">
+                                        <a href="{{ workLink }}">{{ work.title }} {{ work.year ? ', '~work.year }}</a>
+                                    </h4>
+                                    <p class="small"
+                                       style="text-transform: lowercase;">{{ work.technique|trans({},'work') }}
+                                        {% if work.technique is not empty %}
+                                            ,
+                                        {% endif %}
+                                        {{ dimensions[0] }}
+                                        {% if dimensions[1] is not empty %}x {{ dimensions[1] }}
+                                        {% endif %}  {% if dimensions[0] is not empty %}cm{% endif %}</p>
+
+                                    <p class="small">{{ workPrice }}</p>
+
+                                    <p class="small">{{ auctionLeftTime }}</p>
+                                    {% if poaukcyjna %}
+                                        <p class="mb_0 small">{{ poaukcyjna }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+
+                        {% else %}
+                            <div class="alert alert-info">
+                                {{ 'works.nie_znaleziono'|trans }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div id="slider-range"></div>
+
+                    <div class="navigation text-center">
+                        {{ knp_pagination_render(pagination) }}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {% if ads[0] is defined and ads[0] %}
+            {{ ads[0].content|raw }}
+        {% endif %}
+
+    </div>
+
+{% endblock %}
+
+{% block css %}
+    <!-- Owl Carousel Assets -->
+    <link href="{{ asset('assets/vendor/owl.carousel/owl-carousel/owl.carousel.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/owl.carousel/owl-carousel/owl.theme.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/jquery-ui/jquery-ui.css') }}"/>
+    <style>
+        .ui-draggable, .ui-droppable {
+            background-position: top;
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+
+    <script src="{{ asset('assets/vendor/owl.carousel/owl-carousel/owl.carousel.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/jquery-ui/jquery-ui.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/jquery.ui.touch-punch.min.js') }}"></script>
+    <script type="text/javascript">
+
+        $(function () {
+            $("#slider-range-price").slider({
+                range: true,
+                min: {{ minPrice }},
+                max: {{ maxPrice }},
+                values: [ {{ filterPriceFrom }}, {{ filterPriceTo }} ],
+                slide: function (event, ui) {
+                    $("#range_price_from").val(ui.values[0]);
+                    $("#range_price_to").val(ui.values[1]);
+                    $("#price_values").html(ui.values[0] + ' - ' + ui.values[1]);
+                }
+            });
+            $("#range_price_from").val($("#slider-range-price").slider("values", 0));
+            $("#range_price_to").val($("#slider-range-price").slider("values", 1));
+            $("#price_values").html($("#slider-range-price").slider("values", 0) + ' - ' + $("#slider-range-price").slider("values", 1));
+        });
+
+        $(function () {
+
+            if ($('input.wystawcy:checked').length > 1) {
+                $('#wystawcyNg').removeClass('hidden');
+                $('#wystawcaNg').addClass('hidden');
+            }
+
+            $("#artist").autocomplete({
+                source: "{{ path('work_search_artist') }}",
+                minLength: 2
+            });
+            $("#technique").autocomplete({
+                source: "{{ path('work_search_technique') }}",
+                minLength: 2,
+            });
+            $("#style").autocomplete({
+                source: "{{ path('work_search_style') }}",
+                minLength: 2,
+            });
+
+            $(".owl-carousel").owlCarousel({
+                itemsScaleUp: false,
+                navigationText: false,
+                navigation: true,
+                pagination: false,
+                autoPlay: false,
+                items: 3,
+                itemsDesktop: [1199, 3],
+                itemsDesktopSmall: [979, 3],
+                autoHeight: true
+            });
+
+        });
+
+        function filterSystem(minPrice, maxPrice) {
+            $(".price-value").hide().filter(function () {
+                var price = parseInt($(this).data("price"), 10);
+                return price >= minPrice && price <= maxPrice;
+            }).show();
+        }
+
+        {% if app.request.get('_filter') %}
+        {#$('html,body').animate({
+            scrollTop: $('section#filters').offset().top + $(window).height() - 70
+        }, 500);#}
+        {% endif %}
+    </script>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'AppBundle:Emails:base.html.twig' %}
+
+{% block content %}
+      <h3>{{ 'mail.witaj'|trans({'%username%': user.fullname}, 'admin', lang) }}</h3>
+
+      {% set title = target.langs.first.title %}
+      {% for Exlang in target.langs %}
+            {% if Exlang.lang.shortcut == lang %}
+                  {% set title = Exlang.title %}
+            {% endif %}
+      {% endfor %}
+
+      <p>
+            {{ 'notifications.houseauction_obiekt_text'|trans({'%aukcja%': title, '%link%': absolute_url(path('houseauction', {id: target.id, slug: title|slugify}))}, 'messages', lang)|raw }}
+      </p>
+{% endblock %}

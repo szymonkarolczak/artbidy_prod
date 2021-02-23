@@ -1,0 +1,15 @@
+{% extends 'UserBundle:Default:base.html.twig' %}
+
+{% block content %}
+    <div style="margin-top: 35px;" class="row">
+        {% for artist in looking %}
+            <div class="col-md-3 col-xs-12 text-center mb_25">
+                {% include 'AppBundle:Artist:item.html.twig' with {user: artist.target} %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                {{ 'artists.nie_znaleziono'|trans }}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

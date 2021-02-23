@@ -1,0 +1,54 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="container-fluid">
+            <div class="page-header mt_0">
+                <h1 class="mt_0">{{ 'ogolne.social_media.social_media'|trans }}</h1>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+            <tr>
+                <td colspan="5"><a class="btn btn-primary" href="{{ path("admin_general_social_media_add") }}">{{ 'admin.dodaj'|trans }}</a></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th>ID</th>
+                <th>Url</th>
+                <th>Ikonka</th>
+                <th>Aktywność</th>
+                <th>{{ 'admin.akcja'|trans }}</th>
+            </tr>
+            {% for media in socialMedias %}
+            
+                <tr>
+                    <td>{{ media.id }}</td>
+                    <td><a target="_blank" href="{{ media.url }}">{{ media.url }}</a></td>
+                    <td><img src="{{ asset("assets/images/social/"~media.icon) }}" alt="icon {{ media.id }}" /></td>
+                    <td>{% if media.enabled %}<i class="glyphicon glyphicon-ok"></i>{% endif %}</td>
+                    <td>
+                        <a class="btn btn-xs btn-info" href="{{ path("admin_general_social_media_edit", {id: media.id}) }}">{{ 'admin.edytuj'|trans }}</a>
+                        <a class="btn btn-xs btn-danger pull-right" href="{{ path("admin_general_social_media_delete", {id: media.id}) }}" onclick="return confirm('{{ 'ogolne.social_media.czy_na_pewno_usunac'|trans }}')">{{ 'admin.usun'|trans }}</a>
+                    </td>
+                </tr>
+                
+            {% else %}    
+                <tr>
+                    <td colspan="5">
+                        <div class="alert alert-info mb_0">{{ 'ogolne.social_media.brak'|trans }}</div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'AppBundle:Emails:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block content %}
+    <div style="text-align: center;">
+        <h4>{{ 'mail.news.wstep'|trans({}, 'messages', locale) }}</h4>
+    </div>
+
+    <section style="margin-top: 35px; border-top: 1px solid silver;">
+        <h5 style="text-align: center; font-weight: bold; font-size: 15px; margin: 20px 0;">{{ 'mail.news.dziela'|trans({}, 'messages', locale) }}</h5>
+            {% for work in works %}
+
+                {% if loop.index % 4 == 1 %}
+                    <div class="row">
+                {% endif %}
+
+                <div style="float: left; width: 23%; margin: 0 1%; text-align: center;">
+{#                    <a href="{{ absolute_url(path('work_see', {slug: work.slug|slugify})) }}">#}
+                    <a href="{{ absolute_url(path('work_see', {slug: work.slug|slugify})) }}">
+                        <img src="{{ absolute_url(asset('files/work/'~work.image) | imagine_filter('compress')) }}" style="max-width: 100%" />
+                        <h6>{{ work.title }}</h6>
+                    </a>
+                </div>
+
+                {% if loop.index is divisible by(4) or loop.last %}
+                    <div style="clear: both;"></div>
+                    </div>
+                {% endif %}
+
+            {% endfor %}
+
+    </section>
+
+    <section style="margin-top: 35px; border-top: 1px solid silver;">
+        <h5 style="text-align: center; font-weight: bold; font-size: 15px; margin: 20px 0;">{{ 'mail.news.aukcje'|trans({}, 'messages', locale) }}</h5>
+            {% for auction in auctions %}
+
+        {% if loop.index % 4 == 1 %}
+        <div class="row">
+            {% endif %}
+
+                {% set title = auction.title %}
+                {% set auction = auction[0] %}
+                <div style="float: left; width: 23%; margin: 0 1%; text-align: center;">
+                    <a href="{{ absolute_url(path('auction', {id: auction.id, slug: title|slugify})) }}">
+                        <img src="{{ absolute_url(asset('files/auction/'~auction.image) | imagine_filter('compress')) }}" style="max-width: 100%" />
+                        <h6>{{ title }}</h6>
+                    </a>
+                </div>
+
+                {% if loop.index is divisible by(4) or loop.last %}
+                    <div style="clear: both;"></div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+    </section>
+
+    <section style="margin-top: 35px; border-top: 1px solid silver;">
+        <h5 style="text-align: center; font-weight: bold; font-size: 15px; margin: 20px 0;">{{ 'mail.news.aktualnosci'|trans({}, 'messages', locale) }}</h5>
+            {% for news in newses %}
+                {% set title = news.title %}
+                {% set news = news[0] %}
+                {% if loop.index % 4 == 1 %}
+                    <div class="row">
+                {% endif %}
+                <div style="float: left; width: 23%; margin: 0 1%; text-align: center;">
+{#                    path('news', {id: news.id, slug: title|slugify#}
+                    <a href="{{ absolute_url(path('news', {slug: news.slug})) }}">
+                        <img src="{{ absolute_url(asset('files/news/'~news.image) | imagine_filter('compress')) }}" style="max-width: 100%" />
+                        <h6>{{ title }}</h6>
+                    </a>
+                </div>
+                {% if loop.index is divisible by(4) or loop.last %}
+                    <div style="clear: both;"></div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+    </section>
+
+{% endblock %}

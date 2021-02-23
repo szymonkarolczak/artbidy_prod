@@ -1,0 +1,85 @@
+{% extends 'UserBundle:Default:base.html.twig' %}
+
+{% block content %}
+    <div class="row mt_20">
+        <div class="col-md-12">
+            <div class="page-header mt_0">
+                <h4>{{ 'works.znaleziono_liczba'|trans }} {{ pagination.getTotalItemCount }}</h4>
+            </div>
+                {% for work in pagination %}
+
+
+
+                    {% set bids = work.bids %}
+                    {% set work = work.work %}
+
+                    {% if work.auctionWorks is not empty and work.priceOnRequest is not null %}
+                        {#Obiekt jest na aukcji!#}
+                        {% set auction = work.auctionWorks.first.auction %}
+                        {% if auction.startDate|date('Y-m-d H:i:s') < 'now'|date('Y-m-d H:i:s') and auction.endDate|date('Y-m-d H:i:s') > 'now'|date('Y-m-d H:i:s') %}
+                            {#Aukcja trwajaca#}
+                            {% set workLink = path('auction_see_work', {id: auction.id, slug: auction.langs.first.title|slugify, work_id: work.auctionWorks.first.id, work_slug: work.title|slugify}) %}
+                            {% if work.auctionWorks.first.bids.last %}
+                                {% set workPrice = currency.convert('PLN', app.session.get('_currency'), work.auctionWorks.first.bids.last.amount)~' '~app.session.get('_currency') %}
+                            {% else %}
+                                {% set workPrice = currency.convert(work.currency.code, app.session.get('_currency'), work.auctionWorks.first.startPrice)~' '~app.session.get('_currency') %}
+                            {% endif %}
+                        {% elseif auction.startDate|date('Y-m-d H:i:s') > 'now'|date('Y-m-d H:i:s') %}
+                            {#Aukcja nadchodzaca#}
+                            {% set workLink = path('auction_see_work', {id: auction.id, slug: auction.langs.first.title|slugify, work_id: work.auctionWorks.first.id, work_slug: work.title|slugify}) %}
+                            {% set workPrice = currency.convert(work.currency.code, app.session.get('_currency'), work.auctionWorks.first.startPrice)~' '~app.session.get('_currency') %}
+                        {% else %}
+                            {#Aukcja zakonczona#}
+                            {% set workLink = path('auction_see_work', {id: auction.id, slug: auction.langs.first.title|slugify, work_id: work.auctionWorks.first.id, work_slug: work.title|slugify}) %}
+                            {% if not app.user %}
+                                {% set workPrice = 'auctions.cena_sprzedazy_ukryta'|trans %}
+                            {% else %}
+                                {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_SUPER_ADMIN") or app.user.database|date('Y-m-d H:i:s') > 'now'|date('Y-m-d H:i:s') %}
+                                    {% if work.auctionWorks.first.bids.last %}
+                                        {#work.auctionWorks.first.bids.last.currency.code#}
+                                        {% set workPrice = currency.convert(work.auctionWorks.first.bids.last.currency.code, app.session.get('_currency'), work.auctionWorks.first.bids.last.amount)~' '~app.session.get('_currency') %}
+                                    {% else %}
+                                        {% set workPrice = 'auctions.nie_sprzedano'|trans %}
+                                    {% endif %}
+                                {% else %}
+                                    {% set workPrice = 'auctions.wykup_baza_cen'|trans %}
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    {% else %}
+                        {% set workLink = path('work_see', {id: work.id, slug: work.title|slugify}) %}
+                        {% if work.priceOnRequest is not null %}
+                            {% set workPrice = work.priceOnRequest ? 'add_work.price_on_request'|trans : currency.convert(work.currency.code, app.session.get('_currency'), work.price)~' '~app.session.get('_currency') %}
+                        {% endif %}
+                    {% endif %}
+
+            {% if loop.index % 4 == 1 %}
+            <div class="row">
+                {% endif %}
+                    <div class="col-md-3 col-xs-12 text-center">
+                            <a href="{{ workLink }}"><img src="{{ asset('files/work/'~work.image) | imagine_filter('thumb_276x179') }}" style="max-width: 100%;" alt="{{ work.title }}" /></a>
+                            <div class="caption">
+                                <small>{{ work.artist }}</small>
+                                <h4 class="mb_0 mt_0">
+                                    <a href="{{ workLink }}">{{ work.title }}</a>
+                                </h4>
+                                <p class="mb_0 small">{{ work.author.fullname ? work.author.fullname : work.author.username }}</p>
+                                <p class="small">{{ workPrice }}
+                                </p>
+                            </div>
+                        </div>
+                    {% if loop.index is divisible by(4) or loop.last %}
+                        </div>
+                    {% endif %}
+
+                {% else %}
+                    <div class="alert alert-info">
+                        {{ 'works.nie_znaleziono'|trans }}
+                    </div>
+                {% endfor %}
+            <div class="navigation text-center">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

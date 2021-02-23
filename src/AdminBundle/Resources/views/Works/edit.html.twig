@@ -1,0 +1,140 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="page-header mt_0">
+            <h1 class="mt_0">{{ 'dziela.edytuj'|trans({'%nazwa%': work.title}) }}</h1>
+        </div>
+
+        {{ form_errors(form) }}
+
+        {{ form_start(form) }}
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'add_work.dane'|trans([], 'messages') }}</div>
+                    <div class="panel-body">
+                        {{ form_row(form.creator) }}
+                        {{ form_row(form.artist) }}
+                        {{ form_row(form.title) }}
+                        {{ form_row(form.metatitle) }}
+                        {{ form_row(form.metatitleEn) }}
+                        {{ form_row(form.technique) }}
+                        {{ form_row(form.type) }}
+                        {{ form_row(form.style) }}
+                        {{ form_row(form.description) }}
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'add_work.cena'|trans([], 'messages') }}</div>
+                    <div class="panel-body">
+                        {{ form_row(form.priceOnRequest) }}
+                        {{ form_row(form.currency) }}
+                        <div id="priceValue" class="form-group">
+                            <label class="col-sm-2 control-label" for="app_work_edition">{{ 'add_work.cena'|trans([], 'messages') }}</label>
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    {{ form_widget(form.price) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'main.opcje'|trans([], 'messages') }}</div>
+                    <div class="panel-body">
+                        {{ form_widget(form.submit) }}
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'Slug'|trans }}</div>
+                    <div class="panel-body">
+                        {{ form_widget(form.slug) }}
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'add_work.grafika'|trans([], 'messages') }}</div>
+                    <div class="panel-body">
+                        {% if work.image %}
+                            <img src="{{ asset('files/work/'~work.image.filename) }}" style="max-width: 100%;" />
+                        {% endif %}
+                        {{ form_row(form.image) }}
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'main.opcje'|trans([], 'messages') }}</div>
+                    <div class="panel-body">
+                        {{ form_row(form.pinned) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{ form_end(form) }}
+
+    </div> <!-- /container -->
+
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/jquery-ui/jquery-ui.css') }}" />
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('assets/vendor/jquery-ui/jquery-ui.js') }}"></script>
+    <script type="text/javascript">
+        $(function() {
+
+            $( "#app_admin_work_artist" ).autocomplete({
+                source: "{{ path('work_search_artist') }}",
+                minLength: 2,
+            });
+            $( "#app_admin_work_technique" ).autocomplete({
+                source: "{{ path('work_search_technique') }}",
+                minLength: 2,
+            });
+            $( "#app_admin_work_style" ).autocomplete({
+                source: "{{ path('work_search_style') }}",
+                minLength: 2,
+            });
+
+            $('input#app_work_priceOnRequest').change(function() {
+                if($(this).is(':checked')) {
+                    $('#priceValue').hide();
+                } else {
+                    $('#priceValue').show();
+                }
+            });
+            $('input#app_work_priceOnRequest').trigger('change');
+
+            {#$(document).on('click', '.removeGalleryItem', function() {#}
+                {#$(this).parents('tr').remove();#}
+            {#});#}
+            {#var galleryCount = '{{ form.gallery|length }}';#}
+            {#$('#add-gallery-photo').click(function(e) {#}
+                {#e.preventDefault();#}
+
+                {#var galleryList = $('#galleryList');#}
+
+                {#var newWidget = galleryList.attr('data-prototype');#}
+                {#newWidget = newWidget.replace(/__name__/g, galleryCount);#}
+                {#galleryCount++;#}
+
+                {#var newLi = $('<div id="gallery-field'+galleryCount+'" class="gallery-field-item"></div>').html('<tr>\#}
+                    {#<td colspan="2">'+newWidget+'</td>\#}
+                    {#<td>\#}
+                        {#<button class="btn btn-danger btn-xs removeGalleryItem" type="button">{{ 'admin.usun'|trans({}, 'admin') }}</button>\#}
+                    {#</td>\#}
+                {#</tr>');#}
+                {#newLi.appendTo(galleryList);#}
+            {#});#}
+        });
+    </script>
+{% endblock %}

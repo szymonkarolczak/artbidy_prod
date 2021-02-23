@@ -1,0 +1,21 @@
+{% extends 'UserBundle:Settings:base.html.twig' %}
+
+{% block settings %}
+
+    <div class="page-header mt_0">
+        <h1 class="mt_0">{{ 'profile.ustawienia.ogolne'|trans }}</h1>
+    </div>
+
+    {% if success %}
+        <div class="alert alert-success">{{ success }}</div>
+    {% endif %}
+
+    {{ form_start(form) }}
+    <h3 class="col-md-offset-2">{{ 'profile.ustawienia.dane_kontaktowe'|trans }}</h3>
+        {{ form_row(form.email) }}
+    <h3 class="col-md-offset-2">{{ 'main.preferencje'|trans }}</h3>
+    {{ form_row(form.newsletter) }}
+
+    {{ form_end(form) }}
+
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ 'works.twoje'|trans }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        <div class="page-header mt_0">
+            <h1 class="mt_0 pull-left">{{ 'works.twoje'|trans }} <small>({{ pagination.getTotalItemCount }})</small></h1>
+            <a class="btn btn-primary pull-right" href="{{ path("work_add") }}">{{ 'main.wystaw_nowe_dzielo'|trans }}</a>
+            <div class="clearfix"></div>
+        </div>
+            
+        <form method="get">
+            <div class="row" id="filters">
+                <div class="col-md-2 col-xs-12">
+                    <div class="form-group">
+                        <label for="_filter[title]">{{ 'add_work.tytul'|trans }}</label>
+                        <input type="text" class="form-control" id="_filter[title]" name="_filter[title]" value="{{ app.request.get('_filter').title is defined ? app.request.get('_filter').title }}">
+                    </div>
+                </div>
+                <div class="col-md-2 col-xs-12">
+                    <div class="form-group">
+                        <label for="_filter[artist]">{{ 'add_work.artysta_lub_producent'|trans }}</label>
+                        <input type="text" class="form-control" id="_filter[artist]" name="_filter[artist]" value="{{ app.request.get('_filter').artist is defined ? app.request.get('_filter').artist }}">
+                    </div>
+                </div>
+                <div class="col-md-2 col-xs-12">
+                    <div class="form-group">
+                        <label for="_filter[approved]">{{ 'main.zatwierdzone'|trans }}</label>
+                        <select class="form-control" name="_filter[approved]">
+                            <option selected="" value=""></option>
+                            <option selected="{{ app.request.get('_filter').approved is defined and app.request.get('_filter').approved == 1 ? 'selected' }}" value="1">{{ 'main.tak'|trans }}</option>
+                            <option selected="{{ app.request.get('_filter').approved is defined and app.request.get('_filter').approved == 0 ? 'selected' }}" value="0">{{ 'main.nie'|trans }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Filtruj" />
+        </form>
+
+        <hr />
+                        
+        <table class="table table-bordered table-striped table-hover">
+            <tr>
+                <th>ID</th>
+                <th>{{ 'add_work.tytul'|trans }}</th>
+                <th>{{ 'add_work.artysta'|trans }}</th>
+                <th>{{ 'add_work.grafika'|trans }}</th>
+                <th>{{ 'main.data_dodania'|trans }}</th>
+                <th>{{ 'main.zatwierdzone'|trans }}</th>
+                <th>{{ 'main.odwiedzin'|trans }}</th>
+                <th>{{ 'main.akcja'|trans }}</th>
+            </tr>
+            {% for work in pagination %}
+                <tr class="{{ not work.approved ? 'warning' }}">
+                    <td>{{ work.id }}</td>
+                    <td>{{ work.title }}</td>
+                    <td>{{ work.artist }}</td>
+                    <td><img src="{{ asset('files/work/'~work.image) | imagine_filter('compress') }}" style="max-width: 90px" alt="{{ work.id }} image" /></td>
+                    <td>{{ work.addDate|date("Y-m-d H:i:s") }}</td>
+                    <td>{{ work.approved ? '<i class="glyphicon glyphicon-ok"></i>' }}</td>
+                    <td>{{ work.views }}</td>
+                    <td>
+                        <a href="{{ path("user_work_info", {id: work.id}) }}" class="btn btn-xs btn-info">{{ 'main.informacje'|trans }}</a>
+                        <a href="{{ path("work_edit", {id: work.id}) }}" class="btn btn-xs btn-primary">{{ 'main.edytuj'|trans }}</a>
+                        <a href="{{ path("work_delete", {id: work.id}) }}" class="btn btn-xs btn-danger" onclick="return confirm('{{ 'works.czy_na_pewno_usunac'|trans }}')">{{ 'main.usun'|trans }}</a>
+                        {% if work.approved %}
+                            <a href="{{ path("work_see", {id: work.id, slug: work.title|slugify}) }}" class="btn btn-xs btn-warning">{{ 'main.zobacz'|trans }}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8">
+                        <div class="alert alert-info">{{ 'works.nie_znaleziono'|trans }}</div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    </div> <!-- /container -->
+
+{% endblock %}

@@ -1,0 +1,79 @@
+{% set artist_id = work.id %}
+{% set work = work %}
+
+{% set poaukcyjna = false %}
+
+{% set dimensions = work.dimensions|split('x') %}
+
+{% if work.auctionWorks is not empty %}
+    {#Obiekt jest na aukcji!#}
+    {% set auction = work.auctionWorks.first.auction %}
+    {% if auction.startDate|date('Y-m-d H:i:s') < 'now'|date('Y-m-d H:i:s') and auction.endDate|date('Y-m-d H:i:s') > 'now'|date('Y-m-d H:i:s') %}
+        {#Aukcja trwajaca#}
+        {% set workLink = path('auction_see_work', {id: auction.id, slug: auction.langs.first.title|slugify, work_id: work.auctionWorks.first.id, work_slug: work.title|slugify}) %}
+        {% if work.auctionWorks.first.bids.last %}
+            {% set workPrice = currency.convert('PLN', app.session.get('_currency'), work.auctionWorks.first.bids.last.amount)~' '~app.session.get('_currency') %}
+        {% else %}
+            {% set workPrice = currency.convert(work.currency.code, app.session.get('_currency'), work.auctionWorks.first.startPrice)~' '~app.session.get('_currency') %}
+        {% endif %}
+    {% elseif auction.startDate|date('Y-m-d H:i:s') > 'now'|date('Y-m-d H:i:s') %}
+        {#Aukcja nadchodzaca#}
+        {% set workLink = path('auction_see_work', {id: auction.id, slug: auction.langs.first.title|slugify, work_id: work.auctionWorks.first.id, work_slug: work.title|slugify}) %}
+        {% set workPrice = currency.convert(work.currency.code, app.session.get('_currency'), work.auctionWorks.first.startPrice)~' '~app.session.get('_currency') %}
+    {% else %}
+        {#Aukcja zakonczona#}
+        {% set workLink = path('auction_see_work', {id: auction.id, slug: auction.langs.first.title|slugify, work_id: work.auctionWorks.first.id, work_slug: work.title|slugify}) %}
+
+        {#        {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_SUPER_ADMIN") or app.user.database|date('Y-m-d H:i:s') > 'now'|date('Y-m-d H:i:s') %}#}
+        {% if work.auctionWorks.first.bids.last %}
+            {#work.auctionWorks.first.bids.last.currency.code#}
+            {% set workPrice = currency.convert('PLN', app.session.get('_currency'), work.auctionWorks.first.bids.last.amount)~' '~app.session.get('_currency') %}
+        {% else %}
+            {% set workPrice = work.priceOnRequest ? 'add_work.price_on_request'|trans : currency.convert(work.currency.code, app.session.get('_currency'), work.auctionWorks.first.startPrice)~' '~app.session.get('_currency') %}
+
+            {% if work.auctionWorks.first.allowBuyNow %}
+                {% set workPrice = currency.convert(work.currency.code, app.session.get('_currency'), work.auctionWorks.first.buyNowPrice)~' '~app.session.get('_currency') %}
+                {#                                                                                    {% set poaukcyjna = 'auctions.dostepne_w_poaukcyjnej'|trans %}#}
+            {% endif %}
+        {% endif %}
+        {#        {% else %}#}
+        {#            {% set workPrice = 'auctions.wykup_baza_cen'|trans %}#}
+        {#        {% endif %}#}
+    {% endif %}
+{% else %}
+    {#    {% set workLink = path('work_see', {id: work.id, slug: work.title|slugify}) %}#}
+    {% set workLink = path('work_see', {slug: work.slug|slugify}) %}
+    {% if work.priceOnRequest is null %}
+        {% set workPrice = 'w_zbiorach_muzeum'|trans %}
+    {% else %}
+        {% set workPrice = work.priceOnRequest ? 'add_work.price_on_request'|trans : currency.convert(work.currency.code, app.session.get('_currency'), work.price)~' '~app.session.get('_currency') %}
+    {% endif %}
+{% endif %}
+
+<div style="max-height: 435px;" class="item item-small-height text-center">
+    <div class="text-center">
+        <a href="{{ workLink }}"><img src="{{ asset('files/work/'~work.image) | imagine_filter('thumb_583x380v2') }}"
+                                      alt="{{ work.id }} :: {{ work.title }}"></a>
+        <div class="caption">
+            <small>
+                {% if artist_id %}
+                    <a href="{{ path('profile', {id: artist_id, slug: work.artist|slugify, prefix: 'artists'}) }}">{{ work.artist }}</a>
+                {% else %}
+                    {{ work.artist }}
+                {% endif %}
+            </small>
+            <h4 style="font-style: italic" class="mb_0 mt_0">
+                <a href="{{ workLink }}">{{ work.title }} {{ work.year ? ', '~work.year }}</a>
+            </h4>
+            <p class="mb_0 small">{{ workPrice }}</p>
+            <p class="small"
+               style="text-transform: lowercase;">{{ work.technique|trans({},'work') }}
+                {% if work.technique is not empty %}
+                    ,
+                {% endif %}
+                {{ dimensions[0] }}
+                {% if dimensions[1] is not empty %}x {{ dimensions[1] }}
+                {% endif %}  {% if dimensions[0] is not empty %}cm{% endif %}</p>
+        </div>
+    </div>
+</div>

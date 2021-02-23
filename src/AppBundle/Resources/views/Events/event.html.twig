@@ -1,0 +1,110 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block metatitle %}
+    {% if app.request.locale == event.langs.first.lang.shortcut and event.langs.first.metatitle is not empty %}
+        <title>{{ event.langs.first.metatitle }}</title>
+    {% elseif app.request.locale == event.langs.last.lang.shortcut and event.langs.last.metatitle is not empty %}
+        <title>{{ event.langs.last.metatitle }}</title>
+    {% else %}
+        <title>{% if (app.request.get('_route') in ['homepage']) and app.request.locale == 'pl' %}
+                {{ ('head.title' ~ app.request.get('_route')) |trans }}{% elseif (app.request.get('page') == 'galleries')  and app.request.locale == 'pl' %}
+                Galeria sztuki współczesnej Warszawa galeria obrazów, malarstwa{% elseif (app.request.get('page') == 'auction-houses')  and app.request.locale == 'pl' %}
+                Dom aukcyjny Artbidy - Partnerstwo Domów Aukcyjnych{% elseif (app.request.getUri() == 'https://pl.artbidy.com/news/icaboston')  and app.request.locale == 'pl' %}
+                Sztuka współczesna Artbidy sztuka współczesna w dobie Internetu
+            {% elseif (app.request.getUri() == 'https://pl.artbidy.com/news/ob') and app.request.locale == 'pl' %}
+                Sztuka współczesna, obrazy współczesne Artbidy{% elseif (app.request.getUri() == 'https://pl.artbidy.com/news/mw') and app.request.locale == 'pl' %}
+                Malarstwo współczesne Artbidy{% elseif (app.request.getUri() == 'https://pl.artbidy.com/news/mahak') and app.request.locale == 'pl' %}Malarstwo abstrakcyjne Artbidy{% else %}Artbidy{% endif %}</title>
+
+    {% endif %}
+{% endblock %}
+
+{% set description = event.description %}
+{% set title = event.title %}
+{% set category_title = event.category_title %}
+{% set event = event[0] %}
+
+
+
+{% block meta %}
+    <meta property="og:title" content="{{  title }}">
+    <meta property="og:image" content="{{ absolute_url(asset('files/event/'~event.image)) }}" />
+{% endblock %}
+
+{% block title %}{{title}} - {{ parent() }}{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        <section id="auction" class="stdSection text-center pt_0">
+
+            <div class="row mb_25">
+                <div class="col-md-5 col-xs-12 {{ is_mobile() ? 'text-center' : 'text-left' }}">
+                    <img src="{{ asset("files/event/"~event.image) | imagine_filter('compress') }}" alt="{{ title }} image" style="width: 100%;" />
+                </div>
+                <div class="col-md-7 col-xs-12 {{ is_mobile() ? 'text-center' : 'text-left' }}">
+                    <div class="page-header mt_0 padding-top-events {{ is_mobile() ? 'text-center' : 'text-left' }}">
+                        {% if category_title %}
+                            <h4 class="mt_0">{{ category_title }}</h4>
+                        {% endif %}
+                        <h1 class="mb_25">{{ title }}</h1>
+                        <p>{{ description }}</p>
+                        <div class="addthis_inline_share_toolbox"></div>
+                    </div>
+                    <table class="table mt_20  {{ is_mobile() ? 'text-center' : 'text-left' }}">
+                        <tr>
+                            <td class="">{{ 'main.data_start'|trans }}</td>
+                            <td>
+                                {{ event.startDate|date('Y-m-d H:i:s') }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="">{{ 'main.data_koniec'|trans }}</td>
+                            <td>
+                                {{ event.endDate|date('Y-m-d H:i:s') }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="">{{ 'user.adres'|trans }}</td>
+                            <td>
+                                {{ event.address }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="">{{ 'user.miasto'|trans }}</td>
+                            <td>
+                                {{ country.convert(event.city, app.session.get('_locale')) }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            {% if event.users is not empty %}
+                <hr />
+                <h3>{{ 'aktualnosci.powiazani'|trans }}:</h3>
+                <div class="row clearfix">
+                    {% for user in event.users %}
+                        <div class="col-md-2">
+                            <a href="{{ path('profile', {id: user.id, prefix: user.profilePrefix, slug: user.profileSlug|slugify}) }}">
+                                <div class="thumbnail">
+                                    <img src="{{ asset('files/user/'~user.image) | imagine_filter('compress') }}" style="max-width: 100%" alt="{{ user.fullname ? user.fullname : user.username }} profile pic">
+                                    <div class="caption">
+                                        <h3 class="mt_0">{{ user.fullname ? user.fullname : user.username }}</h3>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="clearfix"></div>
+            <hr />
+            <a href="{{ path("events") }}" class="btn btn-fineart">{{ 'wydarzenia.zobacz_wszystkie_wydarzenia'|trans }}</a>
+
+        </section>
+
+    </div> <!-- /container -->
+
+{% endblock %}

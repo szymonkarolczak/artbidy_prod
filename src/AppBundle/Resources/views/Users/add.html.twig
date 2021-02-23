@@ -1,0 +1,77 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ 'user.stworz'|trans }} - {{ parent() }}{% endblock %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block body %}
+
+    <div class="container">
+
+        <div class="page-header mt_0">
+            <h1 class="mt_0">{{ 'user.stworz'|trans }}</h1>
+        </div>
+
+        {{ form_start(form) }}
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="alert alert-info">
+                    {{ 'main.dodaj_jezyk_info'|trans }}
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'main.wersje_jezykowe'|trans }}</div>
+                    <div class="panel-body">
+                        <button id="add-another-lang" type="button" class="btn btn-info">{{ 'main.dodaj_nowy_jezyk'|trans }}</button>
+                        {% for lang in form.card %}
+                            <div class="langs{{ lang.vars.data.lang != app.session.get('_locale') ? ' hidden' }}">
+                                <input style="margin: 15px 0;" type="text" disabled="disabled" class="form-control" value="{{ lang.vars.data.lang }}" />
+                                {{ form_widget(lang) }}
+                                <hr />
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'user.dane'|trans }}</div>
+                    <div class="panel-body">
+                        {{ form_row(form.fullname) }}
+                        {{ form_row(form.birthdate) }}
+                        {{ form_row(form.deathdate) }}
+                        {{ form_row(form.country) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'main.opcje'|trans }}</div>
+                    <div class="panel-body">
+                        <input type="submit" class="btn btn-success" value="{{ 'main.zapisz'|trans }}" />
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'add_work.grafika_glowna'|trans }}</div>
+                    <div class="panel-body">
+                        {{ form_row(form.image) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{ form_end(form) }}
+
+    </div> <!-- /container -->
+
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript">
+    $(function() {
+        $('#add-another-lang').click(function(e) {
+            e.preventDefault();
+            $(this).remove();
+            $('.langs.hidden').removeClass('hidden');
+        });
+    });
+</script>
+{% endblock %}

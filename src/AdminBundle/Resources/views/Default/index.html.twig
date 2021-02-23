@@ -1,0 +1,161 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+{% if is_granted('ROLE_ADMIN') %}
+        <div class="row">
+            <div class="col-md-3 col-sm-12 col-xs-12">
+                <div class="x_panel tile">
+                    <div class="x_title">
+                        <h2>Zarządzanie</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li style="float: right"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <a href="{{ path('admin_delete_cache') }}" class="btn btn-primary btn-block">Usuń cache</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 col-sm-12 col-xs-12">
+                <div class="x_panel tile">
+                    <div class="x_title">
+                        <h2>Ustawienia</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li style="float: right"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td>Banner</td>
+                                <td><a class="btn btn-xs btn-warning" href="{{ path("admin_settings_edit", {name: 'homepage_banner'}) }}">Edytuj</a></td>
+                            </tr>
+                            <tr>
+                                <td>Szybkość przewijania baneru na stronie głównej</td>
+                                <td><a class="btn btn-xs btn-warning" href="{{ path("admin_settings_edit", {name: 'homepage_banner_speed'}) }}">Edytuj</a></td>
+                            </tr>
+                            <tr>
+                                <td>Polityka bezpieczeństwa Artbidy (PL)</td>
+                                <td><a class="btn btn-xs btn-warning" href="{{ path("admin_settings_edit", {name: 'security_policy_pl'}) }}">Edytuj</a></td>
+                            </tr>
+                            <tr>
+                                <td>Polityka bezpieczeństwa Artbidy (EN)</td>
+                                <td><a class="btn btn-xs btn-warning" href="{{ path("admin_settings_edit", {name: 'security_policy_en'}) }}">Edytuj</a></td>
+                            </tr>
+                            <tr>
+                                <td>Przeglądanie treści przez niezalogowanych użytkowników</td>
+                                <td><a class="btn btn-xs btn-warning" href="{{ path("admin_settings_edit", {name: 'security_user_logged_view'}) }}">Edytuj</a></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'homepage.najnowsze_dziela'|trans }}</div>
+                    <div class="panel-body">
+                        <table class="table table-condensed table-bordered table-striped table-hover">
+                            <tr>
+                                <th>{{ 'admin.tytul'|trans }}</th>
+                                <th>{{ 'admin.grafika'|trans }}</th>
+                                <th>{{ 'admin.artysta'|trans }}</th>
+                                <th>{{ 'admin.akcja'|trans }}</th>
+                            </tr>
+                            {% for work in newestWorks %}
+                            <tr>
+                                <td>{{ work.title }}</td>
+                                <td><img src="{{ asset('files/work/'~work.image) }}" alt="{{ work.id }} image" style="max-height: 50px;" /></td>
+                                <td>{{ work.artist }}</td>
+                                <td>
+                                    <a href="{{ path("work_see", {id: work.id, slug: work.title|slugify}) }}" class="btn btn-xs btn-primary">Zobacz</a>
+                                </td>
+                            </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="4">{{ 'homepage.brak'|trans }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Najnowsze zgłoszenia na aukcje</div>
+                    <div class="panel-body">
+                        <table class="table table-condensed table-bordered table-striped table-hover">
+                            <tr>
+                                <th>{{ 'admin.tytul'|trans }}</th>
+                                <th>{{ 'admin.grafika'|trans }}</th>
+                                <th>Aukcja</th>
+                                <th>{{ 'admin.akcja'|trans }}</th>
+                            </tr>
+                            {% for auctionWork in newestAuctionsWorks %}
+                                {% set auctionTitle = auctionWork.title %}
+                                {% set auctionWork = auctionWork[0] %}
+                                {% set work = auctionWork.work %}
+                                <tr>
+                                    <td>{{ work.title }}</td>
+                                    <td><img src="{{ asset('files/work/'~work.image) }}" alt="{{ work.id }} image" style="max-height: 50px;" /></td>
+                                    <td>{{ auctionTitle }}</td>
+                                    <td>
+                                        <a href="{{ path("admin_fineartsauctions_works_edit", {id: auctionWork.auction.id, work_id: auctionWork.id}) }}" class="btn btn-xs btn-success">Edytuj</a>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="4">{{ 'homepage.brak'|trans }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Najnowsze licytacje</div>
+                    <div class="panel-body">
+                        <table class="table table-condensed table-bordered table-striped table-hover">
+                            <tr>
+                                <th>{{ 'admin.tytul'|trans }}</th>
+                                <th>{{ 'admin.grafika'|trans }}</th>
+                                <th>Aukcja</th>
+                                <th>Kwota</th>
+                            </tr>
+                            {% for bid in newestBids %}
+                                {% set auctionTitle = bid.title %}
+                                {% set bid = bid[0] %}
+                                {% set work = bid.auctionWork.work %}
+                                <tr>
+                                    <td>{{ work.title }}</td>
+                                    <td><img src="{{ asset('files/work/'~work.image) }}" alt="{{ work.id }} image" style="max-height: 50px;" /></td>
+                                    <td>{{ auctionTitle }}</td>
+                                    <td>
+                                        {{ bid.amount }} {{ bid.currency.code }}
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="4">{{ 'homepage.brak'|trans }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endif %}
+    </div>
+
+{% endblock %}

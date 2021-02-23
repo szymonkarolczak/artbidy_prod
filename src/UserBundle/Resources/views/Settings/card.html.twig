@@ -1,0 +1,25 @@
+{% extends 'UserBundle:Settings:base.html.twig' %}
+
+{% block settings %}
+    
+    <div class="page-header mt_0">
+        <h1 class="mt_0">{{ 'profile.ustawienia.wizytowka'|trans }}</h1>
+    </div>
+    
+    {% if success is defined %}
+        <div class="alert alert-success">{{ success }}</div>
+    {% endif %}
+    
+    {% if not access %}
+        <div class="alert alert-danger">{{ 'profile.ustawienia.wizytowka_brak_dostepu'|trans }}</div>
+    {% else %}
+        
+        {{form_start(form)}}
+        {{form_widget(form.card)}}
+        <hr />
+        {{form_widget(form.submit)}}
+        {{form_end(form)}}
+        
+    {% endif %}
+    
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="container-fluid">
+            <div class="page-header mt_0">
+                <h1 class="mt_0">{{ 'aktualnosci.kategorie.jezyki'|trans }}</h1>
+            </div>
+        </div>
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <td colspan="2"><a class="btn btn-primary" href="{{ path("admin_events_categories_languages_add", {id: category.id}) }}">{{ 'aktualnosci.kategorie.dodaj_jezyk'|trans }}</a></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>{{ 'admin.tytul'|trans }}</th>
+                    <th>{{ 'admin.akcja'|trans }}</th>
+                </tr>
+                {% for lang in langs %}
+                    <tr>
+                        <td>{{ lang.title }} ({{ lang.lang.shortcut|upper }})</td>
+                        <td>
+                            <a href="{{ path("admin_events_categories_lang_delete", {id: lang.id}) }}" class="btn btn-xs btn-danger pull-right">{{ 'admin.usun'|trans }}</a>
+                        </td>
+                    </tr>
+
+                {% else %}
+                    <tr>
+                        <td colspan="2">
+                            <div class="alert alert-info mb_0">{{ 'aktualnosci.kategorie.brak'|trans }}</div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="container-fluid">
+            <div class="page-header mt_0">
+                <h1 class="mt_0">Licytacja dla "{{ auctionWork.work.title }}" <small>{{ pagination.getTotalItemCount }}</small></h1>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-hover">
+            <tbody>
+            <tr>
+                <th>ID</th>
+                <th>Data</th>
+                <th>Kwota</th>
+                <th>Autor</th>
+            </tr>
+            {% for bid in pagination %}
+                <tr>
+                    <td>{{ bid.id }}</td>
+                    <td>{{ bid.bidDate|date('Y-m-d H:i:s') }}</td>
+                    <td>{{ bid.amount }} {{ bid.currency.code }}</td>
+                    <td>{{ bid.author.fullname }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">
+                        <div class="alert alert-info mb_0">Brak licytacji</div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    </div>
+
+{% endblock %}

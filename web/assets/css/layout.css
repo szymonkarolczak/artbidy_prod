@@ -1,0 +1,575 @@
+/* line 3, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+body {
+  padding-top: 120px;
+  font-family: 'Open Sans';
+  overflow-x: hidden; }
+
+/* line 4, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:focus, .navbar-default .navbar-nav > .active > a:hover {
+  background-color: transparent;
+  font-weight: bold; }
+
+/* line 8, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+a {
+  color: black; }
+
+/* line 9, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+a:hover {
+  color: #F47D35; }
+
+/* line 10, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:focus, .navbar-default .navbar-nav > .open > a:hover {
+  background-color: white;
+  color: black; }
+
+/* line 11, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.container {
+  max-width: 1225px;
+  width: 100%; }
+
+/* line 14, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.input-group .input-group-btn button, .input-group .input-group-btn input {
+  border-radius: 0; }
+
+/* line 17, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.text-bold {
+  font-weight: bold; }
+
+/* line 18, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.form-control {
+  border-radius: 0;
+  box-shadow: none;
+  border-color: #e8e8e8; }
+
+/* line 19, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.form-control:focus {
+  box-shadow: none; }
+
+/* line 20, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.clearfix {
+  clear: both;
+  display: block;
+  content: ''; }
+
+/* line 22, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.form-group-sm label {
+  font-size: 11px;
+  font-weight: bold; }
+
+/* line 23, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.checkbox.form-group-sm input {
+  position: relative;
+  top: 2px;
+  margin-right: 4px; }
+
+/* line 24, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.ui-autocomplete {
+  z-index: 999999 !important; }
+
+/* line 26, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.mb_15 {
+  margin-bottom: 15px !important; }
+
+/* line 27, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.mb_5 {
+  margin-bottom: 5px !important; }
+
+/* line 28, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.mb_0 {
+  margin-bottom: 0 !important; }
+
+/* line 29, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.mb_25 {
+  margin-bottom: 95px !important; }
+
+/* line 30, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.mt_20 {
+  margin-top: 20px; }
+
+/* line 31, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.mt_0 {
+  margin-top: 0px !important; }
+
+/* line 33, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover, .nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
+  background-color: #F47D35;
+  border-color: #F47D35; }
+
+/* line 38, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover {
+  background-color: #F47D35 !important;
+  border-color: #c25818 !important; }
+
+/* line 44, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+#mobileSearchForm {
+  float: left;
+  max-width: 33%;
+  margin-top: 21px; }
+
+/* line 50, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+#mobileCurrencies {
+  float: left;
+  width: 21%;
+  margin-left: 2%;
+  margin-top: 20px; }
+  /* line 55, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  #mobileCurrencies ul {
+    margin: 0; }
+    /* line 57, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+    #mobileCurrencies ul li {
+      float: left; }
+      /* line 59, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+      #mobileCurrencies > ul > li:last-child {
+        margin-left: 8px; }
+      /* line 60, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+      #mobileCurrencies ul li a {
+        padding: 1px !important;
+        font-size: 13px !important; }
+      /* line 65, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+      #mobileCurrencies ul li > ul li {
+        display: block;
+        width: 100%; }
+
+/* line 73, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.btn-fineart {
+  border-radius: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  background: white;
+  border: 2px solid #222;
+  color: #222;
+  text-transform: uppercase;
+  padding-left: 30px;
+  padding-right: 30px;
+  white-space: normal !important; }
+  /* line 84, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  .btn-fineart:hover {
+    background: white;
+    border-color: black;
+    color: black; }
+
+/* line 91, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+nav#mainNav {
+  background: white;
+  border: 0; }
+  /* line 94, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  nav#mainNav.shadow {
+    box-shadow: 0px -2px 7px rgba(0, 0, 0, 0.3); background: white }
+  /* line 95, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  nav#mainNav div.container {
+    border-bottom: 1px solid #e8e8e8;
+    position: relative; }
+    /* line 99, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+    nav#mainNav div.container div.navbar-header a.navbar-brand {
+      height: auto;
+      padding: 28px 10px 21px 0; }
+    /* line 105, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+    nav#mainNav div.container .navbar-nav > li > a {
+      color: black;
+      font-size: 13px;
+      padding-top: 34px; }
+    /* line 110, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+    nav#mainNav div.container .navbar-nav.navbar-right {
+      position: relative; }
+    /* line 114, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+    nav#mainNav div.container form.navbar-form {
+      position: relative;
+      margin-top: 29px; }
+      /* line 117, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+      nav#mainNav div.container form.navbar-form input {
+        height: 25px;
+        font-size: 12px;
+        padding: 0 29px 0px 10px;
+        max-width: 160px;
+        width: 100%; }
+      /* line 124, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+      nav#mainNav div.container form.navbar-form::after {
+        display: block;
+        position: absolute;
+        top: 7px;
+        right: 23px;
+        width: 14px;
+        height: 11px;
+        background: url(../images/search-icon.jpg) no-repeat;
+        content: ''; }
+    /* line 135, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+    nav#mainNav div.container div.floating-part {
+      position: absolute;
+      top: 0;
+      right: 26px; }
+      /* line 140, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+      nav#mainNav div.container div.floating-part li.social-media {
+        margin-top: 4px;
+        margin-right: 5px; }
+        /* line 143, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+        nav#mainNav div.container div.floating-part li.social-media a {
+          display: inline;
+          padding: 0; }
+      /* line 145, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+      nav#mainNav div.container div.floating-part li a {
+        color: #7d7d7d;
+        font-size: 11px;
+        padding: 5px; }
+      /* line 151, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+      nav#mainNav div.container div.floating-part ul.dropdown-menu {
+        min-width: 50px; }
+
+/* line 158, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+footer#mainFooter {
+  background: black;
+  padding: 20px 0 0;
+  color: #dbdbdb;
+  margin-top: 30px; }
+  /* line 163, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  footer#mainFooter h4 {
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: bold; }
+  /* line 168, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  footer#mainFooter a {
+    font-size: 11px;
+    color: #dbdbdb; }
+    /* line 171, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+    footer#mainFooter a:hover {
+      color: #ff8400; }
+  /* line 174, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  footer#mainFooter div.footer-links a {
+    padding-bottom: 3px; }
+  /* line 175, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  footer#mainFooter div.footer-links div {
+    height: 19px; }
+  /* line 178, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  footer#mainFooter div.newsletter form {
+    margin-bottom: 15px; }
+    /* line 180, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+    footer#mainFooter div.newsletter form input, footer#mainFooter div.newsletter form button {
+      height: 28px;
+      font-size: 12px; }
+    /* line 184, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+    footer#mainFooter div.newsletter form button {
+      color: white;
+      background: #222;
+      text-transform: uppercase;
+      border: 1px solid #222;
+      font-weight: bold;
+      font-size: 11px;
+      padding-top: 5px; }
+  /* line 194, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  footer#mainFooter div.newsletter ul {
+    list-style: none;
+    margin: 0;
+    padding: 0; }
+    /* line 198, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+    footer#mainFooter div.newsletter ul li {
+      display: inline; }
+  /* line 201, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  footer#mainFooter .copyright {
+    background: black;
+    font-size: 12px;
+    padding: 10px 0;
+    margin-top: 20px; }
+
+/* line 209, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+div.workInfo {
+  margin-bottom: 30px; }
+  /* line 211, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  div.workInfo div {
+    min-height: 50px; }
+
+/* line 216, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+section.stdSection {
+  border-bottom: 1px solid #e8e8e8;
+  padding: 35px 0;
+  margin-bottom: 10px; }
+  /* line 220, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  section.stdSection.pt_0 {
+    padding-top: 0; }
+  /* line 221, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  section.stdSection h1.small {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 40px; }
+  /* line 222, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  section.stdSection > a {
+    text-transform: uppercase; }
+  /* line 225, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  section.stdSection .item p > a {
+    color: #aeaeae; }
+  /* line 228, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  section.stdSection .owl-carousel {
+    margin-bottom: 45px; }
+    /* line 230, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+    section.stdSection .owl-carousel div.item {
+      text-align: left; }
+      /* line 232, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+      section.stdSection .owl-carousel div.item img {
+        max-width: 100%;
+        max-height: 300px;
+        margin: 0 auto; }
+      /* line 233, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+      section.stdSection .owl-carousel div.item h2 {
+        font-size: 18px; }
+      /* line 234, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+      section.stdSection .owl-carousel div.item p {
+        font-size: 14px;
+        color: #aeaeae; }
+      /* line 235, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+      section.stdSection .owl-carousel div.item > div {
+        margin: 0 25px; }
+    /* line 237, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+    section.stdSection .owl-carousel .owl-prev, section.stdSection .owl-carousel .owl-next {
+      position: absolute;
+      top: 40%;
+      left: -50px;
+      width: 30px;
+      height: 32px;
+      background: url(../images/slider-arrow.jpg) no-repeat !important;
+      border-radius: 0;
+      background-color: transparent; }
+    /* line 247, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+    section.stdSection .owl-carousel .owl-next {
+      right: -50px;
+      left: auto;
+      transform: rotate(180deg);
+      -moz-transform: rotate(180deg);
+      -webkit-transform: rotate(180deg);
+      -o-transform: rotate(180deg);
+      -ms-transform: rotate(180deg); }
+
+/* line 260, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+section#extra div.row > div {
+  padding: 0 35px;
+  border-left: 1px solid #e8e8e8; }
+  /* line 261, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  section#extra div.row > div a {
+    text-transform: uppercase; }
+  /* line 264, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  section#extra div.row > div p {
+    margin-bottom: 25px; }
+  /* line 265, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  section#extra div.row > div:first-child {
+    border-left: 0; }
+
+/* line 269, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+div.home-articles {
+  min-height: 320px; }
+  /* line 271, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  div.home-articles div.articleInfo {
+    line-height: 22px; }
+    /* line 272, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+    div.home-articles div.articleInfo h3 {
+      line-height: 32px; }
+    /* line 274, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+    div.home-articles div.articleInfo p {
+      margin-bottom: 20px; }
+    /* line 275, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+    div.home-articles div.articleInfo a {
+      text-transform: uppercase; }
+  /* line 278, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  div.home-articles ul li {
+    list-style: none;
+    border-bottom: 1px solid #e8e8e8;
+    padding: 15px 0; }
+    /* line 282, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+    div.home-articles ul li.active {
+      font-weight: bold; }
+
+/* line 287, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.rek-place {
+  width: 100%;
+  text-align: center;
+  background: #e8e8e8;
+  padding: 50px 0;
+  margin: 45px 0; }
+
+/* line 295, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.caption {
+  margin-top: 5px; }
+  /* line 297, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  .caption h4 {
+    line-height: 25px;
+    font-size: 14px;
+    margin: 0; }
+  /* line 298, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  .caption p.small {
+    font-size: 12px;
+    margin: 0; }
+
+/* line 303, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+section#news div.page-header h4 {
+  font-size: 12px; }
+
+/* line 304, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+section#news div.page-header h1 {
+  font-size: 24px; }
+
+/* line 306, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+section#news img.newsImage {
+  margin-right: 25px;
+  margin-bottom: 20px; }
+
+/* line 313, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.registerPlans h2 {
+  font-size: 24px; }
+
+/* line 315, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.registerPlans div.plans label.plan {
+  display: block;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.25);
+  margin-bottom: 15px;
+  font-weight: normal;
+  cursor: pointer; }
+  /* line 321, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  .registerPlans div.plans label.plan.selected {
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.75); }
+  /* line 324, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  .registerPlans div.plans label.plan h3 {
+    font-size: 16px;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 8px 10px;
+    background: #e8e8e8;
+    font-weight: bold; }
+  /* line 325, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  .registerPlans div.plans label.plan ul {
+    margin: 10px;
+    margin-left: 35px;
+    padding: 0; }
+    /* line 329, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+    .registerPlans div.plans label.plan ul li {
+      padding: 5px 0; }
+  /* line 331, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  .registerPlans div.plans label.plan div.price {
+    text-align: center;
+    padding: 8px 10px;
+    background: #e8e8e8;
+    font-style: italic; }
+
+/* line 341, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.dropdown-menu {
+  min-width: 200px; }
+
+/* line 344, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.dropdown-menu.columns-2 {
+  min-width: 465px; }
+
+/* line 347, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.dropdown-menu.columns-3 {
+  min-width: 699px; }
+
+/* line 350, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.dropdown-menu li a {
+  padding: 5px 15px;
+  font-weight: 300; }
+
+/* line 354, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.multi-column-dropdown {
+  list-style: none;
+  padding-left: 5px; }
+  /* line 357, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  .multi-column-dropdown .dropdown-header {
+    padding: 3px 14px; }
+
+/* line 359, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.multi-column-dropdown li a {
+  display: block;
+  clear: both;
+  line-height: 1.428571429;
+  color: #333;
+  white-space: normal; }
+
+/* line 366, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+.multi-column-dropdown li a:hover {
+  text-decoration: none;
+  color: #262626;
+  background-color: #f5f5f5; }
+
+section#mainBanner {
+  width: 100%;
+  font-size: 2rem;
+}
+section#mainBanner div.item {
+  padding: 100px 0 100px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+section#mainBanner div.item.white {color: white;}
+section#mainBanner div.item p {
+  margin: 0;
+}
+section#mainBanner div.item h1 {
+  margin: 0;
+  text-transform: uppercase;
+  font-weight: 900;
+  margin-bottom: 15px;
+  font-size: 5rem;
+}
+section#mainBanner div.item.white a {color: white; border-color: white;}
+section#mainBanner div.item a {
+  border: 3px solid black;
+  color: black;
+  padding: 5px 10px;
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  margin-top: 25px;
+  -webkit-transition: all 1s;
+  -moz-transition: all 1s;
+  -ms-transition: all 1s;
+  -o-transition: all 1s;
+  transition: all 1s;
+}
+section#mainBanner div.item.white a:hover {background: white; color: black;}
+section#mainBanner div.item a:hover {
+  background: black;
+  color: white;
+  text-decoration: none;
+}
+
+@media (max-width: 767px) {
+  /* line 373, D:/Wideapps/Projects/ryneksztuki/web/assets/sass/layout.scss */
+  .dropdown-menu.multi-column {
+    min-width: 240px !important;
+    overflow-x: hidden; }
+  section#mainBanner div.item {padding: 40px 0 40px; min-height: 269px;}
+  section#mainBanner div.item h1 {font-size: 3rem;}
+  section#mainBanner div.item p {font-size: 1.6rem;}
+}
+
+div.mainSearchResults {
+  position: absolute;
+  background: white;
+  z-index: 99999;
+  border: 1px solid silver;
+  padding: 10px 0;
+}
+div.mainSearchResults h4 {
+  margin: 0;
+  color: silver;
+  text-transform: uppercase;
+  font-size: 9px;
+  font-weight: bold;
+  border-bottom: 1px solid silver;
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+div.mainSearchResults ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+div.mainSearchResults ul li:last-child {margin-bottom: 15px;}
+div.mainSearchResults ul li a {
+  display: block;
+  text-decoration: none;
+  color: #333333;
+  padding: 5px;
+  padding-right: 15px;
+}
+div.mainSearchResults ul li div.content {line--height: 20px;}
+div.mainSearchResults ul li a:hover {background: #e8e8e8;}
+div.mainSearchResults ul li + li {margin-top: 1px;}

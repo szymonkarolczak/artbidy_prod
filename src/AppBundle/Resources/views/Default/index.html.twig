@@ -1,0 +1,314 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ parent() }}{% endblock %}
+{% block body %}
+
+    {% if banners %}
+        <section id="mainBanner" style="height: auto !important;">
+            <div class="owl-main-banner">
+                {% for banner in banners %}
+                    <div class="parallax-window item {{ banner.color }}"
+                         style="background-image: url('{{ absolute_url(asset('files/banner/'~banner.image)) }}'); background-repeat: repeat-y;overflow:hidden">
+                        <div class="container" style="background-color:rgba(255, 255, 255, 0.7);padding: 20px;min-height: 400px;">
+                            <p class="text-uppercase" style="font-weight: 500;">{{ banner.langs.first.head }}</p>
+                            <h1 style="font-weight: bold;">{{ banner.langs.first.mainText }}</h1>
+                            <p style="font-weight: 500;">{{ banner.langs.first.description }}</p>
+                            <a href="{{ banner.url }}" style="font-weight: 500;">{{ banner.langs.first.buttonText }}</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+        <div style="clear: both" ></div>
+    {% endif %}
+
+    <div class="container-fluid">
+        <div class="container main-container" style="    margin-bottom: 50px;">
+
+            <section id="finearts-auctions" class="stdSection">
+                <h1 class="small">{{ 'home.nachodzace_aukcje'|trans }}</h1>
+                <div class="home-browse-all-right2"><a
+                            href="{{ path("auctions") }}">{{ 'home.zobacz_wszystkie_aukcje'|trans }}</a></div>
+                <div class="owl-carousel">
+                    {% for auction in auctions %}
+                        {% set title = auction.title %}
+                        {% set description = auction.description %}
+                        {% set auction = auction[0] %}
+                        <div class="item">
+                            <div>
+                                <a style="display: block; text-align: center;"
+                                   href="{{ path("auction", {id: auction.id, slug: title|slugify}) }}">
+                                    <img src="{{ asset('files/auction/'~auction.image)|imagine_filter('finearts_auction') }}"
+                                         alt="Auction {{ auction.id }}"></a>
+                                <h2 class="text-center"><a
+                                            href="{{ path("auction", {id: auction.id, slug: title|slugify}) }}">{{ title }}</a>
+                                </h2>
+                                <p class="text-center">{{ description }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section id="artbidy-artcategories" class="stdSection">
+                <div class="row">
+                    <div class="header-artcategories">
+                        <h1 class="small">{{ 'home.dziela_w_sprzedazy'|trans }}</h1>
+                        <div class="home-browse-all-right"><a
+                                    href="{{ path('works_all') }}">{{ 'home.zobacz_wszystkie_dziela'|trans }}</a></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <a href="{{ app.request.getBaseURL() }}/works/all?_filter%5Btype%5D=Fotografia"
+                           class="boxes">{{ 'home.fotografia'|trans }}</a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <a href="{{ app.request.getBaseURL() }}/works/all?_filter%5Btype%5D=Grafika"
+                           class="boxes">{{ 'home.grafika'|trans }}</a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <a href="{{ app.request.getBaseURL() }}/works/all?_filter%5Btype%5D=Malarstwo"
+                           class="boxes">{{ 'home.malarstwo'|trans }}</a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <a href="{{ app.request.getBaseURL() }}/works/all?_filter%5Btype%5D=Rysunek"
+                           class="boxes">{{ 'home.rysunek'|trans }}</a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <a href="{{ app.request.getBaseURL() }}/works/all?_filter%5Btype%5D=Rzeźba"
+                           class="boxes">{{ 'home.rzezba'|trans }}</a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <a href="{{ app.request.getBaseURL() }}/works/all?_filter%5Btype%5D=Rzemiosło"
+                           class="boxes">{{ 'home.rzemioslo'|trans }}</a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <a href="{{ app.request.getBaseURL() }}/works/all?_filter%5Btype%5D=Meble"
+                           class="boxes">{{ 'home.meble'|trans }}</a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <a href="{{ app.request.getBaseURL() }}/works/all?_filter%5Btype%5D=Lampy"
+                           class="boxes">{{ 'home.lampy'|trans }}</a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <a href="{{ app.request.getBaseURL() }}/works/all?_filter%5Btype%5D=Szkło"
+                           class="boxes">{{ 'home.szklo'|trans }}</a>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <a href="{{ app.request.getBaseURL() }}/works/all?_filter%5Btype%5D=Porcelana%20/%20Ceramika"
+                           class="boxes">{{ 'home.porcelana'|trans }}</a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <a href="{{ app.request.getBaseURL() }}/works/all?_filter%5Btype%5D=Tkaniny"
+                           class="boxes">{{ 'home.tkaniny'|trans }}</a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <a href="{{ app.request.getBaseURL() }}/works/all?_filter%5Btype%5D=Brąz"
+                           class="boxes">{{ 'home.braz'|trans }}</a>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <a href="{{ app.request.getBaseURL() }}/works/all?_filter%5Btype%5D=Srebro%20/%20Plater"
+                           class="boxes">{{ 'home.srebro'|trans }}</a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <a href="{{ app.request.getBaseURL() }}/works/all?_filter%5Btype%5D=Złoto"
+                           class="boxes">{{ 'home.zloto'|trans }}</a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <a href="{{ app.request.getBaseURL() }}/works/all?_filter%5Btype%5D=Zegary%20/%20Zegarki"
+                           class="boxes">{{ 'home.zegarki'|trans }}</a>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <a href="{{ app.request.getBaseURL() }}/works/all?_filter%5Btype%5D=Biżuteria"
+                           class="boxes">{{ 'home.bizuteria'|trans }}</a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <a href="{{ app.request.getBaseURL() }}/works/all?_filter%5Btype%5D=Kamienie szlachetne"
+                           class="boxes">{{ 'home.kamienie_szlachetne'|trans }}</a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <a href="{{ app.request.getBaseURL() }}/works/all?_filter%5Btype%5D=Numizmatyka"
+                           class="boxes">{{ 'home.numizmatyka'|trans }}</a>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <a href="{{ app.request.getBaseURL() }}/works/all?_filter%5Btype%5D=Bibliofilia"
+                           class="boxes">{{ 'home.bibliofilia'|trans }}</a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <a href="{{ app.request.getBaseURL() }}/works/all?_filter%5Btype%5D=Militaria"
+                           class="boxes">{{ 'home.militaria'|trans }}</a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <a href="{{ app.request.getBaseURL() }}/works/all?_filter%5Btype%5D=Obiekty kolekcjonerskie"
+                           class="boxes">{{ 'home.obiekty_kolekcjonerskie'|trans }}</a>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <a href="{{ app.request.getBaseURL() }}/works/all?_filter%5Btype%5D=Wina%20/%20Alkohole"
+                           class="boxes">{{ 'home.wina'|trans }}</a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <a href="{{ app.request.getBaseURL() }}/works/all?_filter%5Btype%5D=Pojazdy"
+                           class="boxes">{{ 'home.pojazdy'|trans }}</a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <a href="{{ app.request.getBaseURL() }}/works/all?_filter%5Btype%5D=Nieruchomości"
+                           class="boxes">{{ 'home.nieruchomosci'|trans }}</a>
+                    </div>
+
+                </div>
+            </section>
+
+
+            <section id="works" class="stdSection">
+                <h1 class="small">{{ 'home.polecane_dziela'|trans }}</h1>
+                <div class="home-browse-all-right2"><a
+                            href="{{ path("works_all") }}">{{ 'home.zobacz_wszystkie_dziela'|trans }}</a></div>
+                <div class="row">
+                    {% for work in works %}
+                        {% include '@App/Work/item.html.twig' %}
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section id="extra" class="stdSection">
+                <div class="row">
+                    <div class="col-md-6 col-xs-12">
+                        <h1 class="small">{{ 'home.how_to_buy'|trans }}</h1>
+                        <p style="text-align: justify;overflow-wrap:break-word;-webkit-hyphens:auto;-moz-hyphens:auto;-ms-hyphens: auto;hyphens:auto;">{{ 'home.how_to_buy_content'|trans|raw }}</p>
+                        <a href="{{ path("footer_information", {page: 'how-to-buy'}) }}">{{ 'home.dowiedz_sie_wiecej'|trans }}</a>
+                    </div>
+                    <div class="col-md-6 col-xs-12">
+                        <h1 class="small">{{ 'home.how_to_sell'|trans }}</h1>
+                        <p style="text-align: justify;overflow-wrap:break-word;-webkit-hyphens:auto;-moz-hyphens:auto;-ms-hyphens: auto;hyphens:auto;">{{ 'home.how_to_sell_content'|trans|raw }}</p>
+                        <a href="{{ path("footer_information", {page: 'how-to-buy'}) }}">{{ 'home.dowiedz_sie_wiecej'|trans }}</a>
+                    </div>
+                </div>
+            </section>
+
+            <section id="news" class="stdSection">
+                <h1 class="small">{{ 'home.polecane_aktualnosci'|trans }}</h1>
+                <div class="home-browse-all-right2"><a
+                            href="{{ path("newses") }}">{{ 'home.zobacz_wszystkie_aktualnosci'|trans }}</a></div>
+                <div class="row">
+                    {% for article in articles %}
+                        {% set url = "news/"~article.slug %}
+                        <div class="item">
+                            <div class="">
+                                <a{% if is_mobile() %} style="display: block; text-align: center;"{% endif %}
+                                        href="{{ url }}">
+                                    <img src="{{ asset('files/news/'~article.image) | imagine_filter('thumb_1195x380') }}"
+                                         alt="{{ article.langs.first.title }}"></a>
+                                <h2><a href="{{ url }}">{{ article.langs.first.title }}</a></h2>
+                                <p>{{ article.langs.first.smallText|slice(0,180)|striptags('<p>')|raw }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+{#            {% if ads[1] is defined and ads[1] %}#}
+{#                {{ ads[1].content|raw }}#}
+{#            {% endif %}#}
+
+        </div> <!-- /container -->
+    </div> <!-- /container fluid -->
+{% endblock %}
+
+{% block css %}
+    <!-- Owl Carousel Assets -->
+    <link href="{{ asset('assets/vendor/owl.carousel/owl-carousel/owl.carousel.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/owl.carousel/owl-carousel/owl.theme.css') }}" rel="stylesheet">
+    <style type="text/css">
+        body {
+            padding-top: 76px;
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/vendor/owl.carousel/owl-carousel/owl.carousel.js') }}"></script>
+    <script type="text/javascript">
+        $(function () {
+            $(".owl-carousel").owlCarousel({
+                itemsScaleUp: true,
+                navigationText: false,
+                navigation: true,
+                pagination: false,
+                autoPlay: false,
+                items: 3,
+                itemsDesktop: [1199, 3],
+                itemsDesktopSmall: [979, 3],
+                autoHeight: true
+            });
+            $(".owl-carousel-8").owlCarousel({
+                itemsScaleUp: true,
+                navigationText: false,
+                navigation: true,
+                pagination: false,
+                autoPlay: false,
+                items: 2,
+                itemsDesktop: [1199, 3],
+                itemsDesktopSmall: [979, 3],
+                autoHeight: true
+            });
+            $('.owl-main-banner').owlCarousel({
+                itemsScaleUp: true,
+                navigationText:["<div class='nav-btn prev-slide'>&#8249;</div>","<div class='nav-btn next-slide'>&#8250;</div>"],
+                navigation: true,
+                pagination: true,
+                autoPlay: {{ bannerSpeed }},
+                items: 1,
+                autoHeight: true
+            });
+
+            {% if not is_mobile() %}
+            var articlesInterval = setInterval(function () {
+                var $current = $('ul#articles-list li.active');
+                $current.removeClass('active');
+                $($current.data('target')).addClass('hidden');
+                var $next = $('ul#articles-list li:nth-child(' + ($current.index() + 2) + ')');
+                if (!$next.length) $next = $('ul#articles-list li').first();
+                $next.addClass('active');
+                $($next.data('target')).removeClass('hidden');
+            }, 3000);
+            {% endif %}
+            $('a.changeNews').click(function (e) {
+                e.preventDefault();
+                {% if not is_mobile() %}
+                clearInterval(articlesInterval);
+                {% endif %}
+
+                var $clickedLi = $(this).parent();
+                if ($clickedLi.hasClass('active'))
+                    return;
+
+                var $current = $('ul#articles-list li.active');
+                $current.removeClass('active');
+                $($current.data('target')).addClass('hidden');
+
+                $clickedLi.addClass('active');
+                $($clickedLi.data('target')).removeClass('hidden');
+            });
+
+
+            $("section#works .item:nth-child(1)").addClass("col-md-6");
+            $("section#works .item:nth-child(2)").addClass("col-md-6");
+            $("section#works .item:nth-child(3)").addClass("col-md-3");
+            $("section#works .item:nth-child(4)").addClass("col-md-3");
+            $("section#works .item:nth-child(5)").addClass("col-md-3");
+            $("section#works .item:nth-child(6)").addClass("col-md-3");
+            $("section#news .item:nth-child(1)").addClass("col-md-12");
+            $("section#news .item:nth-child(2)").addClass("col-md-4");
+            $("section#news .item:nth-child(3)").addClass("col-md-4");
+            $("section#news .item:nth-child(4)").addClass("col-md-4");
+        });
+
+
+    </script>
+{% endblock %}

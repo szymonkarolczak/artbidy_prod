@@ -1,0 +1,25 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div class="container">
+
+    <div class="page-header mt_0">
+        <h1 class="mt_0">{{ 'user.resetuj_haslo'|trans([], 'messages') }}</h1>
+    </div>
+
+    <form class="form-horizontal" action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request">
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label" for="username">{{ 'resetting.request.username'|trans }}</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="username" name="username" required="required" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                <input type="submit" class="btn btn-success" value="{{ 'resetting.request.submit'|trans }}" />
+            </div>
+        </div>
+    </form>
+
+</div>

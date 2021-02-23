@@ -1,0 +1,39 @@
+{% extends 'UserBundle:Default:base.html.twig' %}
+
+{% block content %}
+    <div class="row mt_20">
+        <div class="col-md-3">
+            <form method="get">
+                <div class="form-group form-group-sm">
+                    <label for="title">{{ 'user.imie_i_nazwisko'|trans }}</label>
+                    <input type="text" name="_filter[title]"{% if app.request.get('_filter').title is defined %} value="{{ app.request.get('_filter').title }}"{% endif %} class="form-control" id="title">
+                </div>
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <input type="submit" value="{{ 'main.filtruj'|trans }}" class="btn btn-primary" />
+                        <a href="{{ path("profile_artists", {id: user.id, prefix: user.profilePrefix, slug: user.profileSlug|slugify}) }}" class="btn btn-default">{{ 'main.wyczysc'|trans }}</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-9">
+            <div class="page-header mt_0">
+                <h4>{{ 'artists.znaleziono_liczba'|trans }} {{ pagination.getTotalItemCount }}</h4>
+            </div>
+            <div class="row">
+                {% for artist in pagination %}
+                    <div class="col-md-3 col-xs-12 text-center mb_25">
+                        {% include 'AppBundle:Artist:item.html.twig' with {user: artist} %}
+                     </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        {{ 'artists.nie_znaleziono'|trans }}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="navigation text-center">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,106 @@
+.gwBNch {
+    display: flex;
+    bottom: 20px;
+    -webkit-box-pack: center;
+    justify-content: center;
+    position: absolute;
+    width: 100%;
+    z-index: 1001;
+}
+
+.bBDRtM {
+    width: 240px;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 2px;
+    padding: 10px;
+}
+
+.cQSUhA {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    height: 100%;
+    -webkit-box-pack: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.cQSUhA {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    height: 100%;
+    -webkit-box-pack: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.gvJvRr:invalid {
+    box-shadow: none;
+}
+
+.gvJvRr {
+    -webkit-appearance: none;
+    width: 100%;
+    background: transparent;
+    margin: 0px 10px;
+    border-radius: 10px;
+}
+
+
+input {
+    -webkit-writing-mode: horizontal-tb !important;
+    text-rendering: auto;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    display: inline-block;
+    text-align: start;
+    -webkit-rtl-ordering: logical;
+    font: 400 13.3333px Arial;
+}
+
+input[type="range"] {
+    color: rgb(196, 196, 196);
+    cursor: default;
+    padding: initial;
+    border: initial;
+    outline: none;
+    background-color: transparent;
+    height: 16px;
+}
+
+input[type="range"]::-webkit-slider-runnable-track{
+    background:#ccc;
+    height: 3px;
+    border-radius: 4px;
+}
+
+input[type="range"]:hover::-webkit-slider-runnable-track,
+input[type="range"]:focus::-webkit-slider-runnable-track{
+    background-color: #777;
+}
+
+input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    background:#fff;
+    width:16px;
+    height: 16px;
+    border-radius: 50%;
+    margin-top:-6px;
+}
+
+.fJfAwr {
+    height: 32px;
+    width: 32px;
+    flex-shrink: 0;
+    cursor: pointer;
+    padding: 10px;
+}
+
+input:focus {
+    outline-offset: -2px;
+}

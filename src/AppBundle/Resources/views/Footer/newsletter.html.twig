@@ -1,0 +1,19 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ 'main_menu.dziela'|trans }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        <div class="page-header mt_0">
+            <h1>{{ 'newsletter.newsletter'|trans }}</h1>
+        </div>
+
+        <div class="alert alert-success">
+            {{ 'newsletter.sukces'|trans }}
+        </div>
+
+    </div>
+
+{% endblock %}

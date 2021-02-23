@@ -1,0 +1,26 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block body %}
+    
+    <div class="container">
+        <div class="page-header mt_0">
+            <h1 class="mt_0">{{ 'profile.ustawienia.dane_do_faktury'|trans }}</h1>
+        </div>
+
+        {% if success %}
+            <div class="alert alert-success">{{ success }}</div>
+        {% endif %}
+
+        {{form_start(form)}}
+
+        {{ form_row(form.invoice_fullname) }}
+        {{ form_row(form.invoice_address) }}
+        {{ form_row(form.invoice_city) }}
+        {{ form_row(form.invoice_postal_code) }}
+        {{ form_row(form.invoice_country) }}
+        {{ form_row(form.invoice_nip) }}
+
+        {{form_end(form)}}
+    </div>
+    
+{% endblock %}

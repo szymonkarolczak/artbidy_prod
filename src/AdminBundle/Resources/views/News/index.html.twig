@@ -1,0 +1,86 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="container-fluid">
+            <div class="page-header mt_0">
+                <h1 class="mt_0">{{ 'aktualnosci.lista'|trans }}</h1>
+            </div>
+        </div>
+
+        {{ filters|raw }}
+
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+            <tr>
+                <td colspan="9"><a class="btn btn-primary" href="{{ path("admin_news_add") }}">{{ 'aktualnosci.dodaj'|trans }}</a></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th>ID</th>
+                <th>{{ 'admin.tytul'|trans }}</th>
+                <th>{{ 'admin.grafika'|trans }}</th>
+                <th>{{ 'admin.odwiedzin'|trans }}</th>
+                <th>{{ 'aktualnosci.wyroznione'|trans }}</th>
+                <th>{{ 'admin.data_dodania'|trans }}</th>
+                <th>{{ 'admin.akcja'|trans }}</th>
+            </tr>
+            {% for article in articles %}
+
+                <tr>
+                    <td>{{ article.id }}</td>
+                    <td>{{ article.langs.first.title }}</td>
+                    <td>
+                        {% if article.image %}
+                            <img src="{{ asset("files/news/"~article.image) }}" style="max-height: 100px;" />
+                        {% endif %}
+                    </td>
+                    <td>{{ article.views }}</td>
+                    <td>
+                        {% if article.pinned %}<i class="glyphicon glyphicon-ok"></i>{% endif %}
+                    </td>
+                    <td>{{ article.addDate|date("Y-m-d H:i:s") }}</td>
+                    <td>
+                        <a href="{{ path("admin_news_edit", {id: article.id}) }}" class="btn btn-xs btn-info btn-block">{{ 'admin.edytuj'|trans }}</a>
+                        <a onclick="return confirm('{{ 'aktualnosci.czy_na_pewno_usunac'|trans }}')" href="{{ path("admin_news_delete", {id: article.id}) }}" class="btn btn-xs btn-danger btn-block pull-right">{{ 'admin.usun'|trans }}</a>
+                    </td>
+                </tr>
+
+            {% else %}
+                <tr>
+                    <td colspan="9">
+                        <div class="alert alert-info mb_0">{{ 'aktualnosci.brak'|trans }}</div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $('input.datetimerange').daterangepicker(
+            {
+                timePicker: true,
+                locale: {
+                    format: 'YYYY-MM-DD H:mm:ss'
+                },
+            });
+        })
+    </script>
+{% endblock %}

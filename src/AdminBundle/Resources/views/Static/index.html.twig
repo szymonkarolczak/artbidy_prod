@@ -1,0 +1,47 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="container-fluid">
+            <div class="page-header mt_0">
+                <h1 class="mt_0">
+                    Strony statyczne
+                </h1>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-hover">
+            <tbody>
+            <tr>
+                <th>ID</th>
+                <th>{{ 'admin.url'|trans }}</th>
+                <th>{{ 'admin.opis'|trans }}</th>
+                <th>{{ 'admin.edytuj'|trans }}</th>
+            </tr>
+            {% for page in pages %}
+                <tr>
+                    <td>{{ page.id }}</td>
+                    <td>{{ page.url }}</td>
+                    <td>{{ page.description }}</td>
+                    <td>
+                        <form onchange="this.submit()" action="{{ path("admin_general_static_edit", {id: page.id}) }}" method="get">
+                            <select class="form-control input-sm" name="language">
+                                <option>{{ 'ogolne.statyczne.wybierz_jezyk'|trans }}</option>
+                                {% for lang in langs %}
+                                    <option value="{{ lang.id }}">{{ lang.shortcut|upper }}</option>
+                                {% endfor %}
+                            </select>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+{% endblock %}

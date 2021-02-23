@@ -1,0 +1,49 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ 'auctionhouse.aukcja.wprowadz_wyniki'|trans }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        <div class="page-header mt_0">
+            <h1 class="mt_0">{{ 'auctionhouse.aukcja.wprowadz_wyniki'|trans }}</h1>
+        </div>
+
+        {% set title = auction.title %}
+        {% set description = auction.description %}
+        {% set auction = auction[0] %}
+
+        {% if auction.status == 2 %}
+            <div class="alert alert-success">{{ 'auctionhouse.wyniki_zaakceptowane'|trans }}</div>
+        {% elseif auction.status == 1 %}
+            <div class="alert alert-info">{{ 'auctionhouse.wyniki_oczekuja'|trans }}</div>
+        {% else %}
+        <form method="post">
+            <table class="table">
+                <tr>
+                    <th class="text-right">Obiekt</th>
+                    <th style="width: 50%">{{ 'add_work.cena'|trans }}</th>
+                </tr>
+                {% for auctionWork in auction.works %}
+                    <tr>
+                        <td class="text-right">{{ auctionWork.work.title }}</td>
+                        <td class="text-left">
+                            <div class="input-group input-group-sm">
+                                <input type="text" name="work[{{ auctionWork.id }}]" class="form-control" value="{{ auctionWork.soldPrice }}">
+                                <span class="input-group-addon">{{ auctionWork.work.currency.code|upper }}</span>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            <div class="text-center">
+                <input type="submit" value="{{ 'main.zapisz'|trans }}" class="btn btn-success" />
+            </div>
+        </form>
+        {% endif %}
+
+    </div> <!-- /container -->
+
+{% endblock %}

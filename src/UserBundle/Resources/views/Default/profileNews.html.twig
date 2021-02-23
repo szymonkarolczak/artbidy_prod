@@ -1,0 +1,49 @@
+{% extends 'UserBundle:Default:base.html.twig' %}
+
+{% block content %}
+    <div class="row mt_20">
+        <div class="col-md-3">
+            <form method="get">
+                <div class="form-group form-group-sm">
+                    <label for="title">{{ 'main.tytul'|trans }}</label>
+                    <input type="text" name="_filter[title]"{% if app.request.get('_filter').title is defined %} value="{{ app.request.get('_filter').title }}"{% endif %} class="form-control" id="title">
+                </div>
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <input type="submit" value="{{ 'main.filtruj'|trans }}" class="btn btn-primary" />
+                        <a href="{{ path("profile_news", {id: user.id, prefix: user.profilePrefix, slug: user.profileSlug|slugify}) }}" class="btn btn-default">{{ 'main.wyczysc'|trans }}</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-9">
+            <div class="page-header mt_0">
+                <h4>{{ 'profile.znaleziono_liczba_news'|trans }} {{ pagination.getTotalItemCount }}</h4>
+            </div>
+            <div class="row">
+                {% for news in pagination %}
+                    <div class="col-md-3 col-xs-12 text-left">
+                        {% if news.image %}
+                            {% set url =  url('homepage')~"news/"~news.slug%}  
+                            <a href="{{ url }}">
+                                <img src="{{ asset('files/news/'~news.image) | imagine_filter('compress') }}" style="max-width: 100%;" alt="{{ news.langs.first.title }}" /></a>
+                        {% endif %}
+                        <div class="caption">
+                            <h4 class="mb_5">
+                                {% set url =  url('homepage')~"news/"~news.slug%}     
+                                <a href="{{ url }}">{{ news.langs.first.title }}</a>
+                            </h4>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        {{ 'aktualnosci.nie_znaleziono'|trans }}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="navigation text-center">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ 'exhibition.twoje'|trans }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        <div class="page-header mt_0">
+            <h1 class="mt_0 pull-left">{{ 'exhibition.twoje'|trans }} <small>({{ pagination.getTotalItemCount }})</small></h1>
+            <a class="btn btn-primary pull-right" href="{{ path("exhibition_add") }}">{{ 'exhibition.dodaj'|trans }}</a>
+            <div class="clearfix"></div>
+        </div>
+            
+        {#<form method="get">
+            <div class="row" id="filters">
+                <div class="col-md-2 col-xs-12">
+                    <div class="form-group">
+                        <label for="_filter[title]">{{ 'main.tytul'|trans }}</label>
+                        <input type="text" class="form-control" id="_filter[title]" name="_filter[title]" value="{{ app.request.get('_filter').title is defined ? app.request.get('_filter').title }}">
+                    </div>
+                </div>
+                <div class="col-md-2 col-xs-12">
+                    <div class="form-group">
+                        <label for="_filter[artist]">{{ 'add_work.artysta'|trans }}</label>
+                        <input type="text" class="form-control" id="_filter[artist]" name="_filter[artist]" value="{{ app.request.get('_filter').artist is defined ? app.request.get('_filter').artist }}">
+                    </div>
+                </div>
+                <div class="col-md-2 col-xs-12">
+                    <div class="form-group">
+                        <label for="_filter[approved]">{{ 'main.zatwierdzone'|trans }}</label>
+                        <select class="form-control" name="_filter[approved]">
+                            <option selected="" value=""></option>
+                            <option selected="{{ app.request.get('_filter').approved is defined and app.request.get('_filter').approved == 1 ? 'selected' }}" value="1">{{ 'main.tak'|trans }}</option>
+                            <option selected="{{ app.request.get('_filter').approved is defined and app.request.get('_filter').approved == 0 ? 'selected' }}" value="0">{{ 'main.nie'|trans }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Filtruj" />
+        </form>#}
+{#        <hr />#}
+                        
+        <table class="table table-bordered table-striped table-hover">
+            <tr>
+                <th>ID</th>
+                <th>{{ 'main.tytul'|trans }}</th>
+                <th>{{ 'add_work.opis'|trans }}</th>
+                <th>{{ 'add_work.grafika'|trans }}</th>
+                <th>{{ 'main.data_start'|trans }}</th>
+                <th>{{ 'main.data_koniec'|trans }}</th>
+                <th>{{ 'main.zatwierdzone'|trans }}</th>
+                <th>{{ 'main.akcja'|trans }}</th>
+            </tr>
+            {% for exhibition in pagination %}
+                <tr class="{{ not exhibition.approved ? 'warning' }}">
+                    <td>{{ exhibition.id }}</td>
+                    <td>{{ exhibition.title }}</td>
+                    <td>{{ exhibition.description }}</td>
+                    <td>
+                        <img src="{{ asset('files/exhibition/'~exhibition.image) | imagine_filter('compress') }}" style="max-width: 90px" alt="{{ exhibition.id }} image" /></td>
+                    <td>{{ exhibition.startDate|date("Y-m-d H:i:s") }}</td>
+                    <td>{{ exhibition.endDate|date("Y-m-d H:i:s") }}</td>
+                    <td>{{ exhibition.approved ? '<i class="glyphicon glyphicon-ok"></i>' }}</td>
+                    <td>
+                        {% if exhibition.approved %}
+                            <a href="{{ path('exhibition', {id: exhibition.id, slug: exhibition.title|slugify}) }}" class="btn btn-xs btn-warning">{{ 'main.zobacz'|trans }}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8">
+                        <div class="alert alert-info">{{ 'exhibition.nie_znaleziono'|trans }}</div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    </div> <!-- /container -->
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'AppBundle:Emails:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block content %}
+      <h3>{{ 'mail.witaj'|trans({'%username%': work.author.fullname}) }}</h3>
+
+<h4>{{ 'mail.auction.chce_zglosic_obiekt'|trans({'%user%': {{ author.fullname }}}, 'messages') }}</h4>
+<h5>{{ auction.title }}</h5>
+<p>{{ content }}</p>
+
+{% if for_admin is defined %}
+    <hr />
+    <h6>Dane dla administratora</h6>
+    <table>
+        <tr>
+            <td>Aukcja:</td>
+            <td>{{ auction.title }}</td>
+        </tr>
+        <tr>
+            <td>Autor:</td>
+            <td>
+                <a href="{{ path("profile", {id: work.author.id, prefix: work.author.profilePrefix, slug: work.author.profileSlug|slugify}) }}">
+                    {{ auction.author.fullname }}
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>Zgłaszający:</td>
+            <td>
+                <a href="{{ path("profile", {id: author.id, prefix: author.profilePrefix, slug: author.profileSlug|slugify}) }}">
+                    {{ author.fullname }}
+                </a>
+            </td>
+        </tr>
+    </table>
+{% endif %}
+{% endblock %}

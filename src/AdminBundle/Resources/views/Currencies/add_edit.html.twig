@@ -1,0 +1,46 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="page-header mt_0">
+            {% if currency is defined %}
+                <h1 class="mt_0">{{ 'ogolne.waluty.zmien'|trans }}</h1>
+            {% else %}
+                <h1 class="mt_0">{{ 'ogolne.waluty.dodaj'|trans }}</h1>
+            {% endif %}
+        </div>
+
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-md-9 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'ogolne.waluty.dane'|trans }}</div>
+                    <div class="panel-body">
+                        {{ form_row(form.code) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'admin.akcje'|trans }}</div>
+                    <div class="panel-body">
+                        <input type="submit" class="btn btn-success" value="{{ currency is defined ? 'admin.edytuj'|trans : 'admin.dodaj'|trans }}" />
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'admin.opcje'|trans }}</div>
+                    <div class="panel-body">
+                        {{ form_row(form.enabled) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+
+    </div>
+
+{% endblock %}

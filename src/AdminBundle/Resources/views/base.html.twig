@@ -1,0 +1,300 @@
+{% trans_default_domain 'admin' %}
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="author" content="Wideapps.com.pl">
+    <link rel="icon" href="{{ asset('assets/images/logo-bez-napisow.png') }}">
+
+    <title>{{ 'head.title'|trans }}</title>
+
+    <link href="{{ asset("assets/vendor/bootstrap/dist/css/bootstrap.min.css") }}" rel="stylesheet">
+    <link href="{{ asset("assets/css/ie10-viewport-bug-workaround.css") }}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{{ asset("assets/vendor/gentelella/vendors/font-awesome/css/font-awesome.min.css") }}" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="{{ asset("assets/vendor/gentelella/vendors/iCheck/skins/flat/green.css") }}" rel="stylesheet">
+    <!-- bootstrap-progressbar -->
+    <link href="{{ asset("assets/vendor/gentelella/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css") }}"
+          rel="stylesheet">
+    <!-- jVectorMap -->
+    <link href="{{ asset("assets/vendor/gentelella/production/css/maps/jquery-jvectormap-2.0.3.css") }}"
+          rel="stylesheet"/>
+
+    <!-- Custom Theme Style -->
+    <link href="{{ asset("assets/vendor/gentelella/build/css/custom.min.css") }}" rel="stylesheet">
+    {% block css %}{% endblock %}
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container">
+        <div class="col-md-3 left_col">
+            <div class="left_col scroll-view">
+                <div class="navbar nav_title" style="border: 0;">
+                    <a href="{{ path("admin_homepage") }}" class="site_title"><span>Artbidy</span></a>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <!-- menu profile quick info -->
+                <div class="profile">
+                    <div class="profile_pic">
+                        <img src="{{ asset('files/user/'~app.user.image) }}" alt="{{ app.user.fullname }} image"
+                             class="img-circle profile_img">
+                    </div>
+                    <div class="profile_info">
+                        <span>Welcome,</span>
+                        <h2>{{ app.user.fullname }}</h2>
+                    </div>
+                </div>
+                <!-- /menu profile quick info -->
+
+                <br/>
+
+                <!-- sidebar menu -->
+                <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                    <div class="menu_section">
+                        <h3>General</h3>
+                        <ul class="nav side-menu">
+                            {% if is_granted("ROLE_ADMIN") %}
+                                <li>
+                                    <a><i class="fa fa-home"></i> {{ 'main_menu.ogolne'|trans }} <span
+                                                class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li>
+                                            <a href="{{ path("admin_general_social_media") }}">{{ 'ogolne.social_media.social_media'|trans }}</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path("admin_general_languages") }}">{{ 'ogolne.jezyki.jezyki'|trans }}</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path("admin_general_currencies") }}">{{ 'ogolne.waluty.waluty'|trans }}</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path("admin_general_static") }}">{{ 'ogolne.statyczne.statyczne'|trans }}</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path("admin_general_advert") }}">{{ 'reklamy.reklamy'|trans }}</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path("admin_newsletter") }}">{{ 'uzytkownicy.newsletter'|trans }}</a>
+                                        </li>
+                                        <li><a href="{{ path("admin_banner_index") }}">Banner</a></li>
+                                    </ul>
+                                </li>
+                            {% endif %}
+                            <li>
+                                <a><i class="fa fa-newspaper-o"></i> {{ 'main_menu.aktualnosci'|trans([], 'messages') }}
+                                    <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li><a href="{{ path("admin_news") }}">{{ 'admin.przegladaj'|trans }}</a></li>
+                                    <li><a href="{{ path("admin_news_categories") }}">{{ 'admin.kategorie'|trans }}</a>
+                                    </li>
+                                    <li><a href="{{ path("admin_news_add") }}">{{ 'admin.dodaj'|trans }}</a></li>
+                                </ul>
+                            </li>
+                            {% if is_granted("ROLE_EDYTOR") %}
+                                <li>
+                                    <a><i class="fa fa-users"></i> {{ 'main_menu.users'|trans }} <span
+                                                class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="{{ path("admin_users") }}">{{ 'admin.przegladaj'|trans }}</a></li>
+                                        <li>
+                                            <a href="{{ path("admin_users_added") }}">{{ 'uzytkownicy.dodane_przez'|trans }}</a>
+                                        </li>
+                                        <li><a href="{{ path("admin_users_add") }}">{{ 'admin.dodaj'|trans }}</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a><i class="fa fa-briefcase"></i> {{ 'main_menu.dziela'|trans }} <span
+                                                class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="{{ path("admin_works") }}">{{ 'dziela.zaakceptowane'|trans }}</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path("admin_works_waiting") }}">{{ 'dziela.oczekujace'|trans }}</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path("admin_works_results") }}">{{ 'dziela.wyniki'|trans }}</a>
+                                        </li>
+                                        <li><a href="{{ path("admin_works_configuration") }}">Konfiguracja</a></li>
+                                    </ul>
+                                </li>
+                            {% endif %}
+                            <li>
+                                <a><i class="fa fa-home"></i> Aukcje Artbidy <span
+                                            class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li><a href="{{ path("admin_fineartsauctions_add") }}">{{ 'admin.dodaj'|trans }}</a>
+                                    </li>
+                                    <li><a href="{{ path("admin_fineartsauctions") }}">Przeglądaj</a></li>
+                                    <li>
+                                        <a href="{{ path("admin_fineartsauctions_results") }}">{{ 'aukcje.wyniki'|trans }}</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            {% if is_granted("ROLE_ADMIN") %}
+                                <li><a href="{{ path('admin_invoices_index') }}"><i
+                                                class="fa fa-file-text-o"></i> {{ 'admin.faktury'|trans }}</a></li>
+                                <li><a href="{{ path('admin_reports_index') }}"><i
+                                                class="fa fa-book"></i> {{ 'admin.raporty'|trans }}</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+
+                </div>
+                <!-- /sidebar menu -->
+
+                <!-- /menu footer buttons -->
+                <div class="sidebar-footer hidden-small">
+                    <a data-toggle="tooltip" data-placement="top" title="Settings">
+                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                    </a>
+                    <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                        <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+                    </a>
+                    <a data-toggle="tooltip" data-placement="top" title="Lock">
+                        <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+                    </a>
+                    <a data-toggle="tooltip" data-placement="top" title="Logout">
+                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                    </a>
+                </div>
+                <!-- /menu footer buttons -->
+            </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+            <div class="nav_menu">
+                <nav class="" role="navigation">
+                    <div class="nav toggle">
+                        <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                    </div>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="">
+                            <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
+                               aria-expanded="false">
+                                <img src="{{ asset('files/user/'~app.user.image) }}" alt="">{{ app.user.fullname }}
+                                <span class=" fa fa-angle-down"></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                <li><a href="{{ path('homepage') }}"><i class="fa fa-home pull-right"></i> Przejdź do
+                                        strony</a></li>
+                                <li><a href="{{ path('fos_user_security_logout') }}"><i
+                                                class="fa fa-sign-out pull-right"></i> Wyloguj</a></li>
+                            </ul>
+                        </li>
+
+                        {#<li role="presentation" class="dropdown">#}
+                        {#<a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">#}
+                        {#<i class="fa fa-envelope-o"></i>#}
+                        {#<span class="badge bg-green">6</span>#}
+                        {#</a>#}
+                        {#<ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">#}
+                        {#<li>#}
+                        {#<a>#}
+                        {#<span class="image"><img src="{{ asset('files/user/'~app.user.image) }}" alt="Profile Image" /></span>#}
+                        {#<span>#}
+                        {#<span>John Smith</span>#}
+                        {#<span class="time">3 mins ago</span>#}
+                        {#</span>#}
+                        {#<span class="message">#}
+                        {#Film festivals used to be do-or-die moments for movie makers. They were where...#}
+                        {#</span>#}
+                        {#</a>#}
+                        {#</li>#}
+                        {#<li>#}
+                        {#<div class="text-center">#}
+                        {#<a>#}
+                        {#<strong>See All Alerts</strong>#}
+                        {#<i class="fa fa-angle-right"></i>#}
+                        {#</a>#}
+                        {#</div>#}
+                        {#</li>#}
+                        {#</ul>#}
+                        {#</li>#}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+
+            {% for message in app.session.flashBag.get('success') %}
+                <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
+            {% for message in app.session.flashBag.get('error') %}
+                <div class="alert alert-danger">{{ message }}</div>
+            {% endfor %}
+
+            {% block body %}{% endblock %}
+
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer>
+            <div class="pull-right">
+                Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+            </div>
+            <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+    </div>
+</div>
+
+<!-- jQuery -->
+<script src="{{ asset("assets/vendor/gentelella/vendors/jquery/dist/jquery.min.js") }}"></script>
+<!-- Bootstrap -->
+<script src="{{ asset("assets/vendor/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js") }}"></script>
+<!-- FastClick -->
+<script src="{{ asset("assets/vendor/gentelella/vendors/fastclick/lib/fastclick.js") }}"></script>
+<!-- NProgress -->
+<script src="{{ asset("assets/vendor/gentelella/vendors/nprogress/nprogress.js") }}"></script>
+<!-- Chart.js -->
+<script src="{{ asset("assets/vendor/gentelella/vendors/Chart.js/dist/Chart.min.js") }}"></script>
+<!-- gauge.js -->
+<script src="{{ asset("assets/vendor/gentelella/vendors/bernii/gauge.js/dist/gauge.min.js") }}"></script>
+<!-- bootstrap-progressbar -->
+<script src="{{ asset("assets/vendor/gentelella/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js") }}"></script>
+<!-- iCheck -->
+<script src="{{ asset("assets/vendor/gentelella/vendors/iCheck/icheck.min.js") }}"></script>
+<!-- Skycons -->
+<script src="{{ asset("assets/vendor/gentelella/vendors/skycons/skycons.js") }}"></script>
+<!-- Flot -->
+<script src="{{ asset("assets/vendor/gentelella/vendors/Flot/jquery.flot.js") }}"></script>
+<script src="{{ asset("assets/vendor/gentelella/vendors/Flot/jquery.flot.pie.js") }}"></script>
+<script src="{{ asset("assets/vendor/gentelella/vendors/Flot/jquery.flot.time.js") }}"></script>
+<script src="{{ asset("assets/vendor/gentelella/vendors/Flot/jquery.flot.stack.js") }}"></script>
+<script src="{{ asset("assets/vendor/gentelella/vendors/Flot/jquery.flot.resize.js") }}"></script>
+<!-- Flot plugins -->
+<script src="{{ asset("assets/vendor/gentelella/production/js/flot/jquery.flot.orderBars.js") }}"></script>
+<script src="{{ asset("assets/vendor/gentelella/production/js/flot/date.js") }}"></script>
+<script src="{{ asset("assets/vendor/gentelella/production/js/flot/jquery.flot.spline.js") }}"></script>
+<script src="{{ asset("assets/vendor/gentelella/production/js/flot/curvedLines.js") }}"></script>
+<!-- jVectorMap -->
+<script src="{{ asset("assets/vendor/gentelella/production/js/maps/jquery-jvectormap-2.0.3.min.js") }}"></script>
+<!-- bootstrap-daterangepicker -->
+<script src="{{ asset("assets/vendor/gentelella/production/js/moment/moment.min.js") }}"></script>
+<script src="{{ asset("assets/vendor/gentelella/production/js/datepicker/daterangepicker.js") }}"></script>
+
+<!-- Custom Theme Scripts -->
+<script src="{{ asset("assets/vendor/gentelella/build/js/custom.min.js") }}"></script>
+
+{% block javascripts %}{% endblock %}
+</body>
+</html>

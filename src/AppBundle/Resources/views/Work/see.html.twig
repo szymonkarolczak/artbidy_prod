@@ -1,0 +1,325 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% set artist_id = work.id %}
+{% set work = work[0] %}
+
+{% block title %}{{ work.title }} - {{ parent() }}{% endblock %}
+
+{% block metatitle %}
+
+    {% if app.request.locale == 'pl' and work.metatitle is not empty %}
+        <title>{{ work.metatitle }}</title>
+    {% elseif app.request.locale == 'en' and work.metatitleEn is not empty %}
+        <title>{{ work.metatitleEn }}</title>
+    {% else %}
+        <title>{% if (app.request.get('_route') in ['homepage']) and app.request.locale == 'pl' %}
+                {{ ('head.title' ~ app.request.get('_route')) |trans }}{% elseif (app.request.get('page') == 'galleries')  and app.request.locale == 'pl' %}
+                Galeria sztuki współczesnej Warszawa galeria obrazów, malarstwa{% elseif (app.request.get('page') == 'auction-houses')  and app.request.locale == 'pl' %}
+                Dom aukcyjny Artbidy - Partnerstwo Domów Aukcyjnych{% elseif (app.request.getUri() == 'https://pl.artbidy.com/news/icaboston')  and app.request.locale == 'pl' %}
+                Sztuka współczesna Artbidy sztuka współczesna w dobie Internetu
+            {% elseif (app.request.getUri() == 'https://pl.artbidy.com/news/ob') and app.request.locale == 'pl' %}
+                Sztuka współczesna, obrazy współczesne Artbidy{% elseif (app.request.getUri() == 'https://pl.artbidy.com/news/mw') and app.request.locale == 'pl' %}
+                Malarstwo współczesne Artbidy{% elseif (app.request.getUri() == 'https://pl.artbidy.com/news/mahak') and app.request.locale == 'pl' %}Malarstwo abstrakcyjne Artbidy{% else %}Artbidy{% endif %}</title>
+    {% endif %}
+{% endblock %}
+
+{% block meta %}
+    <meta property="og:image" content="{{ absolute_url(asset('files/work/'~work.image)) }}"/>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+
+        {% if auction %}
+            {% if auction.auction.endDate|date('Y-m-d H:i:s') > 'now'|date('Y-m-d H:i:s') %}
+                <div class="alert alert-info">
+                    {{ 'works.jest_na_aukcji'|trans }} <a
+                            href="{{ path('auction_see_work', {id: auction.auction.id, slug: auction.auction.langs.first.title|slugify, work_id: auction.id, work_slug: work.title|slugify}) }}"
+                            style="position: relative; top: -1px; left: 5px;"
+                            class="btn btn-xs btn-primary">{{ 'main.zobacz'|trans }}</a>
+                </div>
+            {% else %}
+                {% if auction.bids.last %}
+                    <div class="alert alert-success">
+                        {{ 'works.sprzedano'|trans }}<br/>
+                        {{ 'auctions.sprzedano_za'|trans({'%cena%': auction.bids.last.amount~' '~auction.bids.last.currency.code}) }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+
+        <div class="page-header mt_0">
+            <h1 class="mt_0 text-center">{{ work.title }}</h1>
+        </div>
+
+        <div class="row workInfo">
+
+            <div class="text-center col-md-6">
+                <a class="lightbox" href="{{ asset('files/work/'~work.image) }}"
+                   style="cursor: zoom-in; -webkit-tap-highlight-color: rgba(26,26,26,0.302);">
+                    <img src="{{ asset("files/work/"~work.image) | imagine_filter('thumb_500x500') }}" id="mainPhoto"
+                         style="max-width: 500px; max-height: 500px;" class="mb_15" alt="{{ work.id }} image"/>
+                </a>
+                {% if work.gallery %}
+                    <div id="gallery-thumbs">
+                        <img src="{{ asset("files/work/"~work.image)  | imagine_filter('thumb_40x40') }}"
+                             data-image="{{ asset("files/work/"~work.image)  | imagine_filter('thumb_500x500') }}"
+                             data-src="{{ asset("files/work/"~work.image) }}" style="cursor: pointer" height="40"
+                             width="40" alt="{{ work.id }} min image"/>
+                        {% for image in work.gallery %}
+                            <img src="{{ asset('files/work/'~image)  | imagine_filter('thumb_40x40') }}"
+                                 data-image="{{ asset("files/work/"~image)  | imagine_filter('thumb_500x500') }}"
+                                 data-src="{{ asset("files/work/"~image) }}" style="cursor: pointer" height="40"
+                                 width="40" alt="{{ image }}"/>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="col-md-6">
+                <div class="col-md-6 col-xs-4 text-bold text-right">{{ 'add_work.artysta'|trans }}</div>
+                <div class="col-md-6 col-xs-8">
+                    {% if artist_id %}
+                        <a href="{{ path('profile', {id: artist_id, slug: work.artist|slugify, prefix: 'artists'}) }}">{{ work.artist }}</a>
+                    {% else %}
+                        {{ work.artist }}
+                    {% endif %}
+                </div>
+
+                <div class="col-md-6 col-xs-4 text-bold text-right">{{ 'add_work.technika'|trans }}</div>
+                <div class="col-md-6 col-xs-8">{{ work.technique|trans({}, 'work') }}</div>
+
+                <div class="col-md-6 col-xs-4 text-bold text-right">{{ 'add_work.typ'|trans }}</div>
+                <div class="col-md-6 col-xs-8">{{ work.type|trans({}, 'work') }}</div>
+
+                <div class="col-md-6 col-xs-4 text-bold text-right">{{ 'add_work.styl'|trans }}</div>
+                <div class="col-md-6 col-xs-8">{{ work.style|trans({}, 'work') }}</div>
+
+                {% if work.dimensions %}
+                    {% set inches = work.dimensions|split("x") %}
+                    <div class="col-md-6 col-xs-4 text-bold text-right">{{ 'auctions.wymiary'|trans }}</div>
+                    <div class="col-md-6 col-xs-8" style="margin-bottom: 15px; display: block">
+                        {% if inches[0] is not empty %}{{ work.dimensions }} CM<br/>
+                        <small>({{ (inches[0]/2.54)|round(2) }}x{{ (inches[1]/2.54)|round(2) }}
+                            x{{ (inches[2]/2.54)|round(2) }} IN)</small>{% endif %}
+                    </div>
+                {% endif %}
+
+                <div class="col-md-6 col-xs-4 text-bold text-right">{{ 'auctions.rok_powstania'|trans }}</div>
+                <div class="col-md-6 col-xs-8">{% if work.year %}{{ work.year }}{% endif %}</div>
+
+
+                {% if work.priceOnRequest is null %}
+                    <div class="col-md-6 col-xs-4 text-bold text-right">{{ 'add_work.cena'|trans }}</div>
+                    <div class="col-md-6 col-xs-8">{{ 'w_zbiorach_muzeum'|trans }}</div>
+                {% endif %}
+
+                {% if not auction and work.priceOnRequest is not null %}
+                    <div class="col-md-6 col-xs-4 text-bold text-right">{{ 'add_work.cena'|trans }}</div>
+                    {% set price = currency.convert(work.currency.code, app.session.get('_currency'), work.price) %}
+                    {% if price > 0 %}
+                        <div class="col-md-6 col-xs-8">{{ work.priceOnRequest ? 'add_work.price_on_request'|trans : currency.convert(work.currency.code, app.session.get('_currency'), work.price) }} {{ not work.priceOnRequest ? app.session.get('_currency') }}</div>
+                    {% else %}
+                        <div class="col-md-6 col-xs-8">
+                            {{ 'add_work.price_on_request'|trans }}
+                        </div>
+                    {% endif %}
+                {% endif %}
+
+                <div class="col-md-6 col-xs-4 text-bold text-right">{{ 'add_work.opis'|trans }}</div>
+                <div class="col-md-6 col-xs-8">{{ work.description }}</div>
+                <div class="col-md-6 col-xs-4 text-bold text-right"></div>
+                <div class="col-md-6 col-xs-8">
+                    {% if work.bids.last %}
+                        <div class="alert alert-success">
+                            {{ 'works.sprzedano1'|trans }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+
+        <div class="text-center workInfo2">
+            {% if not work.bids.last %}
+                {% if (not auction or auction.auction.endDate|date('Y-m-d H:i:s') < 'now'|date('Y-m-d H:i:s')) and work.priceOnRequest is not null %}
+                    <button class="btn btn-fineart mb_15" data-toggle="modal"
+                            data-target="#myModal">{{ 'works.zapytaj'|trans }}</button>
+                {% endif %}
+
+                {% set price = currency.convert(work.currency.code, app.session.get('_currency'), work.price) %}
+                {% if price is not empty and price > 0 %}
+                    <button id="buynow" data-url="{{ path("work_work_buy_now", {workId: work.id}) }}"
+                            class="btn btn-fineart mb_15">{{ 'auctions.poaukcyjna.kup'|trans({'%kwota%': currency.convert(work.currency.code, app.session.get('_currency'), work.price)~' '~app.session.get('_currency')}) }}</button>
+                {% endif %}
+            {% endif %}
+            <br/>
+            {#            <button id="moreDetails" class="btn">{{ 'works.more'|trans }}</button>#}
+
+            <div style="margin-top: 20px;" class="addthis_inline_share_toolbox"></div>
+        </div>
+
+        {{ render(controller('UserBundle:Default:userDetailsOnWorkPage', {artist_id: artist_id, seller_id: work.author.id})) }}
+
+    </div> <!-- /container -->
+
+    <!-- Modal -->
+    {% form_theme form 'bootstrap_3_layout.html.twig' %}
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                {{ form_start(form) }}
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{{ 'works.zapytaj'|trans }}</h4>
+                </div>
+                <div class="modal-body">
+                    {{ form_row(form.fullname) }}
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form_row(form.email) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_row(form.phone) }}
+                        </div>
+                    </div>
+                    {{ form_widget(form.content) }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">{{ 'main.zamknij'|trans }}</button>
+                    <button type="submit" class="btn btn-primary">{{ 'main.wyslij'|trans }}</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+    <div id="dialog-confirm" title="{{ 'dialogs.title'|trans }}">
+        <p>{{ 'dialogs.content'|trans }}</p>
+    </div>
+
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/fancybox/dist/jquery.fancybox.css') }}">
+    <link href="{{ asset("assets/css/zoom.css") }}" rel="stylesheet"/>
+    <style>
+        .lightbox:hover img {
+            color: #000;
+            opacity: 0.5;
+        }
+    </style>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/vendor/openseadragon/built-openseadragon/openseadragon/openseadragon.js') }}"></script>
+    <script type="text/javascript">
+        $(function () {
+            var dialog;
+
+            dialog = $("#dialog-confirm").dialog({
+                autoOpen: false,
+                resizable: false,
+                height: "auto",
+                width: 400,
+                modal: true,
+                buttons: {
+                    "{{ 'dialogs.buttons.kupuje'|trans }}": function () {
+                        var url = $('#buynow').data('url');
+                        $(this).dialog("close");
+                        window.location.href = url;
+                    },
+                    "{{ 'dialogs.buttons.anuluj'|trans }}": function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+
+            $("#buynow").button().on("click", function () {
+                dialog.dialog("open");
+            });
+        });
+
+        $('.lightbox').fancybox({
+            buttons: [
+                'close'
+            ],
+            fullScreen: {
+                autoStart: true,
+                requestOnStart: true
+            },
+            zoom: false,
+            onUpdate: function (instance, current) {
+                $(current.$content)
+                    .width($(window).width())
+                    .height($(window).height())
+                    .css('transform', 'translate(0px,0px)');
+            },
+            'afterLoad': function (instance, current) {
+                let html = '<div width="100%" class="sc-bwzfXH gwBNch"><div style="transition: opacity 300ms ease-in-out 0s; opacity: 1;"><div class="LightboxSlider__SliderContainer-sc-2u6frb-1 bBDRtM"><div height="100%" width="100%" class="sc-bwzfXH cQSUhA"><svg class="LightboxSlider__ZoomSymbolContainer-sc-2u6frb-2 fJfAwr"><line x1="0" y1="50%" x2="100%" y2="50%" stroke="#FFF" stroke-width="2px"></line></svg>' +
+                    '<input min="0.22326708847336002" max="2.5659777424483305" step="0.001" type="range" class="LightboxSlider__StyledSlider-sc-2u6frb-0 gvJvRr">' +
+                    '<svg class="LightboxSlider__ZoomSymbolContainer-sc-2u6frb-2 fJfAwr"><line x1="50%" y1="0" x2="50%" y2="100%" stroke="#FFF" stroke-width="2px"></line><line x1="0" y1="50%" x2="100%" y2="50%" stroke="#FFF" stroke-width="2px"></line></svg></div></div></div></div>';
+                $(html).appendTo($(current.$content));
+                $(current.$content).attr('id', 'lightbox-content');
+                $(current.$content).css(';')
+                $(current.$content).find('.fancybox-image').hide();
+                let viewer = OpenSeadragon({
+                    id: "lightbox-content",
+                    tileSources: {
+                        type: 'image',
+                        url: current.src
+                    },
+                    showHomeControl: false,
+                    panHorizontal: true,
+                    defaultZoomLevel: 1,
+                    minZoomLevel: 0.22326708847336002,
+                    maxZoomLevel: 2.5659777424483305,
+                    visibilityRatio: 0.001,
+                    showNavigator: false,
+                    showFullPageControl: false,
+                    showZoomControl: false,
+                });
+
+                $('input[type=range]').on('change', function () {
+                    viewer.viewport.zoomTo($(this).val());
+                });
+
+                viewer.addHandler("canvas-click", eventHandler, {eventType: "viewer canvas-click"});
+                viewer.addHandler("canvas-press", eventHandler, {eventType: "viewer canvas-click"});
+                viewer.addHandler("pan", eventHandler, {eventType: "viewer pan"});
+                viewer.addHandler('canvas-scroll', eventHandler, {eventType: "viewer mousewheel"});
+
+                function eventHandler(event, obj) {
+                    let zoom = viewer.viewport.getZoom();
+                    $('input[type=range]').val(zoom);
+                }
+
+                $(window).resize();
+            },
+            'autoSize': false,
+            'autoScale': false,
+            'autoDimensions': true,
+            'fitToView': false,
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $('#moreDetails').click(function () {
+                $(this).remove();
+                $('div.details').removeClass('hidden');
+            });
+
+            {% if work.gallery %}
+            $('#gallery-thumbs img').click(function () {
+                var src = $(this).data('image');
+                var imgSrc = $(this).data('src');
+                if ($('#mainPhoto').attr('src') != src) {
+                    $('#mainPhoto').attr('src', src);
+                    $('#mainPhoto').parent().attr('href', imgSrc);
+                }
+            });
+            {% endif %}
+        });
+    </script>
+
+{% endblock %}

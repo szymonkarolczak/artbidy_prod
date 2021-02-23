@@ -1,0 +1,361 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ parent() }} - Worldwide Artbase{% endblock %}
+
+{% block body %}
+    <!-- Block {{ __FILE__ }} -->
+    <div class="container">
+
+        {% if banner.value is defined %}
+            {{ banner.value|raw }}
+        {% else %}
+            <section id="banner" class="stdSection text-center pt_0">
+                {% if bannerValue == '%prezentacja_galerii%' %}
+                    <div class="owl-carousel mb_0">
+                        {% for gallery in banner %}
+                            <div class="item">
+                                <div class="text-center">
+                                    <a href="{{ path("profile", {id: gallery.id, slug: gallery.profileSlug|slugify, prefix: gallery.profilePrefix}) }}">
+                                        <img src="{{ asset('files/user/'~gallery.image) | imagine_filter('compress') }}" style="max-height: 200px;" alt="Gallery {{ gallery.id }}"></a>
+                                    <h2><a href="{{ path("profile", {id: gallery.id, slug: gallery.profileSlug|slugify, prefix: gallery.profilePrefix}) }}">{{ gallery.fullname }}</a></h2>
+                                    <p>{{ gallery.address }}, {{ gallery.city|trans }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% elseif bannerValue == '%nadchodzace_aukcje%' %}
+                    <div class="owl-carousel mb_0">
+                        {% for auction in banner %}
+                            <div class="item">
+                                <div class="text-center">
+                                    <a href="{{ path("auction", {id: auction.id, slug: auction.title|slugify}) }}">
+                                        <img src="{{ asset('files/auction/'~auction.image) | imagine_filter('compress1') }}" style="max-height: 200px;" alt="Auction {{ auction.id }}"></a>
+                                    <h2><a href="{{ path("auction", {id: auction.id, slug: auction.title|slugify}) }}">{{ auction.title }}</a></h2>
+                                    <p>{{ auction.description }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% elseif bannerValue == '%wyniki_aukcji%' %}
+                    <div class="owl-carousel">
+                        {% for bids in banner %}
+                            {% set work = bids[0].work %}
+                            <div class="item">
+                                <div class="text-center">
+                                    <a href="{{ path("work_see", {id: work.id, slug: work.title|slugify}) }}">
+                                        <img src="{{ asset('files/work/'~work.image) | imagine_filter('compress') }}" alt="{{ work.id }} :: {{ work.title }}"></a>
+                                    <div class="caption">
+                                        <small>{{ work.artist }}</small>
+                                        <h4 class="mb_0 mt_0">
+                                            <a href="{{ path('work_see', {id: work.id, slug: work.title|slugify}) }}">{{ work.title }}</a>
+                                        </h4>
+                                        <p class="mb_0 small">{{ work.author.fullname ? work.author.fullname : work.author.username }}</p>
+                                        <p class="small">
+                                            {% if not app.user %}
+                                                {{ 'auctions.cena_sprzedazy_ukryta'|trans }}
+                                            {% else %}
+                                                {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_SUPER_ADMIN") or app.user.database|date('Y-m-d H:i:s') > 'now'|date('Y-m-d H:i:s') %}
+                                                    {{ 'auctions.sprzedano_za'|trans({'%cena%': bids[1]~' '~work.currency.code}) }}
+                                                {% else %}
+                                                    <a href="{{ path('footer_information', {page: 'database'}) }}">{{ 'auctions.wykup_baza_cen'|trans }}</a>
+                                                {% endif %}
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% elseif bannerValue == '%nadchodzace_wystawy%' %}
+                    <div class="owl-carousel mb_0">
+                        {% for exhibition in banner %}
+                            <div class="item">
+                                <div class="text-center">
+                                    <a href="{{ path("exhibition", {id: exhibition.id, slug: exhibition.title|slugify}) }}">
+                                        <img src="{{ asset('files/exhibition/'~exhibition.image) | imagine_filter('compress') }}" style="max-height: 200px;" alt="Exhibition {{ exhibition.id }}"></a>
+                                    <h2><a href="{{ path("exhibition", {id: exhibition.id, slug: exhibition.title|slugify}) }}">{{ exhibition.title }}</a></h2>
+                                    <p>{{ exhibition.address }}, {{ exhibition.city|trans }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% elseif bannerValue == '%polecane_wydarzenia%' %}
+                    <div class="owl-carousel mb_0">
+                        {% for event in banner %}
+                            <div class="item">
+                                <div class="text-center">
+                                    <a href="#">
+                                        <img src="{{ asset('files/event/'~event.image) | imagine_filter('compress') }}" style="max-height: 200px;" alt="Event {{ event.id }}"></a>
+                                    <h2><a href="#">{{ event.title }}</a></h2>
+                                    <p>{{ event.address }}, {{ event.city|trans }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% elseif bannerValue == '%najnowsze_aktualnosci%' %}
+                    <div class="owl-carousel mb_0">
+                        {% for news in banner %}
+                            <div class="item">
+                                <div class="text-center">
+                                    <a href="{{ path("news", {id: news.id, slug: news.langs.first.title|slugify}) }}">
+                                        <img src="{{ asset('files/news/'~news.image) | imagine_filter('compress') }}" style="max-height: 200px;" alt="Event {{ news.id }}"></a>
+                                    <h2><a href="{{ path("news", {id: news.id, slug: news.langs.first.title|slugify}) }}">{{ news.langs.first.title }}</a></h2>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </section>
+        {% endif %}
+
+        <section id="finearts-auctions" class="stdSection text-center">
+            <h1 class="small">{{ 'main_menu.aukcje'|trans }}</h1>
+
+            <div class="owl-carousel">
+                {% for auction in auctions %}
+                {% set title = auction.title %}
+                {% set description = auction.description %}
+                {% set auction = auction[0] %}
+                <div class="item">
+                    <div>
+                        <a style="display: block; text-align: center;" href="{{ path("auction", {id: auction.id, slug: title|slugify}) }}">
+                            <img src="{{ asset('files/auction/'~auction.image) | imagine_filter('compress') }}" alt="Auction {{ auction.id }}">
+                        </a>
+                        <h2 class="text-center"><a href="{{ path("auction", {id: auction.id, slug: title|slugify}) }}">{{ title }}</a></h2>
+                        <p class="text-center">{{ description }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <a href="{{ path("auctions") }}">{{ 'home.zobacz_wszystkie_aukcje'|trans }}</a>
+        </section>
+
+        <section id="news" class="stdSection text-center">
+            <h1 class="small">{{ 'main_menu.aktualnosci'|trans }}</h1>
+
+            <div class="row text-left mb_25 home-articles">
+                <div class="col-md-4">
+                    <ul id="articles-list">
+                        {% for article in articles %}
+                            <li data-target="#article-{{ article.id }}" class="{{ loop.index == 1 ? 'active' }}"><a class="changeNews" href="#changeNews">{{ article.langs.first.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% for article in articles %}
+                <div id="article-{{ article.id }}" class="col-md-8{{ loop.index != 1 ? ' hidden' }}">
+                    <div class="col-md-6 text-right">
+                        <img src="{{ asset('files/news/'~article.image) | imagine_filter('compress') }}" class="newsArticlesImages" alt="{{ article.langs.first.title }}" style="max-width: 100%; max-height: 300px" />
+                    </div>
+                    <div class="col-md-6 articleInfo">
+                        <h3 class="mt_0 mb_15">{{ article.langs.first.title }}</h3>
+                        <p>{{ article.langs.first.smallText|slice(0,450)|striptags('<p>')|raw }}</p>
+                        <a{% if is_mobile() %} style="display: block; text-align: center;"{% endif %} href="{{ path("news", {id: article.id, slug: article.langs.first.title|slugify}) }}">{{ 'home.czytaj_dalej'|trans }}</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <a href="{{ path("newses") }}">{{ 'home.zobacz_wszystkie_aktualnosci'|trans }}</a>
+        </section>
+
+            <section id="events" class="stdSection text-center">
+                <h1 class="small">{{ 'main_menu.wydarzenia'|trans }}</h1>
+
+                <div class="owl-carousel">
+                    {% for event in events %}
+                        {% set title = event.title %}
+                        {% set description = event.description %}
+                        {% set event = event[0] %}
+                        {% if event.exhibition %}
+                            {% set url = path("exhibition", {id: event.exhibition.id, slug: title|slugify}) %}
+                        {% elseif event.houseAuction %}
+                            {% set url = path("houseauction", {id: event.houseauction.id, slug: title|slugify}) %}
+                        {% else %}
+                            {% set url = path("event", {id: event.id, slug: title|slugify}) %}
+                        {% endif %}
+                        <div class="item">
+                            <div class="text-center">
+                                <a href="{{ url }}"><img src="{{ asset('files/event/'~event.image) | imagine_filter('compress') }}" style="max-width: 100%;" alt="Event {{ event.id }}"></a>
+                                <h2><a href="{{ url }}">{{ title }}</a></h2>
+                                <p>{{ description|length > 180 ? description|slice(0, 180) ~ '...' : description  }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <a href="{{ path("events") }}">{{ 'wydarzenia.zobacz_wszystkie_wydarzenia'|trans }}</a>
+            </section>
+
+{#        {% if ads[0] is defined and ads[0] %}#}
+{#            {{ ads[0].content|raw }}#}
+{#        {% endif %}#}
+
+        <section id="auction-houses" class="stdSection text-center">
+            <h1 class="small">{{ 'main_menu.domy_aukcyjne'|trans }}</h1>
+
+            <div class="owl-carousel">
+                {% for gallery in houses %}
+                <div class="item">
+                    {% include 'AppBundle:HouseAuction:item.html.twig' with {user: gallery} %}
+                </div>
+                {% endfor %}
+            </div>
+
+            <a href="{{ path("auction_houses") }}">{{ 'home.zobacz_wszystkie_domy_aukcyjne'|trans }}</a>
+        </section>
+
+        <section id="galleries" class="stdSection text-center">
+            <h1 class="small">{{ 'main_menu.galerie'|trans }}</h1>
+
+            <div class="owl-carousel">
+                {% for gallery in galleries %}
+                    <div class="item">
+                        {% include 'AppBundle:Gallery:item.html.twig' with {user: gallery} %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <a href="{{ path("galleries") }}">{{ 'home.zobacz_wszystkie_galerie'|trans }}</a>
+        </section>
+
+
+        <section id="artists" class="stdSection text-center">
+            <h1 class="small">{{ 'main_menu.artysci'|trans }}</h1>
+
+            <div class="owl-carousel-8">
+                {% for artist in artists %}
+                <div class="item">
+                    {% include 'AppBundle:Artist:item.html.twig' with {user: artist} %}
+                </div>
+                {% endfor %}
+            </div>
+
+            <a href="{{ path("artists") }}">{{ 'home.znajdz_artyste'|trans }}</a>
+        </section>
+
+        <section id="works" class="stdSection text-center">
+            <h1 class="small">{{ 'main_menu.dziela'|trans }}</h1>
+
+            <div class="owl-carousel">
+                {% for work in works %}
+                    {% set artist_id = work.id %}
+                    {% set work = work[0] %}
+                <div class="item">
+                    <div class="text-center">
+                        <a href="{{ path("work_see", {id: work.id, slug: work.title|slugify}) }}">
+                            <img src="{{ asset('files/work/'~work.image) | imagine_filter('compress') }}" alt="{{ work.id }} :: {{ work.title }}"></a>
+                        <div class="caption">
+                            <small>
+                                {% if artist_id %}
+                                    <a href="{{ path('profile', {id: artist_id, slug: work.artist|slugify, prefix: 'artists'}) }}">{{ work.artist }}</a>
+                                {% else %}
+                                    {{ work.artist }}
+                                {% endif %}
+                            </small>
+                            <h4 style="font-style: italic" class="mb_0 mt_0">
+                                <a href="{{ path('work_see', {id: work.id, slug: work.title|slugify}) }}">{{ work.title }} {{ work.year ? ', '~work.year }}</a>
+                            </h4>
+                            {% if not work.auctionWorks %}
+                            <p class="mb_0 small">{{ work.priceOnRequest ? 'add_work.price_on_request'|trans : currency.convert(work.currency.code, app.session.get('_currency'), work.price) }} {{ not work.priceOnRequest ? app.session.get('_currency') }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <a href="{{ path("works_all") }}">{{ 'home.zobacz_wszystkie_dziela'|trans }}</a>
+        </section>
+
+        {% if ads[1] is defined and ads[1] %}
+            {{ ads[1].content|raw }}
+        {% endif %}
+
+        <section id="extra" class="stdSection text-center">
+            <h1 class="small">{{ 'home.pakiety_dodatkowe'|trans }}</h1>
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    <h1 class="small mb_25">{{ 'home.baza_cen'|trans }}</h1>
+                    <p>{{ 'home.pakiety.baza_cen'|trans }}</p>
+                    <a href="{{ path("footer_information", {page: 'database'}) }}">{{ 'home.dowiedz_sie_wiecej'|trans }}</a>
+                </div>
+                <div class="col-md-4 col-xs-12">
+                    <h1 class="small mb_25">{{ 'home.powiadomienia'|trans }}</h1>
+                    <p>{{ 'home.pakiety.powiadomienia'|trans }}</p>
+                    <a href="{{ path("footer_information", {page: 'annoucements'}) }}">{{ 'home.dowiedz_sie_wiecej'|trans }}</a>
+                </div>
+                <div class="col-md-4 col-xs-12">
+                    <h1 class="small mb_25">{{ 'home.raporty'|trans }}</h1>
+                    <p>{{ 'home.pakiety.raporty'|trans }}</p>
+                    <a href="{{ path("footer_information", {page: 'reports'}) }}">{{ 'home.dowiedz_sie_wiecej'|trans }}</a>
+                </div>
+            </div>
+        </section>
+
+    </div> <!-- /container -->
+
+{% endblock %}
+
+{% block css %}
+    <!-- Owl Carousel Assets -->
+    <link href="{{ asset('assets/vendor/owl.carousel/owl-carousel/owl.carousel.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/owl.carousel/owl-carousel/owl.theme.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block javascripts %}
+<script src="{{ asset('assets/vendor/owl.carousel/owl-carousel/owl.carousel.js') }}"></script>
+<script type="text/javascript">
+    $(function() {
+        $(".owl-carousel").owlCarousel({
+            itemsScaleUp: false,
+            navigationText: false,
+            navigation: true,
+            pagination: false,
+            autoPlay: 3000,
+            items : 3,
+            itemsDesktop : [1199,3],
+            itemsDesktopSmall : [979,3]
+        });
+        $(".owl-carousel-8").owlCarousel({
+            itemsScaleUp: false,
+            navigationText: false,
+            navigation: true,
+            pagination: false,
+            autoPlay: 3000,
+            items : 4,
+            itemsDesktop : [1199,3],
+            itemsDesktopSmall : [979,3]
+        });
+
+        {% if not is_mobile() %}
+        var articlesInterval = setInterval(function() {
+            var $current = $('ul#articles-list li.active');
+            $current.removeClass('active');
+            $($current.data('target')).addClass('hidden');
+            var $next = $('ul#articles-list li:nth-child('+($current.index()+2)+')');
+            if(!$next.length) $next = $('ul#articles-list li').first();
+            $next.addClass('active');
+            $($next.data('target')).removeClass('hidden');
+        }, 3000);
+        {% endif %}
+        $('a.changeNews').click(function(e) {
+            e.preventDefault();
+            {% if not is_mobile() %}
+            clearInterval(articlesInterval);
+            {% endif %}
+            
+            var $clickedLi = $(this).parent();
+            if($clickedLi.hasClass('active'))
+                return;
+            
+            var $current = $('ul#articles-list li.active');
+            $current.removeClass('active');
+            $($current.data('target')).addClass('hidden');
+
+            $clickedLi.addClass('active');
+            $($clickedLi.data('target')).removeClass('hidden');
+        });
+    });
+</script>
+{% endblock %}

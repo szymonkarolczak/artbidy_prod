@@ -1,0 +1,150 @@
+head:
+  title: 'Rynek Sztuki - Dzieła, Aukcje, Artyści, Galerie'
+  description: 'Najlepszy rynek sztuki w Polsce'
+
+main:
+    zapisz: 'Zapisz'
+    dane_zmienione: 'Dane zostały zmienione.'
+    preferencje: 'Preferencje'
+    faktury: 'Faktury'
+    wystaw_nowe_dzielo: 'Wystaw nowe dzieło'
+    opcje: 'Opcje'
+    od: 'Od'
+    do: 'Do'
+    waluta: 'Waluta'
+    data_dodania: 'Data dodania'
+    zatwierdzone: 'Zatwierdzone'
+    akcja: 'Akcja'
+    informacje: 'Informacje'
+    zobacz: 'Zobacz'
+    tak: 'Tak'
+    nie: 'Nie'
+    filtruj: 'Filtruj'
+    wyczysc: 'Wyczyść'
+    tytul: 'Tytuł'
+    
+roles:
+    artysta: 'Artysta'
+    dom_aukcyjny: 'Dom aukcyjny'
+    galeria: 'Galeria'
+    edytor: 'Edytor'
+    redaktor: 'Redaktor'
+    administrator: 'Administrator'
+
+main_menu:
+    dziela: 'Dzieła'
+    aukcje: 'Aukcje'
+    artysci: 'Artyści'
+    galerie: 'Galerie'
+    domy_aukcyjne: 'Domy aukcyjne'
+    wydarzenia: 'Wydarzenia'
+    aktualnosci: 'Aktualności'
+    search: 'Szukaj'
+    zarejestruj_sie: 'Zarejestruj się'
+
+login:
+  jestes_nowy: 'Jesteś nowy? %link_start% Dołącz %link_end%'
+  zapomniales_hasla: 'Zapomniałeś hasła?'
+
+register:
+  zarejestruj_sie: 'Zarejestruj się'
+  potwierdzenie_konta: 'Potwierdzenie konta'
+  zweryfikuj_adres: 'Zweryfikuj adres e-mail'
+  akceptuje_newsletter: 'Chcę otrzymywać informacje z serwisu na mój adres e-mail'
+  akceptuje_regulamin: 'Akceptuję regulamin oraz politykę prywatności serwisu'
+
+profile:
+  profil_uzytkownika: 'Profil użytkownika'
+  edytuj_konto: 'Edytuj konto'
+  informacje: 'Informacje'
+  wyniki_aukcji: 'Wyniki aukcji'
+  dziela_brak: 'Użytkownik nie dodał jeszcze żadnych dzieł.'
+  znaleziono_liczba_news: 'Znaleziona liczba aktualności: '
+  ustawienia:
+    ustawienia: 'Ustawienia'
+    ogolne: 'Ogólne'
+    zmiana_hasla: 'Zmiana hasła'
+    informacje_o_koncie: 'Informacje o koncie'
+    dane_kontaktowe: 'Dane kontaktowe'
+    dane_do_faktury: 'Dane do faktury'
+    faktura_nazwa: 'Imię i nazwisko lub nazwa firmy'
+    wizytowka: 'Wizytówka'
+    wizytowka_brak_dostepu: 'Twoje konto nie posiada wystarczających uprawnień aby zmienić wizytówkę.'
+    zdjecie_profilowe: 'Zdjęcie profilowe'
+    
+
+user:
+  profil: 'Profil'
+  ustawienia: 'Ustawienia'
+  wyloguj: 'Wyloguj'
+  imie_i_nazwisko: 'Imię i nazwisko'
+  data_urodzenia: 'Data urodzenia'
+  haslo_zmienione: 'Hasło zostało poprawnie zmienione.'
+  numer_telefonu: 'Numer telefonu'
+  adres: 'Adres'
+  kod_pocztowy: 'Kod pocztowy'
+  miasto: 'Miasto'
+  kraj: 'Kraj'
+  nip: 'NIP'
+  nazwa: 'Nazwa'
+
+add_work:
+  dane: 'Dane na temat dodawanego dzieła'
+  artysta: 'Artysta / Producent'
+  tytul: 'Tytuł dzieła'
+  technika: 'Technika'
+  edycja_seria: 'Edycja / Seria'
+  typ: 'Typ obiektu'
+  styl: 'Movement'
+  katalog: 'Katalog'
+  price_on_request: 'Zapytaj o cenę'
+  cena: 'Cena'
+  signatures: 'Signatures'
+  opis: 'Opis'
+  grafika: 'Grafika'
+  dodane: 'Nowe dzieło zostało przekazane do sprawdzenia przez administratora.'
+  nie_dodane: 'Nowe dzieło nie mogło zostać dodane. Skontaktuj się z administratorem serwisu.'
+  dodaj: 'Dodaj nowe dzieło'
+
+works:
+  twoje: 'Twoje dzieła'
+  informacje: 'Informacje o Twoim dziele'
+  oczekuje_na_akceptacje: 'To dzieło oczekuje na akceptację przez administratora.'
+  nie_znaleziono: 'Nie znaleziono żadnych dzieł.'
+  znaleziono_liczba: 'Znaleziona liczba dzieł: '
+
+home:
+  polecane_aukcje: 'Polecane aukcje'
+  zobacz_wszystkie_aukcje: 'Zobacz wszystkie aukcje'
+  zobacz_wszystkie_domy_aukcyjne: 'Zobacz wszystkie domy aukcyjne'
+  zobacz_wszystkie_aktualnosci: 'Zobacz wszystkie aktualności'
+  zobacz_wszystkie_galerie: 'Zobacz wszystkie galerie'
+  zobacz_wszystkie_dziela: 'Zobacz wszystkie dzieła'
+  znajdz_artyste: 'Znajdź artystę'
+  pakiety_dodatkowe: 'Usługi dodatkowe'
+  powiadomienia: 'Powiadomienia'
+  baza_cen: 'Baza cen'
+  raporty: 'Raporty'
+  dowiedz_sie_wiecej: 'Dowiedz się więcej'
+  czytaj_dalej: 'Czytaj dalej'
+
+artists:
+  znaleziono_liczba: 'Znaleziona liczba artystów: '
+  nie_znaleziono: 'Nie znaleziono żadnych artystów.'
+
+auctionhouse:
+  znaleziono_liczba: 'Znaleziona liczba domów aukcyjnych: '
+  nie_znaleziono: 'Nie znaleziono żadnych domów aukcyjnych.'
+
+galleries:
+  znaleziono_liczba: 'Znaleziona liczba galerii: '
+  nie_znaleziono: 'Nie znaleziono żadnych galerii.'
+
+auctions:
+  znaleziono_liczba: 'Znaleziona liczba aukcji: '
+  nie_znaleziono: 'Nie znaleziono żadnych aukcji.'
+  rozpoczeta: 'Aukcja rozpoczyna się za: '
+
+newses:
+  znaleziono_liczba: 'Znaleziona liczba aktualności: '
+  nie_znaleziono: 'Nie znaleziono żadnych aktualności.'

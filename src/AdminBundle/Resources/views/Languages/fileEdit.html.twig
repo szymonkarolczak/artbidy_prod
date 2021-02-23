@@ -1,0 +1,36 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="page-header mt_0">
+            <h1 class="mt_0">{{ 'ogolne.jezyki.edytuj_plik'|trans }}</h1>
+        </div>
+
+        <form method="post">
+            <div class="row">
+                <div class="col-md-9 col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">{{ 'ogolne.jezyki.dane'|trans }}</div>
+                        <div class="panel-body">
+                            <textarea class="form-control" style="min-height: 400px" name="contentFile">{{ content }}</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">{{ 'admin.akcje'|trans }}</div>
+                        <div class="panel-body">
+                            <input type="submit" class="btn btn-success" value="{{ 'admin.edytuj'|trans }}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'UserBundle:Default:base.html.twig' %}
+
+{% block content %}
+    <div class="row mt_20">
+        <div class="col-md-12">
+            <div class="page-header mt_0">
+                <h4>{{ 'exhibition.znaleziona_liczba'|trans }} {{ pagination.getTotalItemCount }}</h4>
+            </div>
+            <div class="row">
+                {% for exhibition in pagination %}
+                    <div class="item col-xs-12">
+                        <div class="text-center">
+                            <div class="text-center col-md-4">
+                                <a href="{{ path('exhibition',{id: exhibition.id}) }}">
+                                    <img src="{{asset('files/exhibition/'~exhibition.image)| imagine_filter('thumb_378x250')}}" style="width:100%; height: 270px; object-fit: cover;"></a>
+{#                                <a href="{{ path('exhibition', {id: exhibition.id, slug: exhibition.title|slugify}) }}"><img src="{{ asset('files/exhibition/'~exhibition.image) }}" alt="{{ exhibition.title }} {{ exhibition.id }}"></a>#}
+                                
+                            </div>
+                            <h2 class="mb_5 col-md-8">
+                                <a href="{{ path('exhibition',{id: exhibition.id}) }}">{{ exhibition.title }}</a>
+                            </h2>
+                            <p>
+                                {{ exhibition.address }}
+                            </p>
+                                {#                                
+{#                            <p class="mb_0"><a href="{{ path('profile', {id:user.id, slug:user.profileSlug|slugify, prefix:user.profilePrefix}) }}">{{ user.fullname ? user.fullname : user.username }}</a></p>#}
+{#                            <p class="small">{{ 'exhibition.koniec'|trans({'%data%': exhibition.endDate|date('Y-m-d H:i:s')}) }}</p>#}
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        {{ 'exhibition.nie_znaleziono'|trans }}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="navigation text-center">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

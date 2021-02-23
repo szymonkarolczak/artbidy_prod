@@ -1,0 +1,66 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ 'profile.bids.twoje'|trans }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+
+        <div class="page-header mt_0">
+            <h1 class="mt_0">{{ 'auctions.provision.title'|trans }}</h1>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                {% if auctionWork is not empty %}
+                <img src="{{ asset("files/work/"~auctionWork.work.image) | imagine_filter('compress') }}" style="max-width: 100%;" />
+                {%  else %}
+                    <img src="{{ asset("files/work/"~bid.work.image) | imagine_filter('compress') }}" style="max-width: 100%;" />
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+                {% if auctionWork is not empty %}
+                <p>{{ 'auctions.provision.gratulacje'|trans({'%obiekt%': auctionWork.work.title, '%aukcja%': auction.langs.first.title, '%procent%': auction_provision~'%'}) }}</p>
+                {%  else %}
+                    <p>
+                        {{ 'works.provision.gratulacje'|trans({'%obiekt%': bid.work.title, '%aukcja%': '', '%procent%': auction_provision~'%'}) }}
+                    </p>
+                {% endif %}
+                <hr />
+                <h4 style="margin-top: 35px">{{ 'transfer.dokonaj_platnosci'|trans }}</h4>
+                <table class="table">
+                    <tr>
+                        <td class="text-right">{{ 'transfer.odbiorca'|trans }}:</td>
+                            <td>
+                                {{ bank_owner }}<br />
+                                {{ bank_country }}<br />
+                                {{ bank_city }}<br />
+                                {{ bank_street }}
+                            </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">{{ 'transfer.numer'|trans }}</td>
+                        <td>{{ bank_number }}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">IBAN:</td>
+                        <td>
+                            {{ bank_iban }}<br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">BIC/SWIFT:</td>
+                        <td>{{ bank_bic }}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">{{ 'transfer.tytul'|trans }}</td>
+                        <td>{{ app.user.username }}-bid-{{ bid.id }}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">{{ 'main.kwota'|trans }}</td>
+                        <td id="amount">{{ currency.convert(bid.currency.code|upper, app.session.get('_currency'), bid.amount*(auction_provision/100)) }} {{ app.session.get('_currency') }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

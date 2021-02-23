@@ -1,0 +1,67 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ work.title }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        <div class="page-header mt_0">
+            <h1 class="mt_0">{{ work.title }}</h1>
+        </div>
+
+        {% if not work.approved %}
+            <div class="alert alert-warning">{{ 'works.oczekuje_na_akceptacje'|trans }}</div>
+        {% endif %}
+        
+        <div class="row">
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'add_work.grafika'|trans }}</div>
+                    <div class="panel-body">
+                      <img src="{{ asset("files/work/"~work.image) | imagine_filter('compress') }}" style="max-width: 100%;" alt="{{ work.id }} image" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <table class="table table-striped">
+                    <tr>
+                        <td>{{ 'add_work.tytul'|trans }}</td>
+                        <td>{{ work.title }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'add_work.artysta'|trans }}</td>
+                        <td>{{ work.artist }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'add_work.technika'|trans }}</td>
+                        <td>{{ work.technique }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'add_work.typ'|trans }}</td>
+                        <td>{{ work.type }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'add_work.styl'|trans }}</td>
+                        <td>{{ work.style }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'add_work.opis'|trans }}</td>
+                        <td>{{ work.description }}</td>
+                    </tr>
+                    {% if work.priceOnRequest is not null %}
+                    <tr>
+                        <td>{{ 'add_work.cena'|trans }}</td>
+                        <td>
+                            {{ work.priceOnRequest ? 'add_work.price_on_request'|trans : work.price }} 
+                            ({{ work.currency.code }})
+                        </td>
+                    </tr>
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+
+    </div> <!-- /container -->
+
+{% endblock %}

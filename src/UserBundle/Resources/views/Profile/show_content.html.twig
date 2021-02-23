@@ -1,0 +1,12 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div class="container">
+
+    <div class="page-header mt_0">
+        <h1 class="mt_0">{{ 'profile.profil_uzytkownika'|trans([], 'messages') }}</h1>
+    </div>
+
+    <p>{{ 'profile.show.username'|trans }}: {{ user.username }}</p>
+    <p>{{ 'profile.show.email'|trans }}: {{ user.email }}</p>
+
+</div>

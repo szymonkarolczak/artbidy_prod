@@ -1,0 +1,45 @@
+# app/config/security.yml
+
+security:
+    encoders:
+        FOS\UserBundle\Model\UserInterface: bcrypt
+
+    role_hierarchy:
+        ROLE_DOM_AUKCYJNY:     ROLE_USER
+        ROLE_GALERIA:          ROLE_USER
+        ROLE_ARTYSTA:          ROLE_USER
+        ROLE_MUZEUM:           ROLE_USER
+        ROLE_REDAKTOR:         ROLE_USER
+        ROLE_EDYTOR:           ROLE_REDAKTOR
+        ROLE_ADMIN:            ROLE_EDYTOR
+        ROLE_SUPER_ADMIN:      ROLE_ADMIN
+
+    providers:
+        fos_userbundle:
+#            id: fos_user.user_provider.username
+            id: fos_user.user_provider.username_email
+
+    firewalls:
+        main:
+            pattern: ^/
+            form_login:
+                provider: fos_userbundle
+#                csrf_token_generator: security.csrf.token_manager
+                login_path: fos_user_security_login
+                check_path: fos_user_security_check
+
+            logout:       true
+            anonymous:    true
+
+    access_control:
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/$, role: ROLE_REDAKTOR }
+        - { path: ^/admin/news, role: ROLE_REDAKTOR }
+        - { path: ^/admin/auctions, role: ROLE_REDAKTOR }
+        - { path: ^/admin/exhibitions, role: ROLE_REDAKTOR }
+        - { path: ^/admin/events, role: ROLE_REDAKTOR }
+        - { path: ^/admin/works, role: ROLE_EDYTOR }
+        - { path: ^/admin/users, role: ROLE_EDYTOR }
+        - { path: ^/admin/, role: ROLE_ADMIN }

@@ -1,0 +1,179 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="page-header">
+            <h1>Zobacz aktualny stan newslettera</h1>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-sm-12 col-xs-12">
+                <div class="x_panel tile">
+                    <div class="x_title">
+                        <h2><input id="customTyp" type="radio" name="typNewslettera" value="custom"
+                                   style="margin-right: 10px;">Własny</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li style="float: right"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        {{ form_row(form.title) }}
+                        {{ form_row(form.content) }}
+                    </div>
+                    <div class="x_content">
+                        {{ form_row(form.titleEn) }}
+                        {{ form_row(form.contentEn) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 col-xs-12">
+                <div class="x_panel tile">
+                    <div class="x_title">
+                        <h2>Test</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li style="float: right"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <form id="send" method="post">
+                            <input type="hidden" name="typ" value=""/>
+                            <input type="hidden" name="title" value=""/>
+                            <input type="hidden" name="content" value=""/>
+                            <input type="email" placeholder="Adres E-mail" class="form-control" name="email"/><br/>
+                            <input id="sendButton" type="submit" class="btn btn-success"
+                                   value="Wyślij"/>
+                        </form>
+                    </div>
+                </div>
+                <div class="x_panel tile">
+                    <div class="x_title">
+                        <h2>Akcje</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li style="float: right"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <form action="{{ path('newsletter_send_now') }}" id="sendNow" method="post">
+                            <input type="hidden" name="typ" value=""/>
+                            <input type="hidden" name="title" value=""/>
+                            <input type="hidden" name="titleEn" value=""/>
+                            <input type="hidden" name="content" value=""/>
+                            <input type="hidden" name="contentEn" value=""/>
+                            <button id="sendButtonNow" type="button"
+                                    class="btn btn-primary btn-block btn-lg" onclick="sendNewsletter();return false;">Wyślij teraz
+                            </button>
+                        </form>
+                        <a href="{{ path('newsletter_break') }}" class="btn btn-primary btn-block btn-lg " style="background: darkred">Przerwij</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-sm-12 col-xs-12">
+                <div class="x_panel tile">
+                    <div class="x_title">
+                        <h2><input type="radio" name="typNewslettera" value="generated" checked
+                                   style="margin-right: 10px;">Automatyczny</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li style="float: right"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        {{ newsletter|raw }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        function setTyp() {
+            let typ = $('[name=typNewslettera]:checked').val();
+            if (typeof typ === 'undefined') typ = 'generated';
+            $('#send input[name=typ]').val(typ);
+            $('#sendNow input[name=typ]').val(typ);
+            if (typ === 'generated' ){
+                $('#send input[name=content]').val('');
+                $('#sendNow input[name=content]').val('');
+                $('#send input[name=contentEn]').val('');
+                $('#sendNow input[name=contentEn]').val('');
+                $('#send input[name=title]').val('');
+                $('#sendNow input[name=title]').val('');
+                $('#sendNow input[name=titleEn]').val('');
+            }
+        }
+
+        var editor = CKEDITOR.instances['admin_newsletter_content'];
+        var editorEn = CKEDITOR.instances['admin_newsletter_contentEn'];
+
+        let title = $('#admin_newsletter_title').val();
+        let titleEn = $('#admin_newsletter_titleEn').val();
+
+        $('#admin_newsletter_title').change(function () {
+            let title = $(this).val();
+            $('#send input[name=title]').val(title);
+            $('#sendNow input[name=title]').val(title);
+            $('#customTyp').attr('checked', true);
+            $('#send input[name=typ]').val('custom');
+            $('#sendNow input[name=typ]').val('custom');
+        });
+
+        $('#admin_newsletter_titleEn').change(function () {
+            let title = $(this).val();
+            $('#send input[name=titleEn]').val(title);
+            $('#sendNow input[name=titleEn]').val(title);
+            $('#customTyp').attr('checked', true);
+            $('#send input[name=typ]').val('custom');
+            $('#sendNow input[name=typ]').val('custom');
+        });
+
+        editor.on('change', function (evt) {
+            $('#customTyp').attr('checked', true);
+            $('#send input[name=typ]').val('custom');
+            $('#sendNow input[name=typ]').val('custom');
+            let content = evt.editor.getData()
+            $('#send input[name=content]').val(content);
+            $('#sendNow input[name=content]').val(content);
+        });
+
+        editorEn.on('change', function (evt) {
+            $('#customTyp').attr('checked', true);
+            $('#send input[name=typ]').val('custom');
+            $('#sendNow input[name=typ]').val('custom');
+            let contentEn = evt.editor.getData()
+            $('#send input[name=contentEn]').val(contentEn);
+            $('#sendNow input[name=contentEn]').val(contentEn);
+        });
+
+        $('[name=typNewslettera]').on('change', function () {
+            setTyp();
+        });
+
+        setTyp();
+
+        let sendNewsletter = function () {
+            let params = $('#sendNow').serialize();
+            $.ajax({
+                type: 'POST',
+                url : '/admin/newsletter/send',
+                data: params,
+            }).done(function (response) {
+                document.location.href = '/admin/newsletter/show';
+            })
+        }
+
+    </script>
+{% endblock %}

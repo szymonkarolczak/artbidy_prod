@@ -1,0 +1,450 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ auction.title }} - {{ parent() }}{% endblock %}
+
+{% block meta %}
+    <meta property="og:image" content="{{ absolute_url(asset('files/work/'~work.image)) }}"/>
+    <meta name="auction" property="og:title" content="{{ work.title }}"/>
+    {#    <meta property="og:description" content="{{ auction.description }}" />#}
+    <meta property="og:description" content="{{ work.description }}"/>
+{% endblock %}
+
+{% block metatitle %}
+
+    {% if app.request.locale == 'pl' and work.metatitle is not empty %}
+        <title>{{ work.metatitle }}</title>
+    {% elseif app.request.locale == 'en' and work.metatitleEn is not empty %}
+        <title>{{ work.metatitleEn }}</title>
+    {% else %}
+        <title>{% if (app.request.get('_route') in ['homepage']) and app.request.locale == 'pl' %}
+                {{ ('head.title' ~ app.request.get('_route')) |trans }}{% elseif (app.request.get('page') == 'galleries')  and app.request.locale == 'pl' %}
+                Galeria sztuki współczesnej Warszawa galeria obrazów, malarstwa{% elseif (app.request.get('page') == 'auction-houses')  and app.request.locale == 'pl' %}
+                Dom aukcyjny Artbidy - Partnerstwo Domów Aukcyjnych{% elseif (app.request.getUri() == 'https://pl.artbidy.com/news/icaboston')  and app.request.locale == 'pl' %}
+                Sztuka współczesna Artbidy sztuka współczesna w dobie Internetu
+            {% elseif (app.request.getUri() == 'https://pl.artbidy.com/news/ob') and app.request.locale == 'pl' %}
+                Sztuka współczesna, obrazy współczesne Artbidy{% elseif (app.request.getUri() == 'https://pl.artbidy.com/news/mw') and app.request.locale == 'pl' %}
+                Malarstwo współczesne Artbidy{% elseif (app.request.getUri() == 'https://pl.artbidy.com/news/mahak') and app.request.locale == 'pl' %}Malarstwo abstrakcyjne Artbidy{% else %}Artbidy{% endif %}</title>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+
+    {% set title = auction.title %}
+    {% set description = auction.description %}
+    {% set auction = auction[0] %}
+
+    {% set AuctionStarted = auction.startDate|date('Y-m-d H:i:s') < "now"|date('Y-m-d H:i:s') %}
+
+    {% set AuctionEnded = auction.endDate|date('Y-m-d H:i:s') < "now"|date('Y-m-d H:i:s') %}
+
+    <script>
+        var AuctionEnded = "{{ auction.endDate|date('Y-m-d H:i:s') }}";
+    </script>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-5">
+                <a class="lightbox" href="{{ asset('files/work/'~work.image) }}" style="cursor: zoom-in;">
+                    <img src="{{ asset('files/work/'~work.image)| imagine_filter('thumb_480x621') }}"
+                         style="width: 100%; height: auto; margin-top: 20px;">
+                </a>
+                {% if AuctionEnded %}
+                    <div id="countDownTimer" class="alert alert-info"
+                         style="padding: 20px 0; font-weight: bold; font-size: 17px; margin-top: 25px; text-align: center;">
+                        {{ 'auctions.zakonczona'|trans }}
+                    </div>
+                    <h5>
+                        {% if workInfo.bids is empty %}
+                            <div class="alert alert-warning">
+                                {{ 'auctions.obiekt_nie_sprzedany'|trans }}
+                            </div>
+                        {% else %}
+
+                        {% endif %}
+                    </h5>
+                {% else %}
+                    {% if not AuctionStarted %}
+                        <div class="alert alert-info">
+                            {% set difference = date(auction.startDate).diff(date('now')) %}
+
+                            {% set hoursEnd = difference.h == 1 ? 'godzinę'|trans : difference.h > 1 and difference.h < 5 ? 'godziny'|trans : 'godzin'|trans %}
+                            {% set daysEnd = difference.days == 1 ? 'dzień'|trans : 'dni'|trans %}
+
+                            {% set days = difference.days~' '~daysEnd %}
+                            {% set hours = difference.h~' '~hoursEnd %}
+                            {% set minutes = difference.i~' '~ 'minut'|trans %}
+
+                            {{ 'licytacja_zaczyna_sie_za'|trans({'%dni%': days, '%godzin%': hours, '%minut%': minutes, '%pelna%': auction.startDate|date('Y-m-d H:i:s')}) }}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            <div id="countDownTimer" class="alert alert-info"
+                                 style="padding: 20px 0; font-weight: bold; font-size: 17px; margin-top: 25px; text-align: center;"></div>
+                        </div>
+                    {% endif %}
+                {% endif %}
+
+            </div>
+
+            <div id="seeWork" class="col-md-7">
+                <div class="page-header mt_0">
+                    <h1>{{ work.title }}</h1>
+                    <h4><a href="{{ path('auction', {id: auction.id, slug: title|slugify}) }}">{{ title }}</a></h4>
+                    <a href="#" id="auctionWorkAsk" style="margin-bottom: 15px;"
+                       class="btn btn-fineart">{{ 'works.zapytaj'|trans }}</a>
+                    {% if not observe %}
+                        <a href="{{ path("auction_work_observe", {workId: workInfo.id}) }}" style="margin-bottom: 15px;"
+                           class="btn btn-fineart">{{ 'main.obserwuj'|trans }}</a>
+                    {% endif %}
+                    <div class="addthis_inline_share_toolbox"></div>
+                </div>
+
+                {% if workInfo.bids is empty %}
+                    {% set actualPrice =  currency.convert(work.currency.code, app.session.get('_currency'), workInfo.startPrice)~' '~app.session.get('_currency') %}
+                {% else %}
+                    {% set actualPrice =  currency.convert(workInfo.bids.last.currency.code, app.session.get('_currency'), workInfo.bids.last.amount)~' '~app.session.get('_currency') %}
+                {% endif %}
+
+                {% if AuctionEnded %}
+                    {% if workInfo.bids is empty and workInfo.allowBuyNow %}
+                        {#SPRZEDAŻ POAUKCYJNA#}
+                        {% if(workInfo.buyNowPrice == null) %}
+                            <h5>{{ 'auctions.obiekt.stawka_cena_wywolawcza'|trans({'%kwota%': currency.convert(work.currency.code, app.session.get('_currency'), workInfo.startPrice)~' '~app.session.get('_currency')}) }}</h5>
+                        {% else %}
+                            <h5>{{ 'auctions.poaukcyjna.dostepny'|trans({'%kwota%': currency.convert(work.currency.code, app.session.get('_currency'), workInfo.buyNowPrice)~' '~app.session.get('_currency')}) }}</h5>
+                            <button id="buynow" style="background: #1b1b1b !important;color: #fff !important;" data-url="{{ path("auction_work_buy_now", {workId: workInfo.id}) }}"
+                               class="btn btn-lg btn-primary">{{ 'auctions.poaukcyjna.kup'|trans({'%kwota%': currency.convert(work.currency.code, app.session.get('_currency'), workInfo.buyNowPrice)~' '~app.session.get('_currency')}) }}</button>
+                            <hr/>
+                        {% endif %}
+                    {% else %}
+                        <h5>
+                            {{ 'auctions.obiekt.stawka_cena_wywolawcza'|trans({'%kwota%': currency.convert(work.currency.code, app.session.get('_currency'), workInfo.startPrice)~' '~app.session.get('_currency')}) }}
+                        </h5>
+                        {% if workInfo.bids is not empty %}
+                        <div class="alert alert-success">
+                            {{ 'works.sprzedano1'|trans }}
+                        </div>
+                        {%  endif %}
+                        <hr/>
+                    {% endif %}
+
+                {% else %}
+                    {% if workInfo.bids is empty %}
+                        <h5>{{ 'auctions.obiekt.stawka_cena_wywolawcza'|trans({'%kwota%': actualPrice}) }}</h5>
+                    {% else %}
+                        <h5>{{ 'auctions.obiekt.aktualna_stawka'|trans({'%kwota%': actualPrice}) }}
+                            ({{ workInfo.bids.count }})</h5>
+                    {% endif %}
+                {% endif %}
+
+                {% if workInfo.estimationStart %}
+                    <h5>{{ 'main.estymacja'|trans }}
+                        : {{ currency.convert(work.currency.code, app.session.get('_currency'), workInfo.estimationStart) }}
+                        -{{ currency.convert(work.currency.code, app.session.get('_currency'), workInfo.estimationEnd) }} {{ app.session.get('_currency') }}</h5>
+                {% endif %}
+
+                {% if app.user %}
+                    {% if AuctionEnded %}
+                    {% elseif not AuctionStarted %}
+                    {% else %}
+                        {% if latestBid and latestBid.author.id == app.user.id %}
+                            <div class="alert alert-success">
+                                {{ 'auctions.aktualnie_wygrywasz'|trans({'%kwota%': currency.convert(latestBid.currency.code, app.session.get('_currency'), latestBid.amount)~' '~app.session.get('_currency')}) }}
+                            </div>
+                        {% else %}
+                            {% if work.author.id != app.user.id %}
+                                {{ form_start(form) }}
+                                {{ form_errors(form.amount) }}
+                                <div class="input-group">
+                                    {{ form_widget(form.amount, {attr: {placeholder: 'auctions.obiekt.podbij'|trans({'%kwota%': nextMinPrice~' '~app.session.get('_currency')})}}) }}
+                                    <span class="input-group-addon"
+                                          id="basic-addon2">{{ app.session.get('_currency') }}</span>
+                                    <span class="input-group-btn">
+                                        {{ form_widget(form.submit) }}
+                                    </span>
+                                </div>
+                                {{ form_end(form) }}
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% else %}
+                    {% if not AuctionEnded %}
+                        <div class="alert alert-danger">{{ 'auctions.obiekt.musisz_byc_zalogowany'|trans }}</div>
+                    {% endif %}
+                {% endif %}
+
+                <div class="mt_20">
+
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#home" aria-controls="home" role="tab"
+                               data-toggle="tab">{{ 'main.informacje'|trans }}</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#condition" aria-controls="profile" role="tab"
+                               data-toggle="tab">{{ 'main.stan'|trans }}</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#delivery" aria-controls="profile" role="tab"
+                               data-toggle="tab">{{ 'auctions.dostawa_zwrot'|trans }}</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#payment" aria-controls="profile" role="tab"
+                               data-toggle="tab">{{ 'auctions.platnosc'|trans }}</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#security" aria-controls="profile" role="tab"
+                               data-toggle="tab">{{ 'auctions.polityka_bezpieczenstwa'|trans }}</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#progress" aria-controls="profile" role="tab"
+                               data-toggle="tab">{{ 'auctions.przebieg'|trans }}</a>
+                        </li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="home">
+                            <table style="margin-top: 1px;" class="table table-striped">
+                                <tr>
+                                    <td>{{ 'add_work.tytul'|trans }}</td>
+                                    <td>{{ work.title }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ 'add_work.artysta'|trans }}</td>
+                                    <td>{{ work.artist }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ 'add_work.technika'|trans }}</td>
+                                    <td>{{ work.technique|trans({}, 'work') }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ 'add_work.typ'|trans }}</td>
+                                    <td>{{ work.type|trans({}, 'work') }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ 'add_work.styl'|trans }}</td>
+                                    <td>{{ work.style|trans({}, 'work') }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ 'add_work.opis'|trans }}</td>
+                                    <td>{{ work.description }}</td>
+                                </tr>
+                                {% if workInfo.work.dimensions %}
+                                    {% set inches = workInfo.work.dimensions|split("x") %}
+                                    <tr>
+                                        <td>{{ 'auctions.wymiary'|trans }}</td>
+                                        <td>
+                                            {% if inches[0] is not empty %}{{ workInfo.work.dimensions }} CM
+                                            ({{ (inches[0]/2.54)|round(2) }}x{{ (inches[1]/2.54)|round(2) }}
+                                            x{{ (inches[2]/2.54)|round(2) }} IN){% endif %}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                                <tr>
+                                    <td>{{ 'auctions.rok_powstania'|trans }}</td>
+                                    <td>
+                                        {% if work.year %}{{ work.year }}{% endif %}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="condition">
+                            <p style="margin-top: 20px">{{ workInfo.condition }}</p>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="payment">
+                            <p style="margin-top: 20px">
+                                <b>{{ 'auctions.forma_platnosci'|trans }}:</b>
+                                {% if workInfo.payment == 'transfer' %}
+                                    {{ 'auctions.przelew_bankowy'|trans }}
+                                {% elseif workInfo.payment == 'online' %}
+                                    {{ 'auctions.platnosc_online'|trans }}
+                                {% else %}
+                                    {{ 'auctions.gotowka'|trans }}
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="delivery">
+                            <p style="margin-top: 20px"><b>{{ 'auctions.dostawa_z'|trans }}
+                                    :</b> {{ country.convert(workInfo.shipsFrom, app.session.get('_locale')) }}</p>
+                            <p style="margin-top: 20px"><b>{{ 'auctions.zwrot'|trans }}
+                                    :</b> {{ 'auctions.zwrot_info'|trans }}</p>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" style="padding-top: 20px;" id="security">
+                            {{ security_policy|raw }}
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="progress">
+                            <table style="margin-top: 1px;" class="table table-striped">
+                                {% for bid in przebieg %}
+                                    <tr>
+                                        <td>{{ currency.convert(bid.currency.code, app.session.get('_currency'), bid.amount) }} {{ app.session.get('_currency') }}</td>
+                                        <td>{{ bid.bidDate|date('Y-m-d H:i:s') }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+{#            {% if ads[0] is defined and ads[0] %}#}
+{#                {{ ads[0].content|raw }}#}
+{#            {% endif %}#}
+
+            {{ render(controller('AppBundle:FineartsAuction:ask', {id: workInfo.id})) }}
+
+        </div>
+    </div> <!-- /container -->
+    <div id="dialog-confirm" title="{{ 'dialogs.title'|trans }}">
+        <p>{{ 'dialogs.content'|trans }}</p>
+    </div>
+
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/fancybox/dist/jquery.fancybox.css') }}">
+    <link href="{{ asset("assets/css/zoom.css") }}" rel="stylesheet"/>
+    <style>
+        .lightbox:hover img {
+            color: #000;
+            opacity: 0.5;
+        }
+    </style>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/vendor/openseadragon/built-openseadragon/openseadragon/openseadragon.js') }}"></script>
+    <script type="text/javascript">
+        $( function() {
+            var dialog;
+
+            dialog = $( "#dialog-confirm" ).dialog({
+                autoOpen: false,
+                resizable: false,
+                height: "auto",
+                width: 400,
+                modal: true,
+                buttons: {
+                    "{{ 'dialogs.buttons.kupuje'|trans }}": function() {
+                        var url = $('#buynow').data('url');
+                        $( this ).dialog( "close" );
+                        window.location.href = url;
+                    },
+                    "{{ 'dialogs.buttons.anuluj'|trans }}": function() {
+                        $( this ).dialog( "close" );
+                    }
+                }
+            });
+
+            $("#buynow").button().on("click", function () {
+                dialog.dialog("open");
+            });
+        });
+        $(document).ready(function () {
+            $('a#auctionWorkAsk').click(function (e) {
+                e.preventDefault();
+                $('#myModal').modal('show');
+            });
+
+            // Set the date we're counting down to
+
+            var dateTimeFormatted = AuctionEnded.split(' ');
+            var dateFormatted = dateTimeFormatted[0];
+            var timeFormatted = dateTimeFormatted[1];
+            var dateDst = dateFormatted.split('-');
+            var timeDst = timeFormatted.split(':');
+            var countDownDate = new Date(dateDst[0], dateDst[1] - 1, dateDst[2], timeDst[0], timeDst[1], timeDst[2]).getTime();
+
+
+            // Update the count down every 1 second
+            var x = setInterval(function () {
+
+                // Get todays date and time
+                var now = new Date().getTime();
+
+                // Find the distance between now an the count down date
+                var distance = countDownDate - now;
+
+                // Time calculations for days, hours, minutes and seconds
+                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Display the result in the element with id="demo"
+                document.getElementById("countDownTimer").innerHTML = "<span>" + "{{ 'auctions.rozpoczeta'|trans }}" + days + " {{ 'auctions.dni'|trans }}" + ": " + hours + " h " + ": " + minutes + " m " + ": " + seconds + " s " + "</span>";
+
+                // If the count down is finished, write some text
+                if (distance < 0) {
+                    clearInterval(x);
+                    document.getElementById("countDownTimer").innerHTML = "{{ 'auctions.zakonczona'|trans }}";
+                }
+            }, 1000);
+        });
+    </script>
+    <script type="text/javascript">
+        $('.lightbox').fancybox({
+            buttons: [
+                'close'
+            ],
+            fullScreen: {
+                autoStart: true,
+                requestOnStart: true
+            },
+            zoom: false,
+            onUpdate: function (instance, current) {
+                $(current.$content)
+                    .width($(window).width())
+                    .height($(window).height())
+                    .css('transform', 'translate(0px,0px)');
+            },
+            'afterLoad': function (instance, current) {
+                let html = '<div width="100%" class="sc-bwzfXH gwBNch"><div style="transition: opacity 300ms ease-in-out 0s; opacity: 1;"><div class="LightboxSlider__SliderContainer-sc-2u6frb-1 bBDRtM"><div height="100%" width="100%" class="sc-bwzfXH cQSUhA"><svg class="LightboxSlider__ZoomSymbolContainer-sc-2u6frb-2 fJfAwr"><line x1="0" y1="50%" x2="100%" y2="50%" stroke="#FFF" stroke-width="2px"></line></svg>' +
+                    '<input min="0.22326708847336002" max="2.5659777424483305" step="0.001" type="range" class="LightboxSlider__StyledSlider-sc-2u6frb-0 gvJvRr">' +
+                    '<svg class="LightboxSlider__ZoomSymbolContainer-sc-2u6frb-2 fJfAwr"><line x1="50%" y1="0" x2="50%" y2="100%" stroke="#FFF" stroke-width="2px"></line><line x1="0" y1="50%" x2="100%" y2="50%" stroke="#FFF" stroke-width="2px"></line></svg></div></div></div></div>';
+                $(html).appendTo($(current.$content));
+                $(current.$content).attr('id', 'lightbox-content');
+                $(current.$content).css(';')
+                $(current.$content).find('.fancybox-image').hide();
+                let viewer = OpenSeadragon({
+                    id: "lightbox-content",
+                    tileSources: {
+                        type: 'image',
+                        url: current.src
+                    },
+                    showHomeControl: false,
+                    panHorizontal: true,
+                    defaultZoomLevel: 1,
+                    minZoomLevel: 0.22326708847336002,
+                    maxZoomLevel: 2.5659777424483305,
+                    visibilityRatio: 0.001,
+                    showNavigator: false,
+                    showFullPageControl: false,
+                    showZoomControl: false,
+                });
+
+                $('input[type=range]').on('change', function () {
+                    viewer.viewport.zoomTo($(this).val());
+                });
+
+                viewer.addHandler("canvas-click", eventHandler, {eventType: "viewer canvas-click"});
+                viewer.addHandler("canvas-press", eventHandler, {eventType: "viewer canvas-click"});
+                viewer.addHandler("pan", eventHandler, {eventType: "viewer pan"});
+                viewer.addHandler('canvas-scroll', eventHandler, {eventType: "viewer mousewheel"});
+
+                function eventHandler(event, obj) {
+                    let zoom = viewer.viewport.getZoom();
+                    $('input[type=range]').val(zoom);
+                }
+
+                $(window).resize();
+            },
+            'autoSize': false,
+            'autoScale': false,
+            'autoDimensions': true,
+            'fitToView': false,
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'AppBundle:Emails:base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block content %}
+      <h3>{{ 'mail.witaj_alone'|trans}}</h3>
+
+<h4>{{ 'mail.zainteresowany_dzielem'|trans({'%user%': fullname}, 'messages') }}</h4>
+<h5>{{ work.title }}</h5>
+<p>
+    {{ 'user.imie_i_nazwisko'|trans({}, 'messages') }}: {{ fullname }},
+    {{ 'kontakt.adres_email'|trans({}, 'messages') }}: {{ email }},
+    {{ 'user.numer_telefonu'|trans({}, 'messages') }}: {{ phone }}
+</p>
+<p>{{ content }}</p>
+
+{% if for_admin is defined %}
+    <hr />
+    <h6>Dane dla administratora</h6>
+    <table>
+        <tr>
+            <td>Dzieło:</td>
+            <td>{{ work.title }}</td>
+        </tr>
+        <tr>
+            <td>Autor:</td>
+            <td>
+                <a href="{{ path("profile", {id: work.author.id, prefix: work.author.profilePrefix, slug: work.author.profileSlug|slugify}) }}">
+                    {{ work.author.fullname }}
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>Pytający:</td>
+            <td>
+                {{ fullname }}, {{ email }}, {{ phone }}
+            </td>
+        </tr>
+    </table>
+{% endif %}
+{% endblock %}

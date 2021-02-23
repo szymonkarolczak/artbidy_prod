@@ -1,0 +1,48 @@
+{% extends 'UserBundle:Settings:base.html.twig' %}
+
+{% block title %}{{ 'main.social_media'|trans }} - {{ parent() }}{% endblock %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block settings %}
+    
+    <div class="page-header mt_0">
+        <h1 class="mt_0">{{ 'main.social_media'|trans }}</h1>
+    </div>
+
+    <button class="btn btn-primary" id="addNewSocial">{{ 'main.dodaj_nowy_serwis'|trans }}</button>
+    <hr />
+    {{ form_start(form) }}
+    {{ form(form) }}
+    {{ form_end(form) }}
+    
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.min.css" />
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('assets/js/bootstrap-select.js') }}"></script>
+    <script type="text/javascript">
+        // keep track of how many email fields have been rendered
+        var socialCount = '{{ form.socialMedia|length }}';
+
+        jQuery(document).ready(function() {
+            jQuery('#addNewSocial').click(function(e) {
+                e.preventDefault();
+
+                var socialList = jQuery('#form_socialMedia');
+                var newWidget = socialList.attr('data-prototype');
+
+                newWidget = newWidget.replace('<div class="col-sm-2"></div><div class="col-sm-10">', '<div class="col-sm-12">');
+                newWidget = newWidget.replace(/__name__/g, socialCount)+'<hr />';
+                socialCount++;
+
+                var newLi = jQuery('<div></div>').html(newWidget);
+                newLi.prependTo(socialList);
+                $('select').selectpicker({});
+            });
+        })
+    </script>
+{% endblock %}

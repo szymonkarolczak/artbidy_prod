@@ -1,0 +1,40 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="page-header mt_0">
+            <h1 class="mt_0">Tłumaczenia dla "{{ config.value }}"</h1>
+        </div>
+
+        {{ form(form) }}
+
+        <table class="table table-bordered table-striped table-hover">
+            <tr>
+                <th>ID</th>
+                <th>Język</th>
+                <th>Wartość</th>
+                <th>Akcja</th>
+            </tr>
+            {% for config in pagination %}
+            <tr>
+                <td>{{ config.id }}</td>
+                <td>{{ config.lang.shortcut|upper }}</td>
+                <td>{{ config.value }}</td>
+                <td>
+                    <a href="{{ path('admin_works_configuration_delete', {id: config.id}) }}" class="btn btn-xs btn-danger" onclick="return confirm('Czy na pewno chcesz usunąć to pole?')">Usuń</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    </div>
+
+{% endblock %}

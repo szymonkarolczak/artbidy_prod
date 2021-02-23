@@ -1,0 +1,101 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block metatitle %}
+    {% if app.request.locale == exhibition.langs.first.lang.shortcut and exhibition.langs.first.metatitle is not empty %}
+        <title>{{ exhibition.langs.first.metatitle }}</title>
+    {% elseif app.request.locale == exhibition.langs.last.lang.shortcut and exhibition.langs.last.metatitle is not empty %}
+        <title>{{ exhibition.langs.last.metatitle }}</title>
+    {% else %}
+        <title>{% if (app.request.get('_route') in ['homepage']) and app.request.locale == 'pl' %}
+                {{ ('head.title' ~ app.request.get('_route')) |trans }}{% elseif (app.request.get('page') == 'galleries')  and app.request.locale == 'pl' %}
+                Galeria sztuki współczesnej Warszawa galeria obrazów, malarstwa{% elseif (app.request.get('page') == 'auction-houses')  and app.request.locale == 'pl' %}
+                Dom aukcyjny Artbidy - Partnerstwo Domów Aukcyjnych{% elseif (app.request.getUri() == 'https://pl.artbidy.com/news/icaboston')  and app.request.locale == 'pl' %}
+                Sztuka współczesna Artbidy sztuka współczesna w dobie Internetu
+            {% elseif (app.request.getUri() == 'https://pl.artbidy.com/news/ob') and app.request.locale == 'pl' %}
+                Sztuka współczesna, obrazy współczesne Artbidy{% elseif (app.request.getUri() == 'https://pl.artbidy.com/news/mw') and app.request.locale == 'pl' %}
+                Malarstwo współczesne Artbidy{% elseif (app.request.getUri() == 'https://pl.artbidy.com/news/mahak') and app.request.locale == 'pl' %}Malarstwo abstrakcyjne Artbidy{% else %}Artbidy{% endif %}</title>
+
+    {% endif %}
+{% endblock %}
+
+{% set title = exhibition.title %}
+{% set description = exhibition.description %}
+{#{% set exhibition = exhibition[0] %}#}
+
+{% block meta %}
+    <meta property="fb:app_id" content="448001615801750" />
+    <meta property="og:url" content="{{ app.request.getUri() }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="{{ absolute_url(asset('files/exhibition/'~exhibition.image)) }}" />
+    <meta property="og:description" content="{{ exhibition.langs.first.smallText|striptags }}" />
+{% endblock %}
+
+{% block title %}{{title}} - {{ parent() }}{% endblock %}
+
+
+{% block body %}
+
+    {% set exhibitionStarted = exhibition.startDate|date('Y-m-d H:i:s') > "now"|date('Y-m-d H:i:s') %}
+    <div class="container">
+
+        <section id="exhibition" class="stdSection text-center pt_0">
+            <div class="page-header text-center mt_0">
+                {% if exhibitionStarted %}
+                    <div class="alert alert-warning text-left">{{ 'exhibition.rozpoczyna_sie_o'|trans({'%data%': exhibition.startDate|date('Y-m-d H:i:s')}) }}</div>
+                {% endif %}
+                <h4 class="mt_0 text-center">{{ exhibition.startDate|date('Y-m-d H:i:s') }} - {{ exhibition.endDate|date('Y-m-d H:i:s') }}</h4>
+                <h1>{{ title }}</h1>
+                <p>{{ description }}</p>
+                <div class="addthis_inline_share_toolbox"></div>
+            </div>
+
+            <div class="row mb_25">
+                <div class="col-md-4 text-right">
+                    <img src="{{ asset("files/exhibition/"~exhibition.image)| imagine_filter('thumb_176x250') }}" alt="{{ title }} image" style="max-height: 250px; max-width: 100%" />
+                </div>
+                <div class="col-md-8">
+                    <table class="table mt_20 text-left">
+                        <tr>
+                            <td class="text-right">{{ 'exhibition.autor'|trans }}</td>
+                            <td>
+{#                                <a href="{{ path("profile", {id: exhibition.author.id, prefix: exhibition.author.profilePrefix, slug: exhibition.author.profileSlug|slugify}) }}">#}
+{#                                    {{ exhibition.author.fullname ? exhibition.author.fullname : exhibition.author.username }}#}
+                                    {{ exhibition.fullname }}
+{#                                </a>#}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">{{ 'main.data_start'|trans }}</td>
+                            <td>
+                                {{ exhibition.startDate|date('Y-m-d H:i:s') }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">{{ 'main.data_koniec'|trans }}</td>
+                            <td>
+                                {{ exhibition.endDate|date('Y-m-d H:i:s') }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">{{ 'user.adres'|trans }}</td>
+                            <td>
+                                {{ exhibition.address }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">{{ 'user.miasto'|trans }}</td>
+                            <td>
+                                {{ country.convert(exhibition.city, app.session.get('_locale')) }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <a href="{{ path("events") }}" class="btn btn-fineart">{{ 'wydarzenia.zobacz_wszystkie_wydarzenia'|trans }}</a>
+
+        </section>
+
+    </div> <!-- /container -->
+
+{% endblock %}

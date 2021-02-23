@@ -1,0 +1,18 @@
+<div class="col-md-7 block-index-{{loop.index}}" style="margin-bottom: 40px;">
+    <div class="col-xs-12">
+        {% if news.image %}
+        <a href="{{ path("news", {slug: news.slug}) }}">
+            <img src="{{ asset('files/news/'~news.image)| imagine_filter('thumb_655x390') }}" class="setHeight" alt="{{ news.langs.first.title }} image" />
+        </a>
+        {% endif %}
+    </div>
+    <div class="col-xs-12 caption sm-text-center">
+        <h4 class="mb_5" style="font-size: 30px; line-height: 35px;">
+            <a href="{{ path("news", {slug: news.slug}) }}">{{ news.langs.first.title}}</a>
+        </h4>
+        <h3 class="mt_0" style="font-size: 18px;">{{ 'exhibition.autor'|trans }}: {{ news.author.fullname ? news.author.fullname : news.author.username }}</h3>
+    </div>
+</div>
+<!-- noindex -->
+
+<!-- /noindex -->

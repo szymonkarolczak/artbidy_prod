@@ -1,0 +1,59 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="page-header mt_0">
+            <h1 class="mt_0">{{ 'aukcje.dziela.edytuj'|trans }}</h1>
+        </div>
+
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-md-9 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'aukcje.dziela.dane_zgloszenia'|trans }}</div>
+                    <div class="panel-body">
+                        {{ form_row(form.startPrice) }}
+                        {{ form_row(form.payment) }}
+                        {{ form_row(form.shipsFrom) }}
+                        {{ form_row(form.condition) }}
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">{{ 'aukcje.dziela.estymacja'|trans }}</label>
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    {{ form_widget(form.estimationStart) }}
+                                    <span class="input-group-addon">Do</span>
+                                    {{ form_widget(form.estimationEnd) }}
+                                    <span class="input-group-addon">{{ work.work.currency.code }}</span>
+                                </div>
+                            </div>
+                        </div>
+                                
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'admin.akcje'|trans }}</div>
+                    <div class="panel-body">
+                        {{ form_widget(form.submit) }}
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'admin.opcje'|trans }}</div>
+                    <div class="panel-body">
+                        {{ form_row(form.allowBuyNow) }}
+                        {{ form_row(form.approved) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+
+    </div>
+
+{% endblock %}

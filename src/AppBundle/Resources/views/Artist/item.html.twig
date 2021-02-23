@@ -1,0 +1,25 @@
+<div class="text-center user-profile-id-{{user.id}}">
+    <a style="display: block" class="text-center" href="{{ path("profile", {prefix: user.profilePrefix, slug: user.profileSlug|slugify}) }}">
+        <img src="{{ asset('files/user/'~user.image)| imagine_filter('thumb_548x400') }}" alt="{{ user.fullname }}">
+    </a>
+    <div class="col-xs-6" style="padding: 0;     height: 100px;">
+        <h3>
+            <a href="{{ path("profile", {prefix: user.profilePrefix, slug: user.profileSlug|slugify}) }}">{{ user.fullname ? user.fullname : user.username }}</a>
+        </h3>
+        <p>
+            {% spaceless %}
+                {{ country.convert(user.country, app.session.get('_locale')) }},
+                {% if user.deathdate %}
+                    {{ user.birthdate|date('Y') }}-{{ user.deathdate|date('Y') }}
+                {% else %}
+                    {{ 'artists.ur'|trans({'%rok%': user.birthdate|date('Y')}) }}
+                {% endif %}
+            {% endspaceless %}
+        </p>
+    </div>
+    <div class="col-xs-6" style="padding: 0;">
+{#        {% if not observe %}#}
+            <a style="margin-top: 20px; float: right;font-size: 14px;font-weight: bold; text-transform: uppercase;" class="btn btn-primary" href="{{ path("profile_observe", {id: user.id}) }}">{{ 'main.obserwuj'|trans }}</a>
+{#        {% endif %}#}
+    </div>
+</div>

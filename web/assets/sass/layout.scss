@@ -1,0 +1,347 @@
+$mainSilver: #e8e8e8;
+
+body {  padding-top: 120px;  font-family: 'Open Sans';  }
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:focus, .navbar-default .navbar-nav > .active > a:hover {
+  background-color: transparent;
+  font-weight: bold;
+}
+a {color: black}
+a:hover {color: #F47D35;}
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:focus, .navbar-default .navbar-nav > .open > a:hover {background-color: white; color: black;}
+.container {max-width: 1200px; width: 100%}
+.input-group {
+  .input-group-btn {
+    button,input {border-radius: 0;}
+  }
+}
+.text-bold {font-weight: bold;}
+.form-control {border-radius: 0; box-shadow: none;border-color: $mainSilver;}
+.form-control:focus {box-shadow: none;}
+.clearfix {clear: both; display: block; content: ''}
+
+.form-group-sm label {font-size: 11px; font-weight: bold}
+.checkbox.form-group-sm input {position: relative; top: 2px; margin-right: 4px;}
+.ui-autocomplete {z-index: 999999 !important;}
+
+.mb_15 {margin-bottom: 15px !important;;}
+.mb_5 {margin-bottom: 5px !important;}
+.mb_0 {margin-bottom: 0 !important;}
+.mb_25 {margin-bottom: 25px !important;}
+.mt_20 {margin-top: 20px;}
+.mt_0 {margin-top: 0px !important;}
+
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover, .nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover
+{
+  background-color: #F47D35;
+  border-color: #F47D35;
+}
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover
+{
+  background-color: #F47D35 !important;
+  border-color: #c25818 !important;;
+}
+
+.btn-fineart {
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    background: white;
+    border: 2px solid #222;
+    color: #222;
+    text-transform: uppercase;
+    padding-left: 30px;
+    padding-right: 30px;
+    &:hover {
+        background: white;
+        border-color: black;
+        color: black;
+    }
+}
+
+nav#mainNav {
+  background: white;
+  border: 0;
+  &.shadow {box-shadow: 0px -2px 7px rgba(0,0,0,0.3);}
+  div.container {
+    border-bottom: 1px solid $mainSilver;
+    position: relative;
+    div.navbar-header {
+      a.navbar-brand {
+        height: auto;
+        padding: 28px 10px 21px 0;
+      }
+    }
+    .navbar-nav {
+      > li > a {
+        color: black;
+        font-size: 13px;
+        padding-top: 34px;
+      }
+      &.navbar-right {
+        position: relative;
+      }
+    }
+    form.navbar-form {
+      position: relative;
+      margin-top: 29px;
+      input {
+        height: 25px;
+        font-size: 12px;
+        padding: 0 29px 0px 10px;
+        max-width: 160px;
+        width: 100%;
+      }
+      &::after {
+        display: block;
+        position: absolute;
+        top: 7px;
+        right: 23px;
+        width: 14px;
+        height: 11px;
+        background: url(../images/search-icon.jpg) no-repeat;
+        content: '';
+      }
+    }
+    div.floating-part {
+      position: absolute;
+      top: 0;
+      right: 26px;
+      li {
+          &.social-media {
+              margin-top: 4px;
+              margin-right: 5px;
+              a {display: inline; padding: 0;}
+          }
+        a {
+            color: #7d7d7d;
+            font-size: 11px;
+            padding: 5px;
+        }
+      }
+      ul.dropdown-menu {
+        min-width: 50px;
+      }
+    }
+  }
+}
+
+footer#mainFooter {
+  background: black;
+  padding: 20px 0 0;
+  color: #dbdbdb;
+  margin-top: 30px;
+  h4 {
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: bold;
+  }
+  a {
+    font-size: 11px;
+    color: #dbdbdb;
+    &:hover {color: #ff8400}
+  }
+  div.footer-links {
+    a {padding-bottom: 3px;}
+    div {height: 19px;}
+  }
+  div.newsletter {
+    form {
+      margin-bottom: 15px;
+      input,button {
+        height: 28px;
+        font-size: 12px;
+      }
+      button {
+        color: white;
+        background: #222;
+        text-transform: uppercase;
+        border: 1px solid #222;
+        font-weight: bold;
+        font-size: 11px;
+        padding-top: 5px;
+      }
+    }
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      li {display: inline;}
+    }
+  }
+  .copyright {
+    background: black;
+    font-size: 12px;
+    padding: 10px 0;
+    margin-top: 20px;
+  }
+}
+
+div.workInfo {
+  margin-bottom: 30px;
+  div {
+    min-height: 35px;
+  }
+}
+
+section.stdSection {
+  border-bottom: 1px solid $mainSilver;
+  padding: 35px 0;
+  margin-bottom: 10px;
+  &.pt_0 {padding-top: 0;}
+  h1.small {font-size: 16px; font-weight: bold; margin-top: 0; margin-bottom: 40px;}
+  > a {  text-transform: uppercase;  }
+
+  .item {
+    p > a {color: #aeaeae}
+  }
+
+  .owl-carousel {
+    margin-bottom: 45px;
+    div.item {
+      text-align: left;
+      img {max-width: 100%; max-height: 300px; margin: 0 auto;}
+      h2 {font-size: 18px;}
+      p {font-size: 14px; color: #aeaeae;}
+      > div {margin: 0 25px;}
+    }
+    .owl-prev, .owl-next {
+      position: absolute;
+      top: 40%;
+      left: -50px;
+      width: 30px;
+      height: 32px;
+      background: url(../images/slider-arrow.jpg) no-repeat !important;
+      border-radius: 0;
+      background-color: transparent;
+    }
+    .owl-next {
+      right: -50px;
+      left: auto;
+      transform: rotate(180deg);
+      -moz-transform: rotate(180deg);
+      -webkit-transform: rotate(180deg);
+      -o-transform: rotate(180deg);
+      -ms-transform: rotate(180deg);
+    }
+  }
+}
+
+section#extra {
+  div.row > div {
+    a {text-transform: uppercase;}
+    padding: 0 35px;
+    border-left: 1px solid $mainSilver;
+    p {margin-bottom: 25px;}
+    &:first-child {border-left: 0;}
+  }
+}
+
+div.home-articles {
+  min-height: 320px;
+  div.articleInfo {
+    h3 {line-height: 32px;}
+    line-height: 22px;
+    p {margin-bottom: 20px;}
+    a {text-transform: uppercase;}
+  }
+  ul {
+    li {
+      list-style: none;
+      border-bottom: 1px solid $mainSilver;
+      padding: 15px 0;
+      &.active {font-weight: bold;}
+    }
+  }
+}
+
+.rek-place {
+  width: 100%;
+  text-align: center;
+  background: #e8e8e8;
+  padding: 50px 0;
+  margin: 45px 0;
+}
+
+.caption {
+  margin-top: 5px;
+  h4 {line-height: 25px; font-size: 14px; margin: 0;}
+  p.small {font-size: 12px; margin: 0;}
+}
+
+section#news {
+  div.page-header {
+    h4 {font-size: 12px;}
+    h1 {font-size: 24px;}
+  }
+  img.newsImage {
+    margin-right: 25px;
+    margin-bottom: 20px;
+  }
+}
+
+.registerPlans {
+    h2 {font-size: 24px;}
+    div.plans {
+        label.plan {
+            display: block;
+            box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.25);
+            margin-bottom: 15px;
+            font-weight: normal;
+            cursor: pointer;
+            &.selected {
+                box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.75);
+            }
+            h3 {font-size: 16px; text-transform: uppercase; text-align: center; padding: 8px 10px; background: $mainSilver; font-weight: bold;}
+            ul {
+                margin: 10px;
+                margin-left: 35px;
+                padding: 0;
+                li {padding: 5px 0;}
+            }
+            div.price {
+                text-align: center;
+                padding: 8px 10px;
+                background: $mainSilver;
+                font-style: italic;
+            }
+        }
+    }
+}
+
+.dropdown-menu {
+  min-width: 200px;
+}
+.dropdown-menu.columns-2 {
+  min-width: 465px;
+}
+.dropdown-menu.columns-3 {
+  min-width: 699px;
+}
+.dropdown-menu li a {
+  padding: 5px 15px;
+  font-weight: 300;
+}
+.multi-column-dropdown {
+  list-style: none;
+  padding-left: 5px;
+  .dropdown-header {padding: 3px 14px;}
+}
+.multi-column-dropdown li a {
+  display: block;
+  clear: both;
+  line-height: 1.428571429;
+  color: #333;
+  white-space: normal;
+}
+.multi-column-dropdown li a:hover {
+  text-decoration: none;
+  color: #262626;
+  background-color: #f5f5f5;
+}
+
+@media (max-width: 767px) {
+  .dropdown-menu.multi-column {
+    min-width: 240px !important;
+    overflow-x: hidden;
+  }
+}

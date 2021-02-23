@@ -1,0 +1,58 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ 'uslugi.uslugi'|trans }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+
+        {{ text|raw }}
+
+        {% if endTime %}
+        <div class="alert alert-info">{{ 'uslugi.konczy_sie'|trans({'%data%': endTime|date('Y-m-d H:i:s')}) }}</div>
+        {% endif %}
+
+        {% if prefix == 'annoucements' and app.user.annoucement > 'now'|date('Y-m-d H;i:s') %}
+            <div class="row">
+                <div class="col-md-3">
+                    <ul class="nav nav-pills nav-stacked">
+                        <li role="presentation"{% if app.request.get('showUsers') is null %} class="active"{% endif %}><a href="{{ path("user_services_service", {prefix: 'annoucements'}) }}">{{ 'obserwuj.aukcje_domow'|trans }}</a></li>
+                        <li role="presentation"{% if app.request.get('showUsers') is not null and app.request.get('showUsers') == 'artists' %} class="active"{% endif %}><a href="{{ path("user_services_service", {prefix: 'annoucements', showUsers:'artists'}) }}">{{ 'obserwuj.artysci'|trans }}</a></li>
+                        <li role="presentation"{% if app.request.get('showUsers') is not null and app.request.get('showUsers') == 'galleries' %} class="active"{% endif %}><a href="{{ path("user_services_service", {prefix: 'annoucements', showUsers:'galleries'}) }}">{{ 'obserwuj.galerie'|trans }}</a></li>
+                        <li role="presentation"{% if app.request.get('showUsers') is not null and app.request.get('showUsers') == 'auction-houses' %} class="active"{% endif %}><a href="{{ path("user_services_service", {prefix: 'annoucements', showUsers:'auction-houses'}) }}">{{ 'obserwuj.domy_aukcyjne'|trans }}</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-9">
+                    {% if app.request.get('showUsers') is null %}
+                        <table class="table">
+                            {% for auction in observedHouses %}
+                            <tr>
+                                <td><a href="{{ path('houseauction', {id: auction.id, slug: auction.title|slugify}) }}">{{ auction.title }}</a></td>
+                                <td><a href="#" class="btn btn-xs btn-danger">{{ 'main.usun'|trans }}</a></td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    {% else %}
+                        <table class="table">
+                            {% for user in observedUsers %}
+                                {% set user = user.targetUser %}
+                                <tr>
+                                    <td><a href="{{ path('profile', {id: user.id, slug: user.profileSlug|slugify, prefix: user.profilePrefix}) }}">{{ user.fullname }}</a></td>
+                                    <td><a href="#" class="btn btn-xs btn-danger">{{ 'main.usun'|trans }}</a></td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="text-center" style="margin-top: 35px;">
+            {% if endTime %}
+                <a class="btn btn-lg btn-primary" href="{{ path('user_payments_service', {service: prefix}) }}">{{ 'main.przedluz'|trans }}</a>
+            {% else %}
+                <a class="btn btn-lg btn-primary" href="{{ path('user_payments_service', {service: prefix}) }}">{{ 'main.kup'|trans }}</a>
+            {% endif %}
+        </div>
+
+    </div>
+{% endblock %}

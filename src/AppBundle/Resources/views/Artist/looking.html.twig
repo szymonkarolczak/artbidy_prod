@@ -1,0 +1,54 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ 'artists.poszukiwani'|trans }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        <div class="page-header mt_0">
+            <h1 class="mt_0">{{ 'artists.poszukiwani'|trans }}</h1>
+        </div>
+
+        {{ form_start(form) }}
+            <div class="input-group">
+                {{ form_widget(form.target) }}
+                <span class="input-group-btn">
+                    {{ form_widget(form.submit) }}
+                </span>
+            </div>
+        {{ form_end(form) }}
+        <hr />
+
+        <table class="table table-bordered">
+            <tr>
+                <th>{{ 'user.imie_i_nazwisko'|trans }}</th>
+                <th>{{ 'main.akcja'|trans }}</th>
+            </tr>
+            {% for look in looking %}
+            <tr>
+                <td>
+                    <a href="{{ path('profile', {id: look.target.id, slug: look.target.profileSlug|slugify, prefix: look.target.profilePrefix}) }}">{{ look.target.fullname }}</a>
+                </td>
+                <td>
+                    <a class="btn btn-xs btn-danger" href="{{ path('artists_looking_delete', {id: look.id}) }}">{{ 'main.usun'|trans }}</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    </div> <!-- /container -->
+
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $( "#user_looking_target" ).autocomplete({
+                source: "{{ path('work_search_artist') }}",
+                minLength: 2
+            });
+        });
+    </script>
+{% endblock %}

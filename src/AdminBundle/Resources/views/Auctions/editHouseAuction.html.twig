@@ -1,0 +1,87 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="page-header mt_0">
+            <h1 class="mt_0">Edytuj dane aukcji "{{ auction.langs.first.title }}"</h1>
+        </div>
+
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-md-9">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'admin.jezyki'|trans }}</div>
+                    <div class="panel-body">
+                        <button id="add-another-lang" type="button" class="btn btn-info">{{ 'aktualnosci.kategorie.dodaj_jezyk'|trans }}</button>
+                        <hr />
+                        <div id="admin_auction_langs" class="langs" data-prototype="{{ form_widget(form.langs.vars.prototype)|e('html_attr') }}">
+                            {% for lang in form.langs %}
+                                {{ form_row(lang) }}
+                                <hr />
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Dane aukcji</div>
+                    <div class="panel-body">
+                        {{ form_row(form.address) }}
+                        {{ form_row(form.city) }}
+                        {{ form_row(form.startDate) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'main.opcje'|trans({}, 'messages') }}</div>
+                    <div class="panel-body">
+                        {{ form_widget(form.submit) }}
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'add_work.grafika'|trans({}, 'messages') }}</div>
+                    <div class="panel-body">
+                        {% if auction is defined and auction.image %}
+                        <img src="{{ asset('files/houseauction/'~auction.image.filename)}}" style="max-width: 100%; max-height: 250px;" />
+                        {% endif %}
+                        {{ form_row(form.image) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+
+    </div> <!-- /container -->
+
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/jquery-ui/jquery-ui.css') }}" />
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('assets/vendor/jquery-ui/jquery-ui.js') }}"></script>
+    <script type="text/javascript">
+        $(function() {
+
+            var langCount = '{{ form.langs|length }}';
+
+            $('#add-another-lang').click(function(e) {
+                e.preventDefault();
+
+                var userList = $('#admin_auction_langs');
+
+                var newWidget = userList.attr('data-prototype');
+                newWidget = newWidget.replace(/__name__/g, langCount);
+                langCount++;
+
+                var newLi = $('<div></div>').html(newWidget+'<hr />');
+                newLi.prependTo(userList);
+            });
+        });
+    </script>
+{% endblock %}

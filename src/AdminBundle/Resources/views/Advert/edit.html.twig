@@ -1,0 +1,35 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="container-fluid">
+            <div class="page-header mt_0">
+                <h1 class="mt_0">
+                    {{ 'ogolne.reklamy.edycja'|trans({'%code%': lang.shortcut|upper, '%page%': advert.description}) }}
+                </h1>
+            </div>
+        </div>
+
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-md-9">
+                {{ form_widget(form.content) }}
+            </div>
+            <aside class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'admin.akcja'|trans }}</div>
+                    <div class="panel-body">
+                        <input type="submit" class="btn btn-success" value="{{ 'admin.edytuj'|trans }}" />
+                    </div>
+                </div>
+            </aside>
+        </div>
+        {{ form_end(form) }}
+
+    </div>
+
+{% endblock %}

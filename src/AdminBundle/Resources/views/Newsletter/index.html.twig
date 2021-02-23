@@ -1,0 +1,35 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="page-header">
+            <h1>{{ 'uzytkownicy.newsletter'|trans }}</h1>
+        </div>
+
+        <a class="btn btn-primary" href="{{ path('admin_newsletter_show') }}">Zobacz</a>
+        <table class="table table-bordered table-striped table-hover">
+            <tbody>
+            <tr>
+                <th>Email</th>
+                <th>Język</th>
+            </tr>
+            {% for email in pagination %}
+                <tr>
+                    <td>{{ email.email }}</td>
+                    <td>{{ email.locale }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    </div>
+
+{% endblock %}

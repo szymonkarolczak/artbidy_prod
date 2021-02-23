@@ -1,0 +1,233 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ 'add_work.dodaj'|trans }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        <div class="page-header mt_0">
+            <h1 class="mt_0">{{ 'add_work.dodaj'|trans }}</h1>
+        </div>
+
+        {{ form_start(form) }}
+
+        <div class="row">
+            <div class="col-md-8">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'add_work.dane'|trans }}</div>
+                    <div class="panel-body">
+
+                        {{ form_row(form.type) }}
+
+                        <div id="creator-wrapper" class="form-group" style="position:relative;z-index: 9999">
+                            {{ form_label(form.creator) }}
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-btn">
+                                    {{ form_widget(form.creator) }}
+                                    </span>
+                                    {{ form_widget(form.artist) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        {{ form_row(form.title) }}
+
+                        <div class="form-group">
+                            {{ form_label(form.technique_type) }}
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-btn">
+                                    {{ form_widget(form.technique_type) }}
+                                    </span>
+                                    {{ form_widget(form.technique) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        {{ form_row(form.style) }}
+                        {{ form_row(form.year) }}
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label required">{{ 'auctions.wymiary'|trans }}</label>
+                            <div class="col-sm-10">
+                                <div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="input-group">
+                                                {{ form_widget(form.dimensions_x) }}
+                                                <span class="input-group-addon" id="sizing-addon2">x</span>
+                                                {{ form_widget(form.dimensions_y) }}
+                                                <span class="input-group-addon" id="sizing-addon2">x</span>
+                                                {{ form_widget(form.dimensions_z) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            {{ form_widget(form.dimension_type, {attr: {style: 'width: 70px'}}) }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        {{ form_row(form.description) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'main.opcje'|trans }}</div>
+                    <div class="panel-body">
+                        {{ form_widget(form.submit) }}
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'add_work.grafika_glowna'|trans }}</div>
+                    <div class="panel-body">
+                        {{ form_row(form.image) }}
+                        <div id="fileName"></div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'roles.galeria'|trans }}</div>
+                    <div class="panel-body">
+                        <p>{{ 'add_work.wybierz_galeria'|trans }}</p>
+                        <div id="galleryPrototype" data-prototype="{{ form_widget(form.gallery.vars.prototype)|e }}">
+                            {{ form_widget(form.gallery) }}
+                        </div>
+                        <hr />
+                        <button type="button" class="btn btn-xs btn-info" id="add-gallery-photo">{{ 'add_work.dodaj_nowe_zdjecie'|trans }}</button>
+                    </div>
+                </div>
+                {% if form.priceOnRequest is defined %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ 'add_work.cena'|trans }}</div>
+                    <div class="panel-body">
+                        {{ form_row(form.priceOnRequest) }}
+                        <div id="currency" class="form-group">
+                            {{ form_label(form.currency) }}
+                            <div class="col-sm-10">
+                                {{ form_widget(form.currency) }}
+                            </div>
+                        </div>
+                        <div id="priceValue" class="form-group">
+                            <label class="col-sm-2 control-label" for="app_work_edition">{{ 'add_work.cena'|trans }}</label>
+                            <div class="col-sm-10">
+                                {{ form_widget(form.price) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {{ form_end(form) }}
+
+    </div> <!-- /container -->
+
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.min.css" />
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript">
+        $(function() {
+
+            $( "#app_work_artist" ).autocomplete({
+                source: "{{ path('work_search_artist') }}",
+                minLength: 2
+            });
+            $( "#app_work_technique" ).autocomplete({
+                source: "{{ path('work_search_technique') }}",
+                minLength: 2,
+            });
+            $( "#app_work_style" ).autocomplete({
+                source: "{{ path('work_search_style') }}",
+                minLength: 2,
+            });
+
+            $('input#app_work_priceOnRequest').change(function() {
+                if($(this).is(':checked')) {
+                    $('#priceValue').hide();
+                    $('#currency').hide();
+                } else {
+                    $('#priceValue').show();
+                    $('#currency').show();
+                }
+            });
+            $('input#app_work_priceOnRequest').trigger('change');
+            
+            var galleryCount = '{{ form.gallery|length }}';
+            $('#add-gallery-photo').click(function(e) {
+                e.preventDefault();
+                
+                var galleryList = $('#galleryPrototype');
+
+                var newWidget = galleryList.attr('data-prototype');
+                newWidget = newWidget.replace(/__name__/g, galleryCount);
+                galleryCount++;
+
+
+                var newLi = $('<div id="gallery-field'+galleryCount+'" class="gallery-field-item"></div>').html('<div class="input-group">\
+                    '+newWidget+'\
+                    <label class="choose-file col-sm-2 control-label">Wybierz plik</label>\
+                    <div class="filename"></div>\
+                    <span class="input-group-btn">\
+                        <button class="btn btn-danger btn-xs gallery-field-remove" type="button">{{ 'admin.usun'|trans({}, 'admin') }}</button>\
+                    </span>\
+                </div>');
+                newLi.appendTo(galleryList);
+
+                fileInput(newLi);
+
+            });
+        });
+
+        var fileInput = function(item)
+        {
+            item.find('input[type=file]').each(function(){
+                let wrapper = $('<div/>').css({height:0,width:0,'overflow':'hidden'});
+
+                 var fileInput = $(this).wrap(wrapper);
+
+                 fileInput.change(function(){
+                     $this = $(this);
+                     $(this).parent().parent().find('.filename').text($this.val());
+                 });
+
+                fileInput.parent().parent().find('.gallery-field-remove').click(function () {
+                    $(this).parent().parent().parent().remove();
+                });
+
+                fileInput.parent().parent().find('label.choose-file').click(function(){
+                     fileInput.click();
+                 }).show();
+            });
+        }
+        
+        $( document ).ready(function() {
+            $('#creator-wrapper ul.dropdown-menu').first().css('display','none');
+
+            var wrapper = $('<div/>').css({height:0,width:0,'overflow':'hidden'});
+            var fileInput = $(':file').wrap(wrapper);
+
+            fileInput.change(function(){
+                $this = $(this);
+                $('#fileName').text($this.val());
+            });
+
+            $('#fileName').click(function(){
+                fileInput.click();
+            }).show();
+        });
+        
+        
+    </script>
+{% endblock %}

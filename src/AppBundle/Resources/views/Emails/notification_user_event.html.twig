@@ -1,0 +1,16 @@
+{% extends 'AppBundle:Emails:base.html.twig' %}
+
+{% block content %}
+      <h3>{{ 'mail.witaj'|trans({'%username%': user.fullname}, 'admin', lang) }}</h3>
+
+      {% set title = event.langs.first.title %}
+      {% for Exlang in event.langs %}
+            {% if Exlang.lang.shortcut == lang %}
+                  {% set title = Exlang.title %}
+            {% endif %}
+      {% endfor %}
+
+      <p>
+            {{ 'notifications.user_wydarzenie_text'|trans({'%fullname%': target.fullname, '%wydarzenie%': title, '%link%': absolute_url(path('event', {id: event.id, slug: title|slugify}))}, 'messages', lang)|raw }}
+      </p>
+{% endblock %}

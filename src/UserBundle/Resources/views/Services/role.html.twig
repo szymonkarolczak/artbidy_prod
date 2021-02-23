@@ -1,0 +1,61 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}{{ 'uslugi.uslugi'|trans }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+
+        <div class="page-header mt_0">
+            <h1 class="mt_0">
+                {% if prefix == 'artist' %}
+                    {{ 'stopka.czlonkostwo_artystow'|trans }}
+                {% elseif prefix == 'gallery' %}
+                    {{ 'stopka.siec_galerii'|trans }}
+                {% elseif prefix == 'museum' %}
+                    {{ 'stopka.wspolpraca_muzeow'|trans }}
+                {% else %}
+                    {{ 'stopka.partnerstwo_domow'|trans }}
+                {% endif %}
+            </h1>
+        </div>
+
+        {% if app.user.roleEnd > 'now'|date('Y-m-d H:i:s') %}
+            <div class="alert alert-info">{{ 'uslugi.konczy_sie'|trans({'%data%': app.user.roleEnd|date('Y-m-d H:i:s')}) }}</div>
+        {% endif %}
+
+        <ul class="list-group">
+            {% if prefix == 'museum' %}
+                <li class="list-group-item">{{ 'uslugi.usluga1'|trans }}</li>
+                <li class="list-group-item">{{ 'uslugi.usluga3'|trans }}</li>
+                <li class="list-group-item">{{ 'uslugi.usluga10'|trans }}</li>
+                <li class="list-group-item">{{ 'uslugi.usluga11'|trans }}</li>
+                <li class="list-group-item">{{ 'uslugi.usluga12'|trans }}</li>
+            {% else %}
+                <li class="list-group-item">{{ 'uslugi.usluga1'|trans }}</li>
+                <li class="list-group-item">{{ 'uslugi.usluga2'|trans }}</li>
+                <li class="list-group-item">{{ 'uslugi.usluga3'|trans }}</li>
+                <li class="list-group-item">{{ 'uslugi.usluga4'|trans }}</li>
+                {% if prefix == 'gallery' or prefix == 'auction-house' %}
+                    <li class="list-group-item">{{ 'uslugi.usluga5'|trans }}</li>
+                    <li class="list-group-item">{{ 'uslugi.usluga7'|trans }}</li>
+                {% endif %}
+                {% if prefix == 'gallery' %}
+                    <li class="list-group-item">{{ 'uslugi.usluga6'|trans }}</li>
+                {% endif %}
+                {% if prefix == 'auction-house' %}
+                    <li class="list-group-item">{{ 'uslugi.usluga8'|trans }}</li>
+                    <li class="list-group-item">{{ 'uslugi.usluga9'|trans }}</li>
+                {% endif %}
+            {% endif %}
+        </ul>
+
+        <div class="text-center">
+            {% if app.user.roleEnd > 'now'|date('Y-m-d H:i:s') %}
+                <a class="btn btn-lg btn-primary" href="{{ path('user_payments_role', {role: prefix}) }}">{{ 'main.przedluz'|trans }}</a>
+            {% else %}
+                <a class="btn btn-lg btn-primary" href="{{ path('user_payments_role', {role: prefix}) }}">{{ 'main.kup'|trans }}</a>
+            {% endif %}
+        </div>
+
+    </div>
+{% endblock %}

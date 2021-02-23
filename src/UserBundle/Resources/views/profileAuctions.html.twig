@@ -1,0 +1,48 @@
+{% extends 'UserBundle:Default:base.html.twig' %}
+
+{% block content %}
+    <div class="row mt_20">
+        <div class="col-md-3">
+            <form method="get">
+                <div class="checkbox form-group-sm">
+                    <label>
+                        <input type="checkbox" value="next"{% if app.request.get('_filter').auctions is defined and 'next' in app.request.get('_filter').auctions %} checked="checked"{% endif %} name="_filter[auctions][]"> {{ 'main.nadchodzace'|trans }}
+                    </label>
+                </div>
+                <div class="checkbox form-group-sm">
+                    <label>
+                        <input type="checkbox" value="ended"{% if app.request.get('_filter').auctions is defined and 'ended' in app.request.get('_filter').auctions %} checked="checked"{% endif %} name="_filter[auctions][]"> {{ 'main.zakonczone'|trans }}
+                    </label>
+                </div>
+                <div class="input-group" style="margin-top: 20px;">
+                    <div class="input-group-btn">
+                        <input type="submit" value="{{ 'main.filtruj'|trans }}" class="btn btn-primary" />
+                        <a href="{{ path("profile_auctions", {id: user.id, prefix: user.profilePrefix, slug: user.profileSlug|slugify}) }}" class="btn btn-default">{{ 'main.wyczysc'|trans }}</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-9">
+            <div class="page-header mt_0">
+                <h4>{{ 'auctions.znaleziono_liczba'|trans }} {{ pagination.getTotalItemCount }}</h4>
+            </div>
+            <div class="row">
+                {% for auction in pagination %}
+                    <div class="col-md-3 col-xs-12 text-center mb_25">
+                        <a href="{{ path("houseauction", {id: auction.id, slug: auction.title|slugify}) }}">
+                            <img src="{{ asset('files/houseauction/'~auction.image) | imagine_filter('compress') }}" style="max-width: 100%;" alt="Auction {{ auction.id }}"></a>
+                        <h2><a href="{{ path("houseauction", {id: auction.id, slug: auction.title|slugify}) }}">{{ auction.title }}</a></h2>
+                        <p>{{ auction.description }}</p>
+                     </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        {{ 'auctions.nie_znaleziono'|trans }}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="navigation text-center">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

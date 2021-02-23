@@ -1,0 +1,91 @@
+{% if events %}
+<section id="pinned-events" class="stdSection text-center">
+    <h1 class="small">{{ 'main_menu.wydarzenia'|trans }}</h1>
+
+    <div class="owl-carousel-filter mb_0">
+        {% for event in events %}
+
+            {% set description = event.description %}
+            {% set title = event.title %}
+            {% set event = event[0] %}
+
+            {% if event.exhibition %}
+                {% set url = path("exhibition", {id: event.exhibition.id, slug: event.langs.first.title|slugify}) %}
+            {% elseif event.houseAuction %}
+                {% set url = path("houseauction", {id: event.houseauction.id, slug: event.langs.first.title|slugify}) %}
+            {% else %}
+                {% set url = path("event", {id: event.id, slug: event.langs.first.title|slugify}) %}
+            {% endif %}
+
+            <div class="item">
+                <div>
+                    <div class="text-center">
+                        <a href="{{ url }}"><img src="{{ asset('files/event/'~event.image) | imagine_filter('compress') }}" alt="Event {{ event.id }}"></a>
+                    </div>
+                    <h2><a href="{{ url }}">{{ title }}</a></h2>
+                    <p class="mb_0">{{ event.address }}, {{ event.city }}</p>
+                    <p class="mt_0">{{ event.startDate|date('Y-m-d H:i:s') }} - {{ event.endDate|date('Y-m-d H:i:s') }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+{% if exhibitions %}
+<section id="ongoing" class="stdSection text-center">
+    <h1 class="small">{{ 'artists.wystawy'|trans }}</h1>
+    <div class="owl-carousel">
+        {% for exhibition in exhibitions %}
+            {% set title = exhibition.title %}
+            {% set description = exhibition.description %}
+            {% set exhibition = exhibition[0] %}
+            {% set user = exhibition.author %}
+            <div class="item">
+                <div>
+                    <div class="text-center">
+                        <a href="{{ path('exhibition', {id: exhibition.id, slug: title|slugify}) }}">
+                            <img src="{{ asset('files/exhibition/'~exhibition.image) | imagine_filter('compress') }}" alt="{{ title }} {{ exhibition.id }}"></a>
+                    </div>
+                    <h2 class="mb_5">
+                        <a href="{{ path('exhibition', {id: exhibition.id, slug: title|slugify}) }}">{{ title }}</a>
+                    </h2>
+                    <p class="mb_0"><a href="{{ path('profile', {id:user.id, slug:user.profileSlug|slugify, prefix:user.profilePrefix}) }}">{{ user.fullname ? user.fullname : user.username }}</a></p>
+                    <p class="small">{{ 'exhibition.koniec'|trans({'%data%': exhibition.endDate|date('Y-m-d H:i:s')}) }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+{% if auctions %}
+<section id="auctions" class="stdSection text-center">
+    <h1 class="small">{{ 'main_menu.aukcje'|trans }}</h1>
+    <div class="owl-carousel">
+        {% for auction in auctions %}
+            <div class="item">
+                <div>
+                    <a href="{{ path("houseauction", {id: auction[0].id, slug: auction.title|slugify}) }}">
+                        <img src="{{ asset('files/houseauction/'~auction[0].image) | imagine_filter('compress') }}" alt="Auction {{ auction[0].id }}"></a>
+                    <h2><a href="{{ path("houseauction", {id: auction[0].id, slug: auction.title|slugify}) }}">{{ auction.title }}</a></h2>
+                    <p>{{ auction.description }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<script type="text/javascript">
+    $(".owl-carousel-filter").owlCarousel({
+        itemsScaleUp: false,
+        navigationText: false,
+        navigation: true,
+        pagination: false,
+        autoPlay: 3000,
+        items : 3,
+        itemsDesktop : [1199,3],
+        itemsDesktopSmall : [979,3]
+    });
+</script>

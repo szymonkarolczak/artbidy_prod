@@ -1,0 +1,19 @@
+<div class="col-xs-12 block-index-{{loop.index}}" style="margin-bottom: 40px;">
+    <div class="col-md-5 caption sm-text-center">
+        <h4 class="mb_5 titlePosition-{{loop.index}}" style="padding-top: 20%; font-size: 30px;     line-height: 35px;">
+            <a href="{{ path("news", {slug: news.slug}) }}">{{ news.langs.first.title}}</a>
+        </h4>
+        <h3 class="mt_0 h3Position-{{loop.index}}" style="font-size: 18px;">{{ 'exhibition.autor'|trans }}: {{ news.author.fullname ? news.author.fullname : news.author.username }}</h3>
+        <div class="addthis_inline_share_toolbox" class="text-align: right;"></div>
+    </div>
+    <div class="col-md-7 extraHeight">
+        {% if news.image %}
+        <a href="{{ path("news", {slug: news.slug}) }}" class="imgPosition-{{loop.index}}">
+            <img src="{{ asset('files/news/'~news.image)| imagine_filter('thumb_667x390') }}" class="setHeight" alt="{{ news.langs.first.title }} image" />
+        </a>
+        {% endif %}
+    </div>
+</div>
+<!-- noindex -->
+
+<!-- /noindex -->

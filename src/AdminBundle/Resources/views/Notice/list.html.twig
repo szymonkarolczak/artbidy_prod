@@ -1,0 +1,59 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="container-fluid">
+            <div class="page-header mt_0">
+                <h1 class="mt_0">{{ 'licytacja.page.title.notice'|trans({},'messages') }} <small>{{ pagination.getTotalItemCount }}</small></h1>
+            </div>
+        </div>
+
+        {#{ filters|raw }#}
+
+        <table class="table table-striped table-hover">
+            <tr>
+                <th>ID</th>
+                <th>{{ 'licytacja.tabel.title.time'|trans({},'messages') }}</th>
+                <th>{{ 'licytacja.tabel.title.autor'|trans({},'messages') }}</th>
+                <th>{{ 'licytacja.tabel.title.recipient'|trans({},'messages') }}</th>
+                <th>{{ 'licytacja.tabel.title.status'|trans({},'messages') }}</th>
+                <th>{{ 'licytacja.tabel.title.title'|trans({},'messages') }}</th>
+                <th>{{ 'licytacja.tabel.title.options'|trans({},'messages') }}</th>
+                
+            </tr>
+            {% for notices in pagination %}
+{#            <tr {% if notices.IsReaded %} {% else %} class="success"{% endif %}>#}
+            <tr>
+                <td>{{ notices.id }}</td>
+                <td>{{ notices.CreatedAt|date('Y-m-d H:i:s') }}</td>
+                <td> <a href="{{ path('admin_users_edit', {id: notices.author.id}) }}" class="btn btn-xs btn-primary"> {{ notices.author.fullname }}</a> </td>
+                <td> <a href="{{ path('admin_users_edit', {id: notices.recipient.id}) }}" class="btn btn-xs btn-primary"> {{ notices.recipient.fullname }}</a> </td>
+                <td>{% if notices.IsReaded %} {{ 'notice.statusese.readed'|trans({},'messages') }} {% else %} {{ 'notice.statusese.new'|trans({},'messages') }}{% endif %}</td>
+                <td>{{ notices.title }}</td>
+                <td>
+                    <a href="{{ path('admin_notice_read', {id: notices.id}) }}" class="btn btn-xs btn-primary">{{ 'licytacja.buttons.read_obiekty'|trans({},'messages') }}</a>    
+                    <a onclick="return confirm('{{ 'aktualnosci.czy_na_pewno_usunac'|trans }}')" href="{{ path("admin_notice_delete", {id: notices.id}) }}" class="btn btn-xs btn-danger pull-right">{{ 'admin.usun'|trans }}</a>
+                </td>
+            </tr>
+            {% else %}
+                <tr>
+                    <td colspan="9">
+                        <div class="alert alert-info">{{ 'licytacja.massenges.artwork_nie_znaleziono'|trans }}</div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+
+    </div>
+
+{% endblock %}
+
